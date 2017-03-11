@@ -1214,7 +1214,7 @@ void UndrawMouseCursor()
 
 void DrawMouseCursor()
 {
-#if defined(WINCE)
+#if defined(WINCE) || defined(IOS)
 	/* Don't ever draw the mouse for WinCE, as we work with a stylus */
 	return;
 #endif

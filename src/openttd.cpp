@@ -334,6 +334,7 @@ static void LoadIntroGame(bool load_newgrfs = true)
 		SetLocalCompany(COMPANY_SPECTATOR);
 	} else {
 		SetLocalCompany(COMPANY_FIRST);
+		Window *w = FindWindowByClass(WC_MAIN_WINDOW);
 	}
 
 	_pause_mode = PM_UNPAUSED;

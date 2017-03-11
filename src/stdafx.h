@@ -13,7 +13,12 @@
 #define STDAFX_H
 
 #if defined(__APPLE__)
-	#include "os/macosx/osx_stdafx.h"
+    #include <TargetConditionals.h>
+    #if TARGET_OS_IPHONE || TARGET_OS_SIMULATOR
+        #include "os/ios/ios_stdafx.h"
+    #else
+        #include "os/macosx/osx_stdafx.h"
+    #endif
 #endif /* __APPLE__ */
 
 #if defined(__BEOS__) || defined(__HAIKU__)

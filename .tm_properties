@@ -1,0 +1,1 @@
+excludeInFolderSearch = "{$excludeInFolderSearch,$extraExcludes,bin,objs,src/lang}" 

@@ -368,7 +368,261 @@ bool SetFallbackFont(FreeTypeSettings *settings, const char *language_isocode, i
 	return ret == 0;
 }
 
-#elif defined(__APPLE__) /* end ifdef Win32 */
+#elif defined(WITH_COCOA_TOUCH) /* end ifdef Win32 */
+/* ========================================================================================
+ * Cocoa Touch support
+ * ======================================================================================== */
+
+#include "safeguards.h"
+#include <CoreText/CoreText.h>
+
+typedef struct FontHeader {
+	int32_t fVersion;
+	uint16_t fNumTables;
+	uint16_t fSearchRange;
+	uint16_t fEntrySelector;
+	uint16_t fRangeShift;
+} FontHeader;
+
+typedef struct TableEntry {
+	uint32_t fTag;
+	uint32_t fCheckSum;
+	uint32_t fOffset;
+	uint32_t fLength;
+} TableEntry;
+
+static uint32_t CalcTableCheckSum(const uint32_t *table, uint32_t numberOfBytesInTable) {
+	uint32_t sum = 0;
+	uint32_t nLongs = (numberOfBytesInTable + 3) / 4;
+	while (nLongs-- > 0) {
+		sum += CFSwapInt32HostToBig(*table++);
+	}
+	return sum;
+}
+
+static uint32_t CalcTableDataRefCheckSum(CFDataRef dataRef) {
+	const uint32_t *dataBuff = (const uint32_t *)CFDataGetBytePtr(dataRef);
+	uint32_t dataLength = (uint32_t)CFDataGetLength(dataRef);
+	return CalcTableCheckSum(dataBuff, dataLength);
+}
+
+CFDataRef GetFontData(CFStringRef name, FT_Error &err)
+{
+	static dispatch_once_t onceToken;
+	static CFMutableDictionaryRef fontCache;
+	dispatch_once(&onceToken, ^{
+		// nothing here will ever get released
+		fontCache = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+	});
+	
+	CFDataRef fontData = (CFDataRef)CFDictionaryGetValue(fontCache, name);
+	if (fontData) {
+		return fontData;
+	}
+	
+	CTFontRef ctFont = CTFontCreateWithName(name, 0.0, NULL);
+	if (ctFont == NULL) return NULL;
+	
+	/* Get data from the font */
+	CFArrayRef tags = CTFontCopyAvailableTables(ctFont, kCTFontTableOptionNoOptions);
+	int tableCount = CFArrayGetCount(tags);
+	
+	size_t tableSizes[tableCount];
+	memset(tableSizes, 0, sizeof(size_t) * tableCount);
+	
+	bool containsCFFTable = false;
+	
+	size_t totalSize = sizeof(FontHeader) + sizeof(TableEntry) * tableCount;
+	
+	for (int index = 0; index < tableCount; ++index) {
+		
+		//get size
+		size_t tableSize = 0;
+		CTFontTableTag aTag = (CTFontTableTag)(uintptr_t)CFArrayGetValueAtIndex(tags, index);
+		
+		if (aTag == 'CFF ' && !containsCFFTable) {
+			containsCFFTable = true;
+		}
+		
+		//CFDataRef tableDataRef = CGFontCopyTableForTag(cgFont, aTag);
+		CFDataRef tableDataRef = CTFontCopyTable(ctFont, aTag, kCTFontTableOptionNoOptions);
+		if (tableDataRef != NULL) {
+			tableSize = CFDataGetLength(tableDataRef);
+			CFRelease(tableDataRef);
+		}
+		totalSize += (tableSize + 3) & ~3;
+		
+		tableSizes[index] = tableSize;
+	}
+	
+	CFMutableDataRef data = CFDataCreateMutable(kCFAllocatorDefault, totalSize);
+	if (data == NULL) {
+		err = FT_Err_Out_Of_Memory;
+		CFRelease(tags);
+		CFRelease(ctFont);
+		return NULL;
+	}
+	CFDataSetLength(data, totalSize);
+	char* dataStart = (char*)CFDataGetMutableBytePtr(data);;
+	char* dataPtr = dataStart;
+	
+	// compute font header entries
+	uint16_t entrySelector = 0;
+	uint16_t searchRange = 1;
+	
+	while (searchRange < tableCount >> 1) {
+		entrySelector++;
+		searchRange <<= 1;
+	}
+	searchRange <<= 4;
+	
+	uint16_t rangeShift = (tableCount << 4) - searchRange;
+	
+	// write font header (also called sfnt header, offset subtable)
+	FontHeader* offsetTable = (FontHeader*)dataPtr;
+	
+	//OpenType Font contains CFF Table use 'OTTO' as version, and with .otf extension
+	//otherwise 0001 0000
+	offsetTable->fVersion = containsCFFTable ? 'OTTO' : CFSwapInt16HostToBig(1);
+	offsetTable->fNumTables = CFSwapInt16HostToBig((uint16_t)tableCount);
+	offsetTable->fSearchRange = CFSwapInt16HostToBig((uint16_t)searchRange);
+	offsetTable->fEntrySelector = CFSwapInt16HostToBig((uint16_t)entrySelector);
+	offsetTable->fRangeShift = CFSwapInt16HostToBig((uint16_t)rangeShift);
+	
+	dataPtr += sizeof(FontHeader);
+	
+	// write tables
+	TableEntry* entry = (TableEntry*)dataPtr;
+	dataPtr += sizeof(TableEntry) * tableCount;
+	
+	for (int index = 0; index < tableCount; ++index) {
+		CTFontTableTag aTag = (CTFontTableTag)(uintptr_t)CFArrayGetValueAtIndex(tags, index);
+		CFDataRef tableDataRef = CTFontCopyTable(ctFont, aTag, kCTFontTableOptionNoOptions);
+		size_t tableSize = CFDataGetLength(tableDataRef);
+		
+		memcpy(dataPtr, CFDataGetBytePtr(tableDataRef), tableSize);
+		
+		entry->fTag = CFSwapInt32HostToBig((uint32_t)aTag);
+		entry->fCheckSum = CFSwapInt32HostToBig(CalcTableCheckSum((uint32_t *)dataPtr, tableSize));
+		
+		uint32_t offset = dataPtr - dataStart;
+		entry->fOffset = CFSwapInt32HostToBig((uint32_t)offset);
+		entry->fLength = CFSwapInt32HostToBig((uint32_t)tableSize);
+		dataPtr += (tableSize + 3) & ~3;
+		++entry;
+		CFRelease(tableDataRef);
+	}
+	
+	CFRelease(ctFont);
+	
+	// Save in cache
+	CFDictionarySetValue(fontCache, name, data);
+	return data;
+}
+
+FT_Error GetFontByFaceName(const char *font_name, FT_Face *face)
+{
+	
+	FT_Error err = FT_Err_Cannot_Open_Resource;
+	
+	/* Get font reference from name. */
+	CFStringRef name = CFStringCreateWithCString(kCFAllocatorDefault, font_name, kCFStringEncodingUTF8);
+	CFDataRef fontData = GetFontData(name, err);
+	CFRelease(name);
+
+	if (fontData == NULL) {
+		return err;
+	}
+	
+	err = FT_New_Memory_Face(_library, (const FT_Byte*)CFDataGetBytePtr(fontData), (FT_Long)CFDataGetLength(fontData), 0, face);
+	return err;
+}
+
+bool SetFallbackFont(FreeTypeSettings *settings, const char *language_isocode, int winlangid, MissingGlyphSearcher *callback)
+{
+	bool result = false;
+	
+	/* Determine fallback font using CoreText. This uses the language isocode
+	 * to find a suitable font. CoreText is available from 10.5 onwards. */
+	char lang[16];
+	if (strcmp(language_isocode, "zh_TW") == 0) {
+		/* Traditional Chinese */
+		strecpy(lang, "zh-Hant", lastof(lang));
+	} else if (strcmp(language_isocode, "zh_CN") == 0) {
+		/* Simplified Chinese */
+		strecpy(lang, "zh-Hans", lastof(lang));
+	} else {
+		/* Just copy the first part of the isocode. */
+		strecpy(lang, language_isocode, lastof(lang));
+		char *sep = strchr(lang, '_');
+		if (sep != NULL) *sep = '\0';
+	}
+	
+	/* Create a font descriptor matching the wanted language and latin (english) glyphs. */
+	CFStringRef lang_codes[2];
+	lang_codes[0] = CFStringCreateWithCString(kCFAllocatorDefault, lang, kCFStringEncodingUTF8);
+	lang_codes[1] = CFSTR("en");
+	CFArrayRef lang_arr = CFArrayCreate(kCFAllocatorDefault, (const void **)lang_codes, lengthof(lang_codes), &kCFTypeArrayCallBacks);
+	CFDictionaryRef lang_attribs = CFDictionaryCreate(kCFAllocatorDefault, (const void**)&kCTFontLanguagesAttribute, (const void **)&lang_arr, 1, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+	CTFontDescriptorRef lang_desc = CTFontDescriptorCreateWithAttributes(lang_attribs);
+	CFRelease(lang_arr);
+	CFRelease(lang_attribs);
+	CFRelease(lang_codes[0]);
+	
+	/* Get array of all font descriptors for the wanted language. */
+	CFSetRef mandatory_attribs = CFSetCreate(kCFAllocatorDefault, (const void **)&kCTFontLanguagesAttribute, 1, &kCFTypeSetCallBacks);
+	CFArrayRef descs = CTFontDescriptorCreateMatchingFontDescriptors(lang_desc, mandatory_attribs);
+	CFRelease(mandatory_attribs);
+	CFRelease(lang_desc);
+	
+	for (CFIndex i = 0; descs != NULL && i < CFArrayGetCount(descs); i++) {
+		CTFontDescriptorRef font = (CTFontDescriptorRef)CFArrayGetValueAtIndex(descs, i);
+		
+		/* Get font traits. */
+		CFDictionaryRef traits = (CFDictionaryRef)CTFontDescriptorCopyAttribute(font, kCTFontTraitsAttribute);
+		CTFontSymbolicTraits symbolic_traits;
+		CFNumberGetValue((CFNumberRef)CFDictionaryGetValue(traits, kCTFontSymbolicTrait), kCFNumberIntType, &symbolic_traits);
+		CFRelease(traits);
+		
+		/* Skip symbol fonts and vertical fonts. */
+		if ((symbolic_traits & kCTFontClassMaskTrait) == (CTFontStylisticClass)kCTFontSymbolicClass || (symbolic_traits & kCTFontVerticalTrait)) continue;
+		/* Skip bold fonts (especially Arial Bold, which looks worse than regular Arial). */
+		if (symbolic_traits & kCTFontBoldTrait) continue;
+		/* Select monospaced fonts if asked for. */
+		if (((symbolic_traits & kCTFontMonoSpaceTrait) == kCTFontMonoSpaceTrait) != callback->Monospace()) continue;
+		
+		/* Get font name. */
+		char name[128];
+		CFStringRef font_name = (CFStringRef)CTFontDescriptorCopyAttribute(font, kCTFontDisplayNameAttribute);
+		CFStringGetCString(font_name, name, lengthof(name), kCFStringEncodingUTF8);
+		CFRelease(font_name);
+		
+		/* There are some special fonts starting with an '.' and the last
+		 * resort font that aren't usable. Skip them. */
+		if (name[0] == '.' || strncmp(name, "LastResort", 10) == 0) continue;
+		
+		/* Save result. */
+		callback->SetFontNames(settings, name);
+		if (!callback->FindMissingGlyphs(NULL)) {
+			DEBUG(freetype, 2, "CT-Font for %s: %s", language_isocode, name);
+			result = true;
+			break;
+		}
+	}
+	if (descs != NULL) CFRelease(descs);
+	
+	if (!result) {
+		/* For some OS versions, the font 'Arial Unicode MS' does not report all languages it
+		 * supports. If we didn't find any other font, just try it, maybe we get lucky. */
+		callback->SetFontNames(settings, "Arial Unicode MS");
+		result = !callback->FindMissingGlyphs(NULL);
+	}
+	
+	callback->FindMissingGlyphs(NULL);
+	return result;
+}
+
+#elif defined(__APPLE__) /* end ifdef cocoa touch */
 /* ========================================================================================
  * OSX support
  * ======================================================================================== */

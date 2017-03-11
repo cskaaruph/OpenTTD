@@ -1,0 +1,12 @@
+PODS:
+  - freetype (2.6.4)
+
+DEPENDENCIES:
+  - freetype
+
+SPEC CHECKSUMS:
+  freetype: f1607aa45440e7cc17c85c32e901f32b7b801fad
+
+PODFILE CHECKSUM: e5d7e4ce214dca7114443d2da1f9ab3ae1455ef2
+
+COCOAPODS: 1.2.0

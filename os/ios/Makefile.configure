@@ -1,0 +1,16 @@
+all: Makefile src/rev.cpp objs/lang/table/strings.h objs/setting/table/settings.h
+
+Makefile:
+	./configure --os=unix
+
+objs/lang/table/strings.h:
+	make -C objs/lang
+
+objs/setting/table/settings.h:
+	make -C objs/setting
+
+src/rev.cpp:
+	make -C objs/release depend
+
+clean: Makefile
+	make distclean
