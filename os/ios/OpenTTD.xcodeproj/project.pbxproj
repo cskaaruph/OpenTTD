@@ -399,6 +399,7 @@
 		28999D561E7483D900BD8797 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28999D551E7483D900BD8797 /* AudioToolbox.framework */; };
 		28999D5D1E748FC200BD8797 /* cocoa_touch_m.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28999D5B1E7487E500BD8797 /* cocoa_touch_m.cpp */; };
 		28999E721E74BD5F00BD8797 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28999E711E74BD5F00BD8797 /* CoreText.framework */; };
+		28999E771E77495000BD8797 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 28999E761E77495000BD8797 /* Shaders.metal */; };
 		28A8F9ED1E68A75F00044B53 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A8F9EC1E68A75F00044B53 /* CoreFoundation.framework */; };
 		28A8F9EF1E68BD1B00044B53 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A8F9EE1E68BD1B00044B53 /* libz.tbd */; };
 		28A8F9F11E68C1CC00044B53 /* ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A8F9F01E68C1CC00044B53 /* ios.mm */; };
@@ -1393,6 +1394,7 @@
 		28999D5A1E7487E500BD8797 /* cocoa_touch_m.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cocoa_touch_m.h; sourceTree = "<group>"; };
 		28999D5B1E7487E500BD8797 /* cocoa_touch_m.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cocoa_touch_m.cpp; sourceTree = "<group>"; };
 		28999E711E74BD5F00BD8797 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		28999E761E77495000BD8797 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		28A8F8861E68A01600044B53 /* endian_host.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian_host.h; sourceTree = "<group>"; };
 		28A8F8B61E68A01700044B53 /* strings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strings.h; sourceTree = "<group>"; };
 		28A8F9431E68A01700044B53 /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = settings.h; sourceTree = "<group>"; };
@@ -1464,6 +1466,7 @@
 		286628641E6625A100D12DB9 /* OpenTTD */ = {
 			isa = PBXGroup;
 			children = (
+				28999E761E77495000BD8797 /* Shaders.metal */,
 				286628681E6625A100D12DB9 /* AppDelegate.h */,
 				286628691E6625A100D12DB9 /* AppDelegate.mm */,
 				2866286B1E6625A100D12DB9 /* ViewController.h */,
@@ -3218,6 +3221,7 @@
 				28662ABC1E6626E000D12DB9 /* heightmap.cpp in Sources */,
 				286630551E66272600D12DB9 /* script_scanner.cpp in Sources */,
 				286630011E66272600D12DB9 /* script_storypageelementlist.cpp in Sources */,
+				28999E771E77495000BD8797 /* Shaders.metal in Sources */,
 				28662AAB1E6626E000D12DB9 /* fileio.cpp in Sources */,
 				28662B081E6626E000D12DB9 /* station_cmd.cpp in Sources */,
 				28662F151E66272600D12DB9 /* core.cpp in Sources */,
@@ -3452,6 +3456,7 @@
 					"-DNO_QUICKTIME",
 					"-DWITH_COCOA",
 					"-DWITH_COCOA_TOUCH",
+					"-DWITH_METAL",
 					"-DWITH_FREETYPE",
 					"-DWITH_ZLIB",
 					"-DENABLE_NETWORK",
@@ -3483,6 +3488,7 @@
 					"-DNO_QUICKTIME",
 					"-DWITH_COCOA",
 					"-DWITH_COCOA_TOUCH",
+					"-DWITH_METAL",
 					"-DWITH_FREETYPE",
 					"-DWITH_ZLIB",
 					"-DENABLE_NETWORK",
