@@ -402,6 +402,7 @@
 		28999E771E77495000BD8797 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 28999E761E77495000BD8797 /* Shaders.metal */; };
 		28999E7A1E78923700BD8797 /* Fragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 28999E781E78923700BD8797 /* Fragment.glsl */; };
 		28999E7B1E78923700BD8797 /* Vertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 28999E791E78923700BD8797 /* Vertex.glsl */; };
+		28999E7D1E78976A00BD8797 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 28999E7C1E78976900BD8797 /* Settings.bundle */; };
 		28A8F9ED1E68A75F00044B53 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A8F9EC1E68A75F00044B53 /* CoreFoundation.framework */; };
 		28A8F9EF1E68BD1B00044B53 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A8F9EE1E68BD1B00044B53 /* libz.tbd */; };
 		28A8F9F11E68C1CC00044B53 /* ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A8F9F01E68C1CC00044B53 /* ios.mm */; };
@@ -1399,6 +1400,7 @@
 		28999E761E77495000BD8797 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		28999E781E78923700BD8797 /* Fragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Fragment.glsl; sourceTree = "<group>"; };
 		28999E791E78923700BD8797 /* Vertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Vertex.glsl; sourceTree = "<group>"; };
+		28999E7C1E78976900BD8797 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		28A8F8861E68A01600044B53 /* endian_host.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian_host.h; sourceTree = "<group>"; };
 		28A8F8B61E68A01700044B53 /* strings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strings.h; sourceTree = "<group>"; };
 		28A8F9431E68A01700044B53 /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = settings.h; sourceTree = "<group>"; };
@@ -1483,6 +1485,7 @@
 				286628711E6625A100D12DB9 /* Assets.xcassets */,
 				286628731E6625A100D12DB9 /* LaunchScreen.storyboard */,
 				286628761E6625A100D12DB9 /* Info.plist */,
+				28999E7C1E78976900BD8797 /* Settings.bundle */,
 			);
 			path = OpenTTD;
 			sourceTree = "<group>";
@@ -2867,6 +2870,7 @@
 				28FDA4E41E6A2F7700F740B8 /* lang in Resources */,
 				28FDA4E51E6A2F7700F740B8 /* scripts in Resources */,
 				28999E7A1E78923700BD8797 /* Fragment.glsl in Resources */,
+				28999E7D1E78976A00BD8797 /* Settings.bundle in Resources */,
 				28999E7B1E78923700BD8797 /* Vertex.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

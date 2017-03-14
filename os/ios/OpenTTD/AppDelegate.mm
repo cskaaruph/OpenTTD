@@ -82,10 +82,12 @@ static void CheckPaletteAnim()
 }
 
 - (void)overrideDefaultSettings {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	IConsoleSetSetting("hover_delay_ms", 0);
 	IConsoleSetSetting("osk_activation", 3);
-	_gui_zoom = 1;
-	CGFloat fontScale = [UIScreen mainScreen].nativeScale;
+	BOOL hiDPI = [defaults boolForKey:@"NativeResolution"];
+	_gui_zoom = hiDPI ? 1 : 2;
+	CGFloat fontScale = hiDPI ? [UIScreen mainScreen].nativeScale : 1.0;
 	[self setFontSetting:&_freetype.small toFont:[UIFont systemFontOfSize:fontScale * [UIFont smallSystemFontSize]]];
 	[self setFontSetting:&_freetype.medium toFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:fontScale * [UIFont systemFontSize]]];
 	[self setFontSetting:&_freetype.large toFont:[UIFont systemFontOfSize:[UIFont systemFontSize] * 2.0 * fontScale]];
@@ -117,7 +119,7 @@ static void CheckPaletteAnim()
 }
 
 - (void)resizeGameView:(CGSize)size {
-	CGFloat scale = [UIScreen mainScreen].nativeScale;
+	CGFloat scale = [[NSUserDefaults standardUserDefaults] boolForKey:@"NativeResolution"] ? [UIScreen mainScreen].nativeScale : 1.0;
 	_resolutions[0].width = size.width * scale;
 	_resolutions[0].height = size.height * scale;
 	_cocoa_touch_driver->ChangeResolution(size.width * scale, size.height * scale);

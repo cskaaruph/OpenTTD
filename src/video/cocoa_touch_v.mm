@@ -70,16 +70,19 @@ extern "C" {
 const char *VideoDriver_CocoaTouch::Start(const char * const *parm)
 {
 	// TODO: detect start in landscape
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	UIScreen *mainScreen = [UIScreen mainScreen];
-	CGFloat scale = mainScreen.nativeScale;
+	CGFloat scale = [defaults boolForKey:@"NativeResolution"] ? mainScreen.nativeScale : 1.0;
 	_resolutions[0].width = mainScreen.bounds.size.width * scale;
 	_resolutions[0].height = mainScreen.bounds.size.height * scale;
 	_num_resolutions = 1;
 	_fullscreen = true;
 	_cocoa_touch_driver = this;
 	
+	NSString *selectedDriver = [defaults stringForKey:@"Video"];
+	
 #ifdef WITH_METAL
-	if (_cocoa_touch_layer == NULL) {
+	if (_cocoa_touch_layer == NULL && [selectedDriver isEqualToString:@"metal"]) {
 		id<MTLDevice> device = MTLCreateSystemDefaultDevice();
 		CAMetalLayer *metalLayer = nil;
 		if (device && [device supportsFeatureSet:MTLFeatureSet_iOS_GPUFamily1_v1]) {
@@ -117,7 +120,8 @@ const char *VideoDriver_CocoaTouch::Start(const char * const *parm)
 		_cocoa_touch_layer = metalLayer;
 	}
 metal_fail:
-	if (_cocoa_touch_layer == NULL) {
+	if (_cocoa_touch_layer == NULL && [selectedDriver isEqualToString:@"metal"]) {
+		selectedDriver = @"opengl";
 		commandQueue = nil;
 		pipelineState = nil;
 		vertexBuffer = nil;
@@ -125,7 +129,7 @@ metal_fail:
 #endif
 	
 #if WITH_OPENGL
-	if (_cocoa_touch_layer == NULL) {
+	if (_cocoa_touch_layer == NULL && [selectedDriver isEqualToString:@"opengl"]) {
 		glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 		CAEAGLLayer *eaglLayer = NULL;
 		if (glContext != nil) {
@@ -225,22 +229,25 @@ metal_fail:
 		_cocoa_touch_layer = eaglLayer;
 	}
 opengl_fail:
-	if (_cocoa_touch_layer == NULL && glContext) {
-		[EAGLContext setCurrentContext:glContext];
-		glDeleteTextures(1, &glScreenTexture);
-		glDeleteBuffers(1, &glVertexBuffer);
-		positionSlot = 0;
-		texcoordSlot = 0;
-		textureUniform = 0;
-		[EAGLContext setCurrentContext:nil];
-		glContext = nil;
+	if (_cocoa_touch_layer == NULL && [selectedDriver isEqualToString:@"opengl"]) {
+		if (glContext) {
+			[EAGLContext setCurrentContext:glContext];
+			glDeleteTextures(1, &glScreenTexture);
+			glDeleteBuffers(1, &glVertexBuffer);
+			[EAGLContext setCurrentContext:nil];
+			glContext = nil;
+		}
 	}
 #endif
 	
 	if (_cocoa_touch_layer == NULL) {
+		selectedDriver = @"quartz";
 		_cocoa_touch_layer = [CALayer layer];
 	}
 
+	// update defaults to reflect used driver
+	[defaults setValue:selectedDriver forKey:@"Video"];
+	
 	this->ChangeResolution(_resolutions[0].width, _resolutions[0].height);
 
 	return NULL;
