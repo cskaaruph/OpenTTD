@@ -33,6 +33,12 @@ bool FiosIsRoot(const char *path)
 
 void FiosGetDrives(FileList &file_list)
 {
+	// Add link to Documents
+    FiosItem *fios = file_list.Append();
+    fios->type = FIOS_TYPE_DIRECT;
+    fios->mtime = 0;
+    strecpy(fios->name, _searchpaths[SP_PERSONAL_DIR], lastof(fios->name));
+    strecpy(fios->title, "~/Documents", lastof(fios->title));
     return;
 }
 
