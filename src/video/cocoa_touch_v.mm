@@ -81,13 +81,46 @@ const char *VideoDriver_CocoaTouch::Start(const char * const *parm)
 #ifdef WITH_METAL
 	if (_cocoa_touch_layer == NULL) {
 		id<MTLDevice> device = MTLCreateSystemDefaultDevice();
+		CAMetalLayer *metalLayer = nil;
 		if (device && [device supportsFeatureSet:MTLFeatureSet_iOS_GPUFamily1_v1]) {
-			CAMetalLayer *metalLayer = [CAMetalLayer layer];
+			metalLayer = [CAMetalLayer layer];
 			metalLayer.device = device;
 			metalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm;
 			metalLayer.framebufferOnly = YES;
-			_cocoa_touch_layer = metalLayer;
+		} else {
+			goto metal_fail;
 		}
+		
+		NSError *error = NULL;
+		NSString *libraryPath = [[NSBundle mainBundle] pathForResource:@"default" ofType:@"metallib"];
+		id<MTLLibrary> library = [metalLayer.device newLibraryWithFile:libraryPath error:&error];
+		
+		MTLRenderPipelineDescriptor *pipelineDescriptor = [MTLRenderPipelineDescriptor new];
+		pipelineDescriptor.vertexFunction = [library newFunctionWithName:@"basic_vertex"];
+		pipelineDescriptor.fragmentFunction = [library newFunctionWithName:@"basic_fragment"];
+		pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormatBGRA8Unorm;
+	
+		float vertices[] = {
+			-1.0, -1.0,
+			-1.0, 1.0,
+			1.0, -1.0,
+			1.0, 1.0
+		};
+		 
+		pipelineState = [metalLayer.device newRenderPipelineStateWithDescriptor:pipelineDescriptor error:&error];
+		commandQueue = [metalLayer.device newCommandQueue];
+		vertexBuffer = [metalLayer.device newBufferWithBytes:&vertices length:sizeof(vertices) options:MTLResourceOptionCPUCacheModeDefault];
+		if (error) {
+			NSLog(@"Error initializing pipeline state: %@", error.localizedDescription);
+			goto metal_fail;
+		}
+		_cocoa_touch_layer = metalLayer;
+	}
+metal_fail:
+	if (_cocoa_touch_layer == NULL) {
+		commandQueue = nil;
+		pipelineState = nil;
+		vertexBuffer = nil;
 	}
 #endif
 	
@@ -192,6 +225,16 @@ const char *VideoDriver_CocoaTouch::Start(const char * const *parm)
 		_cocoa_touch_layer = eaglLayer;
 	}
 opengl_fail:
+	if (_cocoa_touch_layer == NULL && glContext) {
+		[EAGLContext setCurrentContext:glContext];
+		glDeleteTextures(1, &glScreenTexture);
+		glDeleteBuffers(1, &glVertexBuffer);
+		positionSlot = 0;
+		texcoordSlot = 0;
+		textureUniform = 0;
+		[EAGLContext setCurrentContext:nil];
+		glContext = nil;
+	}
 #endif
 	
 	if (_cocoa_touch_layer == NULL) {
@@ -275,48 +318,15 @@ bool VideoDriver_CocoaTouch::ChangeResolution(int w, int h)
 #ifdef WITH_METAL
 	if ([_cocoa_touch_layer isKindOfClass:[CAMetalLayer class]]) {
 		CAMetalLayer *metalLayer = (CAMetalLayer *)_cocoa_touch_layer;
-		
-		if (commandQueue) {
-			commandQueue = nil;
-			pipelineState = nil;
-			vertexBuffer = nil;
-			screenBuffer = nil;
-			screenTexture = nil;
-		}
-		
 		metalLayer.drawableSize = CGSizeMake(w, h);
-		NSError *error = nil;
-		
-		NSString *libraryPath = [[NSBundle mainBundle] pathForResource:@"default" ofType:@"metallib"];
-		id<MTLLibrary> library = [metalLayer.device newLibraryWithFile:libraryPath error:&error];
-		
-		MTLRenderPipelineDescriptor *pipelineDescriptor = [MTLRenderPipelineDescriptor new];
-		pipelineDescriptor.vertexFunction = [library newFunctionWithName:@"basic_vertex"];
-		pipelineDescriptor.fragmentFunction = [library newFunctionWithName:@"basic_fragment"];
-		pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormatBGRA8Unorm;
 		
 		MTLTextureDescriptor *textureDescriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatBGRA8Unorm width:w height:h mipmapped:NO];
-		
-		float vertices[] = {
-			-1.0, -1.0,
-			-1.0, 1.0,
-			1.0, -1.0,
-			1.0, 1.0
-		};
-		
-		pipelineState = [metalLayer.device newRenderPipelineStateWithDescriptor:pipelineDescriptor error:&error];
-		commandQueue = [metalLayer.device newCommandQueue];
-		vertexBuffer = [metalLayer.device newBufferWithBytes:&vertices length:sizeof(vertices) options:MTLResourceOptionCPUCacheModeDefault];
 		screenBuffer = [metalLayer.device newBufferWithBytesNoCopy:pixel_buffer length:buffer_size options:MTLResourceOptionCPUCacheModeDefault deallocator:nil];
 		screenTexture = [screenBuffer newTextureWithDescriptor:textureDescriptor offset:0 bytesPerRow:(textureDescriptor.width * 4)];
 		
-		if (error) {
-			NSLog(@"Error initializing pipeline state: %@", error.localizedDescription);
-		}
-		
 		BlitterFactory::GetCurrentBlitter()->PostResize();
 		GameSizeChanged();
-		return (error == nil);
+		return true;
 	}
 #endif
 	
