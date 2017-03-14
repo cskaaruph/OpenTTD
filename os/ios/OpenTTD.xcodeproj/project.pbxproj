@@ -400,6 +400,8 @@
 		28999D5D1E748FC200BD8797 /* cocoa_touch_m.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28999D5B1E7487E500BD8797 /* cocoa_touch_m.cpp */; };
 		28999E721E74BD5F00BD8797 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28999E711E74BD5F00BD8797 /* CoreText.framework */; };
 		28999E771E77495000BD8797 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 28999E761E77495000BD8797 /* Shaders.metal */; };
+		28999E7A1E78923700BD8797 /* Fragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 28999E781E78923700BD8797 /* Fragment.glsl */; };
+		28999E7B1E78923700BD8797 /* Vertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 28999E791E78923700BD8797 /* Vertex.glsl */; };
 		28A8F9ED1E68A75F00044B53 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A8F9EC1E68A75F00044B53 /* CoreFoundation.framework */; };
 		28A8F9EF1E68BD1B00044B53 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A8F9EE1E68BD1B00044B53 /* libz.tbd */; };
 		28A8F9F11E68C1CC00044B53 /* ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A8F9F01E68C1CC00044B53 /* ios.mm */; };
@@ -1395,6 +1397,8 @@
 		28999D5B1E7487E500BD8797 /* cocoa_touch_m.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cocoa_touch_m.cpp; sourceTree = "<group>"; };
 		28999E711E74BD5F00BD8797 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		28999E761E77495000BD8797 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		28999E781E78923700BD8797 /* Fragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Fragment.glsl; sourceTree = "<group>"; };
+		28999E791E78923700BD8797 /* Vertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Vertex.glsl; sourceTree = "<group>"; };
 		28A8F8861E68A01600044B53 /* endian_host.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian_host.h; sourceTree = "<group>"; };
 		28A8F8B61E68A01700044B53 /* strings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strings.h; sourceTree = "<group>"; };
 		28A8F9431E68A01700044B53 /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = settings.h; sourceTree = "<group>"; };
@@ -1467,6 +1471,8 @@
 			isa = PBXGroup;
 			children = (
 				28999E761E77495000BD8797 /* Shaders.metal */,
+				28999E781E78923700BD8797 /* Fragment.glsl */,
+				28999E791E78923700BD8797 /* Vertex.glsl */,
 				286628681E6625A100D12DB9 /* AppDelegate.h */,
 				286628691E6625A100D12DB9 /* AppDelegate.mm */,
 				2866286B1E6625A100D12DB9 /* ViewController.h */,
@@ -2860,6 +2866,8 @@
 				28FDA4E31E6A2F7700F740B8 /* game in Resources */,
 				28FDA4E41E6A2F7700F740B8 /* lang in Resources */,
 				28FDA4E51E6A2F7700F740B8 /* scripts in Resources */,
+				28999E7A1E78923700BD8797 /* Fragment.glsl in Resources */,
+				28999E7B1E78923700BD8797 /* Vertex.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3457,6 +3465,7 @@
 					"-DWITH_COCOA",
 					"-DWITH_COCOA_TOUCH",
 					"-DWITH_METAL",
+					"-DWITH_OPENGL",
 					"-DWITH_FREETYPE",
 					"-DWITH_ZLIB",
 					"-DENABLE_NETWORK",
@@ -3489,6 +3498,7 @@
 					"-DWITH_COCOA",
 					"-DWITH_COCOA_TOUCH",
 					"-DWITH_METAL",
+					"-DWITH_OPENGL",
 					"-DWITH_FREETYPE",
 					"-DWITH_ZLIB",
 					"-DENABLE_NETWORK",
