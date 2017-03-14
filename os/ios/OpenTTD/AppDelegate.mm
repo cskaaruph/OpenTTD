@@ -15,6 +15,7 @@
 #include "gfx_func.h"
 #include "random_func.hpp"
 #include "network.h"
+#include "saveload.h"
 #include "settings_type.h"
 #include "settings_func.h"
 #include "fontcache.h"
@@ -132,9 +133,10 @@ static void CheckPaletteAnim()
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-	//DoExitSave();
+	if (_settings_client.gui.autosave_on_exit && _game_mode != GM_MENU && _game_mode != GM_BOOTSTRAP) {
+		DoExitSave();
+	}
 }
-
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
 
@@ -145,7 +147,10 @@ static void CheckPaletteAnim()
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+	if (_game_mode != GM_MENU && _game_mode != GM_BOOTSTRAP) {
+		DoExitSave();
+	}
+	_exit_game = true;
 }
 
 - (void)tick:(NSTimer*)timer {
