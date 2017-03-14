@@ -75,10 +75,10 @@ static void CheckPaletteAnim()
 	return appDelegate;
 }
 
-- (void)setFontSetting:(FreeTypeSubSetting*)setting toFont:(UIFont*)font {
+- (void)setFontSetting:(FreeTypeSubSetting*)setting toFont:(UIFont*)font scale:(CGFloat)scale {
 	strcpy(setting->font, font.fontDescriptor.postscriptName.UTF8String);
 	setting->aa = true;
-	setting->size = (uint)font.pointSize;
+	setting->size = (uint)(font.pointSize * scale);
 }
 
 - (void)overrideDefaultSettings {
@@ -88,10 +88,12 @@ static void CheckPaletteAnim()
 	BOOL hiDPI = [defaults boolForKey:@"NativeResolution"];
 	_gui_zoom = hiDPI ? 1 : 2;
 	CGFloat fontScale = hiDPI ? [UIScreen mainScreen].nativeScale : 1.0;
-	[self setFontSetting:&_freetype.small toFont:[UIFont systemFontOfSize:fontScale * [UIFont smallSystemFontSize]]];
-	[self setFontSetting:&_freetype.medium toFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:fontScale * [UIFont systemFontSize]]];
-	[self setFontSetting:&_freetype.large toFont:[UIFont systemFontOfSize:[UIFont systemFontSize] * 2.0 * fontScale]];
-	[self setFontSetting:&_freetype.mono toFont:[UIFont fontWithName:@"Menlo-Bold" size:fontScale * [UIFont smallSystemFontSize]]];
+	
+	UIFont *smallFont = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+	[self setFontSetting:&_freetype.small toFont:smallFont scale:fontScale];
+	[self setFontSetting:&_freetype.medium toFont:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] scale:fontScale];
+	[self setFontSetting:&_freetype.large toFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody] scale:fontScale];
+	[self setFontSetting:&_freetype.mono toFont:[UIFont fontWithName:@"Menlo-Bold" size:smallFont.pointSize] scale:fontScale];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -129,7 +131,6 @@ static void CheckPaletteAnim()
 	[self stopGameLoop];
 }
 
-
 - (void)applicationDidEnterBackground:(UIApplication *)application {
 	//DoExitSave();
 }
@@ -142,7 +143,6 @@ static void CheckPaletteAnim()
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 	[self startGameLoop];
 }
-
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
