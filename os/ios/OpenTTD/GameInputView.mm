@@ -13,10 +13,27 @@
 #include "debug.h"
 #include "cocoa_touch_v.h"
 #include "gfx_func.h"
+#include "textbuf_gui.h"
+#include "window_func.h"
 #include "window_gui.h"
 #include "zoom_func.h"
 
 extern CALayer *_cocoa_touch_layer;
+static GameInputView *_cocoa_input_view;
+
+char _keyboard_opt[2][OSK_KEYBOARD_ENTRIES * 4 + 1];
+
+void ShowOnScreenKeyboard(Window *parent, int button) {
+	[_cocoa_input_view becomeFirstResponder];
+}
+
+void UpdateOSKOriginalText(const Window *parent, int button) {
+	
+}
+
+bool IsOSKOpenedFor(const Window *w, int button) {
+	return false;
+}
 
 @implementation GameInputView
 {
@@ -33,6 +50,7 @@ extern CALayer *_cocoa_touch_layer;
 	
 	UIPinchGestureRecognizer *pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
 	[self addGestureRecognizer:pinchRecognizer];
+	_cocoa_input_view = self;
 }
 
 - (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer {
@@ -148,5 +166,35 @@ extern CALayer *_cocoa_touch_layer;
 	HandleMouseEvents();
 }
 
+#pragma mark - Key Input
+
+- (BOOL)canBecomeFirstResponder {
+	return EditBoxInGlobalFocus();
+}
+
+- (BOOL)resignFirstResponder {
+	[super resignFirstResponder];
+	if (EditBoxInGlobalFocus()) {
+		_focused_window->UnfocusFocusedWidget();
+		return YES;
+	}
+	return NO;
+}
+
+- (void)insertText:(NSString *)text {
+	HandleTextInput(text.UTF8String);
+}
+
+- (void)deleteBackward {
+	HandleKeypress(WKC_BACKSPACE, '\x08');
+}
+
+- (BOOL)hasText {
+	if (_focused_window) {
+		return _focused_window->GetFocusedText() != NULL;
+	} else {
+		return NO;
+	}
+}
 
 @end

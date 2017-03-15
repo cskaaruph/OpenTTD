@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GameInputView : UIView
+@interface GameInputView : UIView <UIKeyInput>
 
 @end

@@ -133,7 +133,6 @@
 		28662AE91E6626E000D12DB9 /* order_backup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 286629BF1E6626DF00D12DB9 /* order_backup.cpp */; };
 		28662AEA1E6626E000D12DB9 /* order_cmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 286629C21E6626DF00D12DB9 /* order_cmd.cpp */; };
 		28662AEB1E6626E000D12DB9 /* order_gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 286629C41E6626DF00D12DB9 /* order_gui.cpp */; };
-		28662AEC1E6626E000D12DB9 /* osk_gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 286629C61E6626DF00D12DB9 /* osk_gui.cpp */; };
 		28662AED1E6626E000D12DB9 /* pbs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 286629C71E6626DF00D12DB9 /* pbs.cpp */; };
 		28662AEE1E6626E000D12DB9 /* progress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 286629C91E6626DF00D12DB9 /* progress.cpp */; };
 		28662AEF1E6626E000D12DB9 /* rail_cmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 286629CC1E6626DF00D12DB9 /* rail_cmd.cpp */; };
@@ -3081,7 +3080,6 @@
 				28662AFE1E6626E000D12DB9 /* ship_cmd.cpp in Sources */,
 				28662B201E6626E000D12DB9 /* townname.cpp in Sources */,
 				2866286D1E6625A100D12DB9 /* ViewController.m in Sources */,
-				28662AEC1E6626E000D12DB9 /* osk_gui.cpp in Sources */,
 				28662F041E66272600D12DB9 /* linkgraphschedule.cpp in Sources */,
 				28662EBB1E66272500D12DB9 /* game_info.cpp in Sources */,
 				2866300A1E66272600D12DB9 /* script_townlist.cpp in Sources */,
