@@ -204,4 +204,16 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 	}
 }
 
+- (UITextAutocorrectionType)autocorrectionType {
+	return UITextAutocorrectionTypeNo;
+}
+
+- (UITextAutocapitalizationType)autocapitalizationType {
+	return UITextAutocapitalizationTypeNone;
+}
+
+- (UITextSpellCheckingType)spellCheckingType {
+	return UITextSpellCheckingTypeNo;
+}
+
 @end
