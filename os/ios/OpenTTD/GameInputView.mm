@@ -50,6 +50,7 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 	
 	UIPinchGestureRecognizer *pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
 	[self addGestureRecognizer:pinchRecognizer];
+	
 	_cocoa_input_view = self;
 }
 
@@ -164,6 +165,12 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 	_left_button_down = false;
 	_left_button_clicked = false;
 	HandleMouseEvents();
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+	if (motion == UIEventSubtypeMotionShake) {
+		DeleteAllNonVitalWindows();
+	}
 }
 
 #pragma mark - Key Input
