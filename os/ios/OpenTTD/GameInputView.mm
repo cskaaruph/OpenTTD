@@ -198,7 +198,11 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 }
 
 - (void)insertText:(NSString *)text {
-	HandleTextInput(text.UTF8String);
+	if ([text isEqualToString:@"\n"]) {
+		HandleKeypress(WKC_RETURN, '\n');
+	} else {
+		HandleTextInput(text.UTF8String);
+	}
 }
 
 - (void)deleteBackward {
