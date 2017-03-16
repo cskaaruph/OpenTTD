@@ -129,7 +129,7 @@ metal_fail:
 #endif
 	
 #if WITH_OPENGL
-	if (_cocoa_touch_layer == NULL && [selectedDriver isEqualToString:@"opengl"]) {
+	if (_cocoa_touch_layer == NULL && ![selectedDriver isEqualToString:@"quartz"]) {
 		glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 		CAEAGLLayer *eaglLayer = NULL;
 		if (glContext != nil) {
@@ -226,6 +226,7 @@ metal_fail:
 		glBindTexture(GL_TEXTURE_2D, 0);
 		
 		[EAGLContext setCurrentContext:nil];
+		selectedDriver = @"opengl";
 		_cocoa_touch_layer = eaglLayer;
 	}
 opengl_fail:
@@ -246,6 +247,7 @@ opengl_fail:
 	}
 
 	// update defaults to reflect used driver
+	NSLog(@"Updating video driver setting: %@", selectedDriver);
 	[defaults setValue:selectedDriver forKey:@"Video"];
 	
 	this->ChangeResolution(_resolutions[0].width, _resolutions[0].height);
