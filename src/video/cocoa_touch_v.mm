@@ -313,23 +313,37 @@ bool VideoDriver_CocoaTouch::ChangeResolution(int w, int h)
 	_screen.width = w;
 	_screen.height = h;
 	_screen.pitch = _screen.width;
+#ifdef WITH_METAL
+	BOOL usingMetal = [_cocoa_touch_layer isKindOfClass:[CAMetalLayer class]];
+	if (usingMetal && _screen.pitch % 4) {
+		_screen.pitch += (4 - (_screen.pitch % 4));
+	}
+#endif
 	Blitter *blitter = BlitterFactory::GetCurrentBlitter();
 	assert(blitter->GetScreenDepth() == 32);
 	size_t buffer_size = _screen.pitch * _screen.height * 4;
 	if (pixel_buffer) {
 		free(pixel_buffer);
 	}
-	pixel_buffer = malloc(buffer_size);
+
+#ifdef WITH_METAL
+	// align buffer
+	if (usingMetal && buffer_size % 4096) {
+		buffer_size += (4096 - (buffer_size % 4096));
+	}
+#endif
+
+	pixel_buffer = malloc(buffer_size*2);
 	_screen.dst_ptr = pixel_buffer;
 	
 #ifdef WITH_METAL
-	if ([_cocoa_touch_layer isKindOfClass:[CAMetalLayer class]]) {
+	if (usingMetal) {
 		CAMetalLayer *metalLayer = (CAMetalLayer *)_cocoa_touch_layer;
 		metalLayer.drawableSize = CGSizeMake(w, h);
 		
 		MTLTextureDescriptor *textureDescriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatBGRA8Unorm width:w height:h mipmapped:NO];
 		screenBuffer = [metalLayer.device newBufferWithBytesNoCopy:pixel_buffer length:buffer_size options:MTLResourceOptionCPUCacheModeDefault deallocator:nil];
-		screenTexture = [screenBuffer newTextureWithDescriptor:textureDescriptor offset:0 bytesPerRow:(textureDescriptor.width * 4)];
+		screenTexture = [screenBuffer newTextureWithDescriptor:textureDescriptor offset:0 bytesPerRow:(_screen.pitch * 4)];
 		
 		BlitterFactory::GetCurrentBlitter()->PostResize();
 		GameSizeChanged();
@@ -348,7 +362,7 @@ bool VideoDriver_CocoaTouch::ChangeResolution(int w, int h)
 	// default to CoreGraphics
 	int bitsPerComponent = 8;
 	int bitsPerPixel = 32;
-	int bytesPerRow = _screen.width * 4;
+	int bytesPerRow = _screen.pitch * 4;
 	CGBitmapInfo options = kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipFirst;
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 	if (this->context) {
@@ -443,7 +457,7 @@ void VideoDriver_CocoaTouch::Draw()
 		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, glScreenTexture);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _screen.width, _screen.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, pixel_buffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _screen.pitch, _screen.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, pixel_buffer);
 		glUniform1i(textureUniform, 0);
 		
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

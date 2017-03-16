@@ -508,11 +508,11 @@ Blitter::PaletteAnimation Blitter_32bppAnim::UsePaletteAnimation()
 
 void Blitter_32bppAnim::PostResize()
 {
-	if (_screen.width != this->anim_buf_width || _screen.height != this->anim_buf_height) {
+	if (_screen.pitch != this->anim_buf_width || _screen.height != this->anim_buf_height) {
 		/* The size of the screen changed; we can assume we can wipe all data from our buffer */
 		free(this->anim_buf);
-		this->anim_buf = CallocT<uint16>(_screen.width * _screen.height);
-		this->anim_buf_width = _screen.width;
+		this->anim_buf = CallocT<uint16>(_screen.pitch * _screen.height);
+		this->anim_buf_width = _screen.pitch;
 		this->anim_buf_height = _screen.height;
 	}
 }
