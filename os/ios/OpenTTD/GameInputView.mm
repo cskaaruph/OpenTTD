@@ -13,6 +13,7 @@
 #include "debug.h"
 #include "cocoa_touch_v.h"
 #include "gfx_func.h"
+#include "querystring_gui.h"
 #include "textbuf_gui.h"
 #include "window_func.h"
 #include "window_gui.h"
@@ -188,13 +189,33 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 	return EditBoxInGlobalFocus();
 }
 
+- (UIKeyboardType)keyboardType {
+	if (EditBoxInGlobalFocus()) {
+		if (_focused_window->window_class == WC_CONSOLE) {
+			return UIKeyboardTypeASCIICapable;
+		} else {
+			const QueryString *qs = _focused_window->GetQueryString(_focused_window->nested_focus->index);
+			switch (qs->text.afilter) {
+				case CS_NUMERAL:
+					return UIKeyboardTypeDecimalPad;
+				case CS_ALPHA:
+					return UIKeyboardTypeAlphabet;
+				case CS_NUMERAL_SPACE:
+					return UIKeyboardTypeNumbersAndPunctuation;
+				default:
+					return UIKeyboardTypeASCIICapable;
+			}
+		}
+	}
+	return UIKeyboardTypeASCIICapable;
+}
+
 - (BOOL)resignFirstResponder {
 	[super resignFirstResponder];
 	if (EditBoxInGlobalFocus()) {
 		_focused_window->UnfocusFocusedWidget();
-		return YES;
 	}
-	return NO;
+	return YES;
 }
 
 - (void)insertText:(NSString *)text {
