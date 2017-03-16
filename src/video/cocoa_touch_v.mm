@@ -27,6 +27,7 @@
 #include "gfx_func.h"
 #include "fontcache.h"
 
+void HideOnScreenKeyboard();
 static FVideoDriver_CocoaTouch iFVideoDriver_CocoaTouch;
 VideoDriver_CocoaTouch *_cocoa_touch_driver = NULL;
 
@@ -390,7 +391,7 @@ bool VideoDriver_CocoaTouch::AfterBlitterChange()
 
 void VideoDriver_CocoaTouch::EditBoxLostFocus()
 {
-	
+	HideOnScreenKeyboard();
 }
 
 void VideoDriver_CocoaTouch::Draw()

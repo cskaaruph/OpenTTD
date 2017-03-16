@@ -27,11 +27,20 @@ void ShowOnScreenKeyboard(Window *parent, int button) {
 	[_cocoa_input_view becomeFirstResponder];
 }
 
+void HideOnScreenKeyboard() {
+	if ([_cocoa_input_view isFirstResponder]) {
+		[_cocoa_input_view resignFirstResponder];
+	}
+}
+
 void UpdateOSKOriginalText(const Window *parent, int button) {
 	
 }
 
 bool IsOSKOpenedFor(const Window *w, int button) {
+	if (_focused_window == w && [_cocoa_input_view isFirstResponder]) {
+		return true;
+	}
 	return false;
 }
 
