@@ -84,6 +84,8 @@ static void CheckPaletteAnim()
 
 - (void)overrideDefaultSettings {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults registerDefaults:@{@"Video": @"metal",
+								 @"NativeResolution": @YES}];
 	IConsoleSetSetting("hover_delay_ms", 0);
 	IConsoleSetSetting("osk_activation", 3);
 	BOOL hiDPI = [defaults boolForKey:@"NativeResolution"];
