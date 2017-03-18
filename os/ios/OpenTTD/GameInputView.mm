@@ -50,10 +50,15 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 	int start_scrollpos_x, start_scrollpos_y;
 	CGFloat wheelLevel;
 	Window *panWindow;
+	CGRect keyboardFrame;
 }
 
 - (void)awakeFromNib {
 	[super awakeFromNib];
+	
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	[notificationCenter addObserver:self selector:@selector(ensureInputFieldIsVisible:) name:UIKeyboardWillChangeFrameNotification object:nil];
+	
 	UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
 	panRecognizer.minimumNumberOfTouches = 2;
 	[self addGestureRecognizer:panRecognizer];
@@ -62,6 +67,7 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 	[self addGestureRecognizer:pinchRecognizer];
 	
 	_cocoa_input_view = self;
+	keyboardFrame = CGRectZero;
 }
 
 - (void)handlePanGesture:(UIPanGestureRecognizer*)recognizer {
@@ -183,6 +189,32 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 	}
 }
 
+- (void)ensureInputFieldIsVisible:(NSNotification*)notification {
+	if ([notification.userInfo[UIKeyboardFrameEndUserInfoKey] isKindOfClass:[NSValue class]]) {
+		keyboardFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+	}
+	
+	if (!CGRectIntersectsRect(keyboardFrame, self.bounds) ||
+		!EditBoxInGlobalFocus() ||
+		_focused_window->window_class == WC_CONSOLE) {
+		return;
+	}
+	
+	CGAffineTransform transform = CGAffineTransformMakeScale(_screen.width / self.bounds.size.width, _screen.height / self.bounds.size.height);
+	CGRect keyboardRect = CGRectApplyAffineTransform(keyboardFrame, transform);
+	
+	const NWidgetCore *widget = _focused_window->nested_focus;
+	CGRect fieldRect = CGRectMake(_focused_window->left + widget->pos_x, _focused_window->top + widget->pos_y, widget->current_x, widget->current_y);
+	if (CGRectIntersectsRect(fieldRect, keyboardRect)) {
+		// see if offsetting the window upwards will fix it
+		CGFloat offset = (_focused_window->top + widget->pos_y) - (keyboardRect.origin.y - widget->current_y);
+		if (!CGRectIntersectsRect(CGRectOffset(fieldRect, 0, -offset), keyboardRect)) {
+			_focused_window->top -= offset;
+			MarkWholeScreenDirty();
+		}
+	}
+}
+
 #pragma mark - Key Input
 
 - (BOOL)canBecomeFirstResponder {
@@ -219,6 +251,7 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 }
 
 - (void)insertText:(NSString *)text {
+	[self ensureInputFieldIsVisible:nil];
 	if ([text isEqualToString:@"\n"]) {
 		HandleKeypress(WKC_RETURN, '\n');
 	} else {
@@ -227,6 +260,7 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 }
 
 - (void)deleteBackward {
+	[self ensureInputFieldIsVisible:nil];
 	HandleKeypress(WKC_BACKSPACE, '\x08');
 }
 
@@ -249,5 +283,6 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 - (UITextSpellCheckingType)spellCheckingType {
 	return UITextSpellCheckingTypeNo;
 }
+
 
 @end
