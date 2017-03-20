@@ -14,6 +14,7 @@
 #include "cocoa_touch_v.h"
 #include "gfx_func.h"
 #include "querystring_gui.h"
+#include "smallmap_gui.h"
 #include "textbuf_gui.h"
 #include "window_func.h"
 #include "window_gui.h"
@@ -77,9 +78,15 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 			point = [self gamePoint:[recognizer locationInView:self]];
 			panWindow = FindWindowFromPt(point.x, point.y);
 			if (panWindow->viewport) {
-				// panning
+				// viewport
 				start_scrollpos_x = panWindow->viewport->dest_scrollpos_x;
 				start_scrollpos_y = panWindow->viewport->dest_scrollpos_y;
+			} else if (panWindow->window_class == WC_SMALLMAP) {
+				// smallmap
+				point = [self gamePoint:[recognizer translationInView:self]];
+				start_scrollpos_x = point.x;
+				start_scrollpos_y = point.y;
+				break;
 			} else {
 				// mouse wheel
 				_cursor.UpdateCursorPosition(point.x, point.y, false);
@@ -90,11 +97,18 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 		case UIGestureRecognizerStateChanged:
 			point = [self gamePoint:[recognizer translationInView:self]];
 			if (panWindow->viewport && _game_mode != GM_MENU) {
-				// panning
+				// viewport
 				int x = -point.x;
 				int y = -point.y;
 				panWindow->viewport->dest_scrollpos_x = start_scrollpos_x + ScaleByZoom(x, panWindow->viewport->zoom);
 				panWindow->viewport->dest_scrollpos_y = start_scrollpos_y + ScaleByZoom(y, panWindow->viewport->zoom);
+			} else if (panWindow->window_class == WC_SMALLMAP) {
+				// smallmap
+				SmallMapWindow *w = (SmallMapWindow*)panWindow;
+				Point scrollPoint = { .x = start_scrollpos_x - point.x, .y = start_scrollpos_y - point.y };
+				w->OnScroll(scrollPoint);
+				start_scrollpos_x = point.x;
+				start_scrollpos_y = point.y;
 			} else if (panWindow->viewport == NULL) {
 				// mouse wheel
 				int increment = (wheelLevel - point.y) / (5 * (4 >> _gui_zoom));
@@ -105,6 +119,8 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 		case UIGestureRecognizerStateEnded:
 		case UIGestureRecognizerStateCancelled:
 			panWindow = NULL;
+			_cursor.fix_at = false;
+			HandleMouseEvents();
 		default:
 			break;
 	}
