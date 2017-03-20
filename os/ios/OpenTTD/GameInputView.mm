@@ -166,37 +166,45 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-	UITouch *touch = touches.anyObject;
-	Point point = [self gamePoint:[touch locationInView:self]];
-	_cursor.UpdateCursorPosition(point.x, point.y, false);
-	_left_button_down = true;
-	HandleMouseEvents();
+	if (touches.count == 1) {
+		UITouch *touch = touches.anyObject;
+		Point point = [self gamePoint:[touch locationInView:self]];
+		_cursor.UpdateCursorPosition(point.x, point.y, false);
+		_left_button_down = true;
+		HandleMouseEvents();
+	}
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-	UITouch *touch = touches.anyObject;
-	Point point = [self gamePoint:[touch locationInView:self]];
-	_cursor.UpdateCursorPosition(point.x, point.y, false);
-	_left_button_down = true;
-	HandleMouseEvents();
+	if (_left_button_down) {
+		UITouch *touch = touches.anyObject;
+		Point point = [self gamePoint:[touch locationInView:self]];
+		_cursor.UpdateCursorPosition(point.x, point.y, false);
+		_left_button_down = true;
+		HandleMouseEvents();
+	}
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-	UITouch *touch = touches.anyObject;
-	Point point = [self gamePoint:[touch locationInView:self]];
-	_cursor.UpdateCursorPosition(point.x, point.y, false);
-	_left_button_down = false;
-	_left_button_clicked = false;
-	HandleMouseEvents();
+	if (_left_button_down) {
+		UITouch *touch = touches.anyObject;
+		Point point = [self gamePoint:[touch locationInView:self]];
+		_cursor.UpdateCursorPosition(point.x, point.y, false);
+		_left_button_down = false;
+		_left_button_clicked = false;
+		HandleMouseEvents();
+	}
 }
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-	UITouch *touch = touches.anyObject;
-	Point point = [self gamePoint:[touch locationInView:self]];
-	_cursor.UpdateCursorPosition(point.x, point.y, false);
-	_left_button_down = false;
-	_left_button_clicked = false;
-	HandleMouseEvents();
+	if (_left_button_down) {
+		UITouch *touch = touches.anyObject;
+		Point point = [self gamePoint:[touch locationInView:self]];
+		_cursor.UpdateCursorPosition(point.x, point.y, false);
+		_left_button_down = false;
+		_left_button_clicked = false;
+		HandleMouseEvents();
+	}
 }
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
