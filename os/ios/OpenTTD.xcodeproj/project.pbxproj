@@ -2799,6 +2799,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 286628791E6625A100D12DB9 /* Build configuration list for PBXNativeTarget "OpenTTD" */;
 			buildPhases = (
+				2804136B1E80680400439968 /* update rev.cpp */,
 				50CBA60A7762EB46647E0B74 /* [CP] Check Pods Manifest.lock */,
 				2866285E1E6625A100D12DB9 /* Sources */,
 				2866285F1E6625A100D12DB9 /* Frameworks */,
@@ -2877,6 +2878,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2804136B1E80680400439968 /* update rev.cpp */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "update rev.cpp";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "REV_CPP=\"$SRCROOT/../../src/rev.cpp\"\nrm -f \"$REV_CPP\"\nmake -C \"$SRCROOT/../../objs/release\" \"$REV_CPP\"\n";
+		};
 		4A79635A4DB681CA8E824256 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
