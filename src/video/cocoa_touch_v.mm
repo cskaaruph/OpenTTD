@@ -302,7 +302,14 @@ void VideoDriver_CocoaTouch::ExitMainLoop()
 void VideoDriver_CocoaTouch::MainLoop()
 {
 	if (setjmp(main_loop_jmp) == 0) {
-		UIApplicationMain(*_NSGetArgc(), *_NSGetArgv(), nil, @"AppDelegate");
+		UIApplication *app = [UIApplication sharedApplication];
+		if (app == nil) {
+			UIApplicationMain(*_NSGetArgc(), *_NSGetArgv(), nil, @"AppDelegate");
+		} else {
+			// this only happens after bootstrap
+			[app.delegate performSelector:@selector(startGameLoop)];
+			[[NSRunLoop mainRunLoop] run];
+		}
 	}
 }
 
