@@ -541,6 +541,21 @@ FT_Error GetFontByFaceName(const char *font_name, FT_Face *face)
 bool SetFallbackFont(FreeTypeSettings *settings, const char *language_isocode, int winlangid, MissingGlyphSearcher *callback)
 {
 	bool result = false;
+
+	// Try default font
+	CFStringRef languageString = CFStringCreateWithCString(kCFAllocatorDefault, language_isocode, kCFStringEncodingASCII);
+	CTFontRef font = CTFontCreateUIFontForLanguage(callback->Monospace() ? kCTFontUIFontUserFixedPitch : kCTFontUIFontUser, 14.0, languageString);
+	CFRelease(languageString);
+	CFStringRef fontName = CTFontCopyFullName(font);
+	CFRelease(font);
+	char font_name[128];
+	CFStringGetCString(fontName, font_name, sizeof(font_name), kCFStringEncodingUTF8);
+	CFRelease(fontName);
+	callback->SetFontNames(settings, font_name);
+	if (callback->FindMissingGlyphs(NULL) == false) {
+		// did it really work?
+		return true;
+	}
 	
 	/* Determine fallback font using CoreText. This uses the language isocode
 	 * to find a suitable font. CoreText is available from 10.5 onwards. */
@@ -584,8 +599,6 @@ bool SetFallbackFont(FreeTypeSettings *settings, const char *language_isocode, i
 		CFNumberGetValue((CFNumberRef)CFDictionaryGetValue(traits, kCTFontSymbolicTrait), kCFNumberIntType, &symbolic_traits);
 		CFRelease(traits);
 		
-		/* Skip symbol fonts and vertical fonts. */
-		if ((symbolic_traits & kCTFontClassMaskTrait) == (CTFontStylisticClass)kCTFontSymbolicClass || (symbolic_traits & kCTFontVerticalTrait)) continue;
 		/* Skip bold fonts (especially Arial Bold, which looks worse than regular Arial). */
 		if (symbolic_traits & kCTFontBoldTrait) continue;
 		/* Select monospaced fonts if asked for. */
