@@ -72,6 +72,8 @@ const char *VideoDriver_CocoaTouch::Start(const char * const *parm)
 {
 	// TODO: detect start in landscape
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults registerDefaults:@{@"Video": @"metal",
+								 @"NativeResolution": @NO}];
 	UIScreen *mainScreen = [UIScreen mainScreen];
 	CGFloat scale = [defaults boolForKey:@"NativeResolution"] ? mainScreen.nativeScale : 1.0;
 	_resolutions[0].width = mainScreen.bounds.size.width * scale;
