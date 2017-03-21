@@ -26,6 +26,11 @@
 
 const char * _globalDataDir;
 
+extern "C" {
+	extern char ***_NSGetArgv(void);
+	extern int *_NSGetArgc(void);
+}
+
 bool FiosIsRoot(const char *path)
 {
     return path[1] == '\0';
@@ -80,11 +85,16 @@ void ShowInfo(const char *str)
     fprintf(stderr, "%s\n", str);
 }
 
+const char *OSErrorMessage = nullptr;
+
 void ShowOSErrorBox(const char *buf, bool system)
 {
-	fprintf(stderr, "Error: %s\n", buf);
-	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error" message:@(buf) preferredStyle:UIAlertControllerStyleAlert];
-	[[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertController animated:YES completion:nil];
+	if ([UIApplication sharedApplication] == nil) {
+		OSErrorMessage = buf;
+		UIApplicationMain(*_NSGetArgc(), *_NSGetArgv(), nil, @"AppDelegate");
+	} else {
+		[[UIApplication sharedApplication].delegate performSelector:@selector(showErrorMessage:) withObject:@(buf)];
+	}
 }
 
 /**

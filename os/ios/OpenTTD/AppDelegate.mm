@@ -28,6 +28,8 @@ static bool _tab_is_down;
 static uint32 _tEvent;
 #endif
 
+extern const char * OSErrorMessage;
+
 static uint32 GetTick()
 {
 	return CFAbsoluteTimeGetCurrent() * 1000;
@@ -98,14 +100,26 @@ static void CheckPaletteAnim()
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	[self overrideDefaultSettings];
-	
-	GfxInitPalettes();
-	CheckPaletteAnim();
-	_cocoa_touch_driver->Draw();
-	
-	[self startGameLoop];
+	if (OSErrorMessage) {
+		[self showErrorMessage:@(OSErrorMessage)];
+	} else {
+		[self overrideDefaultSettings];
+		
+		GfxInitPalettes();
+		CheckPaletteAnim();
+		_cocoa_touch_driver->Draw();
+		
+		[self startGameLoop];
+	}
     return YES;
+}
+
+- (void)showErrorMessage:(NSString*)errorMessage {
+	UIViewController *viewController = self.window.rootViewController;
+	[self.window makeKeyAndVisible];
+	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Fatal Error" message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
+	viewController.view.userInteractionEnabled = NO;
+	[viewController presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)startGameLoop {
@@ -143,7 +157,9 @@ static void CheckPaletteAnim()
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-	[self startGameLoop];
+	if (OSErrorMessage == NULL) {
+		[self startGameLoop];
+	}
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
