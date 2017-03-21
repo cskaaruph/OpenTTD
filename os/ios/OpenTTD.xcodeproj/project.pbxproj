@@ -425,6 +425,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2804136C1E81D51100439968 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		2804136E1E81D60400439968 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		286628621E6625A100D12DB9 /* OpenTTD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenTTD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		286628681E6625A100D12DB9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		286628691E6625A100D12DB9 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -2751,6 +2753,8 @@
 		28A8F9E91E68A73900044B53 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2804136E1E81D60400439968 /* libiconv.tbd */,
+				2804136C1E81D51100439968 /* libicucore.tbd */,
 				28999E711E74BD5F00BD8797 /* CoreText.framework */,
 				28999D551E7483D900BD8797 /* AudioToolbox.framework */,
 				28999D521E74839000BD8797 /* CoreAudio.framework */,
@@ -2799,8 +2803,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 286628791E6625A100D12DB9 /* Build configuration list for PBXNativeTarget "OpenTTD" */;
 			buildPhases = (
-				2804136B1E80680400439968 /* update rev.cpp */,
 				50CBA60A7762EB46647E0B74 /* [CP] Check Pods Manifest.lock */,
+				2804136B1E80680400439968 /* update rev.cpp */,
 				2866285E1E6625A100D12DB9 /* Sources */,
 				2866285F1E6625A100D12DB9 /* Frameworks */,
 				286628601E6625A100D12DB9 /* Resources */,
@@ -3485,6 +3489,7 @@
 					"-DWITH_OPENGL",
 					"-DWITH_FREETYPE",
 					"-DWITH_ZLIB",
+					"-DWITH_PNG",
 					"-DENABLE_NETWORK",
 					"-DIOS",
 					"$(inherited)",
@@ -3518,6 +3523,7 @@
 					"-DWITH_OPENGL",
 					"-DWITH_FREETYPE",
 					"-DWITH_ZLIB",
+					"-DWITH_PNG",
 					"-DENABLE_NETWORK",
 					"-DIOS",
 					"$(inherited)",

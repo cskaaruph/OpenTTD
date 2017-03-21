@@ -7,4 +7,12 @@ target 'OpenTTD' do
 
   # Pods for OpenTTD
   pod 'freetype'
+  pod 'libpng'
+end
+
+post_install do |installer|
+  libpng = installer.pods_project.targets.find { |target| target.name == 'libpng' }
+  libpng.build_configurations.each do |config|
+    config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'PNG_ARM_NEON_OPT=0']
+  end
 end
