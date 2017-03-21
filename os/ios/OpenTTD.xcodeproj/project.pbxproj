@@ -2890,7 +2890,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "REV_CPP=\"$SRCROOT/../../src/rev.cpp\"\nrm -f \"$REV_CPP\"\nmake -C \"$SRCROOT/../../objs/release\" \"$REV_CPP\"\n";
+			shellScript = "REV_CPP=\"$SRCROOT/../../src/rev.cpp\"\nmake -C \"$SRCROOT/../../objs/release\" \"$REV_CPP\"\n";
 		};
 		4A79635A4DB681CA8E824256 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
