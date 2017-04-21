@@ -139,7 +139,9 @@ static void CheckPaletteAnim()
 	CGFloat scale = [[NSUserDefaults standardUserDefaults] boolForKey:@"NativeResolution"] ? [UIScreen mainScreen].nativeScale : 1.0;
 	_resolutions[0].width = size.width * scale;
 	_resolutions[0].height = size.height * scale;
-	_cocoa_touch_driver->ChangeResolution(size.width * scale, size.height * scale);
+	if (_cocoa_touch_driver) {
+		_cocoa_touch_driver->ChangeResolution(size.width * scale, size.height * scale);
+	}
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
