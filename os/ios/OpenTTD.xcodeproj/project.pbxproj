@@ -405,6 +405,8 @@
 		28A8F9ED1E68A75F00044B53 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A8F9EC1E68A75F00044B53 /* CoreFoundation.framework */; };
 		28A8F9EF1E68BD1B00044B53 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A8F9EE1E68BD1B00044B53 /* libz.tbd */; };
 		28A8F9F11E68C1CC00044B53 /* ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A8F9F01E68C1CC00044B53 /* ios.mm */; };
+		28E4F3A9208FC35700625DDB /* script_clientlist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E4F3A6208FC35600625DDB /* script_clientlist.cpp */; };
+		28E4F3AA208FC35700625DDB /* script_client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E4F3A8208FC35700625DDB /* script_client.cpp */; };
 		28FDA4E11E6A2F7700F740B8 /* ai in Resources */ = {isa = PBXBuildFile; fileRef = 28FDA4DC1E6A2F7700F740B8 /* ai */; };
 		28FDA4E21E6A2F7700F740B8 /* baseset in Resources */ = {isa = PBXBuildFile; fileRef = 28FDA4DD1E6A2F7700F740B8 /* baseset */; };
 		28FDA4E31E6A2F7700F740B8 /* game in Resources */ = {isa = PBXBuildFile; fileRef = 28FDA4DE1E6A2F7700F740B8 /* game */; };
@@ -1410,6 +1412,10 @@
 		28A8F9EE1E68BD1B00044B53 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		28A8F9F01E68C1CC00044B53 /* ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ios.mm; sourceTree = "<group>"; };
 		28A8F9FC1E68CC0500044B53 /* endian_target.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = endian_target.h; sourceTree = "<group>"; };
+		28E4F3A5208FC35600625DDB /* script_client.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = script_client.hpp; sourceTree = "<group>"; };
+		28E4F3A6208FC35600625DDB /* script_clientlist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = script_clientlist.cpp; sourceTree = "<group>"; };
+		28E4F3A7208FC35700625DDB /* script_clientlist.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = script_clientlist.hpp; sourceTree = "<group>"; };
+		28E4F3A8208FC35700625DDB /* script_client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = script_client.cpp; sourceTree = "<group>"; };
 		28FDA4DC1E6A2F7700F740B8 /* ai */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ai; path = ../../bin/ai; sourceTree = "<group>"; };
 		28FDA4DD1E6A2F7700F740B8 /* baseset */ = {isa = PBXFileReference; lastKnownFileType = folder; name = baseset; path = ../../bin/baseset; sourceTree = "<group>"; };
 		28FDA4DE1E6A2F7700F740B8 /* game */ = {isa = PBXFileReference; lastKnownFileType = folder; name = game; path = ../../bin/game; sourceTree = "<group>"; };
@@ -2434,6 +2440,10 @@
 				28662D5D1E66272500D12DB9 /* script_cargolist.hpp */,
 				28662D5E1E66272500D12DB9 /* script_cargomonitor.cpp */,
 				28662D5F1E66272500D12DB9 /* script_cargomonitor.hpp */,
+				28E4F3A8208FC35700625DDB /* script_client.cpp */,
+				28E4F3A5208FC35600625DDB /* script_client.hpp */,
+				28E4F3A6208FC35600625DDB /* script_clientlist.cpp */,
+				28E4F3A7208FC35700625DDB /* script_clientlist.hpp */,
 				28662D601E66272500D12DB9 /* script_company.cpp */,
 				28662D611E66272500D12DB9 /* script_company.hpp */,
 				28662D621E66272500D12DB9 /* script_companymode.cpp */,
@@ -3115,9 +3125,11 @@
 				28662B8E1E66270600D12DB9 /* ai_core.cpp in Sources */,
 				286628C51E66268400D12DB9 /* 8bpp_optimized.cpp in Sources */,
 				2866300F1E66272600D12DB9 /* script_waypoint.cpp in Sources */,
+				28E4F3AA208FC35700625DDB /* script_client.cpp in Sources */,
 				28662F501E66272600D12DB9 /* newgrf_sl.cpp in Sources */,
 				28662A811E6626E000D12DB9 /* autoreplace_cmd.cpp in Sources */,
 				28662A9C1E6626E000D12DB9 /* debug.cpp in Sources */,
+				28E4F3A9208FC35700625DDB /* script_clientlist.cpp in Sources */,
 				28662F571E66272600D12DB9 /* station_sl.cpp in Sources */,
 				2866286A1E6625A100D12DB9 /* AppDelegate.mm in Sources */,
 				28662AD91E6626E000D12DB9 /* newgrf_industries.cpp in Sources */,

@@ -21,6 +21,7 @@
 #include <time.h>
 #include <signal.h>
 #include <sys/mount.h>
+#include <pthread.h>
 
 #include "safeguards.h"
 
@@ -164,4 +165,18 @@ int main(int argc, char * argv[])
 		
 		return openttd_main(1, argv);
     }
+}
+
+/**
+ * Set the name of the current thread for the debugger.
+ * @param name The new name of the current thread.
+ */
+void MacOSSetThreadName(const char *name)
+{
+	pthread_setname_np(name);
+	
+	NSThread *cur = [ NSThread currentThread ];
+	if (cur != NULL && [ cur respondsToSelector:@selector(setName:) ]) {
+		[ cur performSelector:@selector(setName:) withObject:[ NSString stringWithUTF8String:name ] ];
+	}
 }
