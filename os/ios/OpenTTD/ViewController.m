@@ -36,4 +36,8 @@ extern CALayer *_cocoa_touch_layer;
 	return YES;
 }
 
+- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures {
+	return UIRectEdgeAll;
+}
+
 @end
