@@ -16,6 +16,7 @@
 #include "querystring_gui.h"
 #include "smallmap_gui.h"
 #include "textbuf_gui.h"
+#include "tilehighlight_func.h"
 #include "window_func.h"
 #include "window_gui.h"
 #include "zoom_func.h"
@@ -198,6 +199,7 @@ bool IsOSKOpenedFor(const Window *w, int button) {
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
 	if (_left_button_down) {
+		ResetObjectToPlace();
 		UITouch *touch = touches.anyObject;
 		Point point = [self gamePoint:[touch locationInView:self]];
 		_cursor.UpdateCursorPosition(point.x, point.y, false);
