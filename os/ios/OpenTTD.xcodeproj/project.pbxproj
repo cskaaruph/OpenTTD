@@ -392,6 +392,8 @@
 		286630751E66272600D12DB9 /* dedicated_v.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28662E751E66272500D12DB9 /* dedicated_v.cpp */; };
 		286630761E66272600D12DB9 /* null_v.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28662E771E66272500D12DB9 /* null_v.cpp */; };
 		286630791E66272600D12DB9 /* dropdown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28662E8B1E66272500D12DB9 /* dropdown.cpp */; };
+		2867E5DF216D48B700AF1FFB /* midifile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2867E5DE216D48B600AF1FFB /* midifile.cpp */; };
+		2867E5E2216D4C0800AF1FFB /* framerate_gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2867E5E1216D4C0800AF1FFB /* framerate_gui.cpp */; };
 		28999D491E6E1A3700BD8797 /* GameInputView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28999D481E6E1A3700BD8797 /* GameInputView.mm */; };
 		28999D4F1E74815E00BD8797 /* cocoa_touch_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28999D4E1E74815E00BD8797 /* cocoa_touch_s.cpp */; };
 		28999D531E74839000BD8797 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28999D521E74839000BD8797 /* CoreAudio.framework */; };
@@ -1390,6 +1392,12 @@
 		28662EB61E66272500D12DB9 /* viewport_widget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = viewport_widget.h; sourceTree = "<group>"; };
 		28662EB71E66272500D12DB9 /* waypoint_widget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = waypoint_widget.h; sourceTree = "<group>"; };
 		2866307A1E662A4800D12DB9 /* ios_stdafx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ios_stdafx.h; sourceTree = "<group>"; };
+		2867E5DD216D48B600AF1FFB /* midifile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = midifile.hpp; sourceTree = "<group>"; };
+		2867E5DE216D48B600AF1FFB /* midifile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = midifile.cpp; sourceTree = "<group>"; };
+		2867E5E0216D4C0700AF1FFB /* framerate_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = framerate_type.h; sourceTree = "<group>"; };
+		2867E5E1216D4C0800AF1FFB /* framerate_gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = framerate_gui.cpp; sourceTree = "<group>"; };
+		2867E5E3216D4C2A00AF1FFB /* midi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = midi.h; sourceTree = "<group>"; };
+		2867E5E4216D4C5300AF1FFB /* framerate_widget.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = framerate_widget.h; sourceTree = "<group>"; };
 		28999D471E6E1A3700BD8797 /* GameInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameInputView.h; sourceTree = "<group>"; };
 		28999D481E6E1A3700BD8797 /* GameInputView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameInputView.mm; sourceTree = "<group>"; };
 		28999D4D1E74815E00BD8797 /* cocoa_touch_s.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cocoa_touch_s.h; sourceTree = "<group>"; };
@@ -1640,6 +1648,8 @@
 				2866293F1E6626DF00D12DB9 /* fontcache.h */,
 				286629401E6626DF00D12DB9 /* fontdetection.cpp */,
 				286629411E6626DF00D12DB9 /* fontdetection.h */,
+				2867E5E1216D4C0800AF1FFB /* framerate_gui.cpp */,
+				2867E5E0216D4C0700AF1FFB /* framerate_type.h */,
 				286629421E6626DF00D12DB9 /* gamelog_internal.h */,
 				286629431E6626DF00D12DB9 /* gamelog.cpp */,
 				286629441E6626DF00D12DB9 /* gamelog.h */,
@@ -2190,6 +2200,9 @@
 			children = (
 				28999D5A1E7487E500BD8797 /* cocoa_touch_m.h */,
 				28999D5B1E7487E500BD8797 /* cocoa_touch_m.cpp */,
+				2867E5E3216D4C2A00AF1FFB /* midi.h */,
+				2867E5DE216D48B600AF1FFB /* midifile.cpp */,
+				2867E5DD216D48B600AF1FFB /* midifile.hpp */,
 				28662C361E66272500D12DB9 /* music_driver.hpp */,
 				28662C371E66272500D12DB9 /* null_m.cpp */,
 				28662C381E66272500D12DB9 /* null_m.h */,
@@ -2675,6 +2688,7 @@
 				28662E8F1E66272500D12DB9 /* engine_widget.h */,
 				28662E901E66272500D12DB9 /* error_widget.h */,
 				28662E911E66272500D12DB9 /* fios_widget.h */,
+				2867E5E4216D4C5300AF1FFB /* framerate_widget.h */,
 				28662E921E66272500D12DB9 /* genworld_widget.h */,
 				28662E931E66272500D12DB9 /* goal_widget.h */,
 				28662E941E66272500D12DB9 /* graph_widget.h */,
@@ -2899,6 +2913,7 @@
 			);
 			name = "update rev.cpp";
 			outputPaths = (
+				$SRCROOT/../../src/rev.cpp,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3161,6 +3176,7 @@
 				28662F171E66272600D12DB9 /* packet.cpp in Sources */,
 				28662B011E6626E000D12DB9 /* signs_cmd.cpp in Sources */,
 				28662F091E66272600D12DB9 /* getoptdata.cpp in Sources */,
+				2867E5DF216D48B700AF1FFB /* midifile.cpp in Sources */,
 				286630081E66272600D12DB9 /* script_tilelist.cpp in Sources */,
 				28662B301E6626E000D12DB9 /* water_cmd.cpp in Sources */,
 				28662FF11E66272600D12DB9 /* script_infrastructure.cpp in Sources */,
@@ -3285,6 +3301,7 @@
 				28662BB21E66271B00D12DB9 /* geometry_func.cpp in Sources */,
 				28662B111E6626E000D12DB9 /* subsidy_gui.cpp in Sources */,
 				28662F481E66272600D12DB9 /* gamelog_sl.cpp in Sources */,
+				2867E5E2216D4C0800AF1FFB /* framerate_gui.cpp in Sources */,
 				28662AC11E6626E000D12DB9 /* industry_gui.cpp in Sources */,
 				28662FE31E66272600D12DB9 /* script_enginelist.cpp in Sources */,
 				28662AF11E6626E000D12DB9 /* rail.cpp in Sources */,
@@ -3391,10 +3408,7 @@
 				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;

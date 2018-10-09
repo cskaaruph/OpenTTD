@@ -17,6 +17,7 @@
 
 #include "stdafx.h"
 #include "cocoa_touch_m.h"
+#include "midifile.hpp"
 #include "debug.h"
 #include <AudioUnit/AudioUnit.h>
 #include <AudioToolbox/AudioToolbox.h>
@@ -111,24 +112,27 @@ void MusicDriver_CocoaTouch::Stop()
 /**
  * Starts playing a new song.
  *
- * @param filename Path to a MIDI file.
+ * @param song Description of music to load and play
  */
-void MusicDriver_CocoaTouch::PlaySong(const char *filename)
+void MusicDriver_CocoaTouch::PlaySong(const MusicSongInfo &song)
 {
-	DEBUG(driver, 2, "cocoa_touch_m: trying to play '%s'", filename);
+	std::string filename = MidiFile::GetSMFFile(song);
+	DEBUG(driver, 2, "cocoa_touch_m: trying to play '%s'", filename.c_str());
 
 	this->StopSong();
 	if (_sequence != NULL) {
 		DisposeMusicSequence(_sequence);
 		_sequence = NULL;
 	}
+	
+	if (filename.empty()) return;
 
 	if (NewMusicSequence(&_sequence) != noErr) {
 		DEBUG(driver, 0, "cocoa_touch_m: Failed to create music sequence");
 		return;
 	}
 
-	const char *os_file = OTTD2FS(filename);
+	const char *os_file = OTTD2FS(filename.c_str());
 	CFURLRef url = CFURLCreateFromFileSystemRepresentation(kCFAllocatorDefault, (const UInt8*)os_file, strlen(os_file), false);
 	if (MusicSequenceFileLoad(_sequence, url, kMusicSequenceFile_AnyType, 0) != noErr) {
 		DEBUG(driver, 0, "cocoa_touch_m: Failed to load MIDI file");
@@ -168,7 +172,7 @@ void MusicDriver_CocoaTouch::PlaySong(const char *filename)
 	if (MusicPlayerStart(_player) != noErr) return;
 	_playing = true;
 
-	DEBUG(driver, 3, "cocoa_touch_m: playing '%s'", filename);
+	DEBUG(driver, 3, "cocoa_touch_m: playing '%s'", filename.c_str());
 }
 
 
