@@ -14,6 +14,8 @@
 
 + (instancetype)sharedInstance;
 - (void)resizeGameView:(CGSize)size;
+- (void)startGameLoop;
+- (void)showErrorMessage:(NSString*)message;
 
 @end
 

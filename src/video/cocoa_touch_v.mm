@@ -20,7 +20,7 @@
 #endif
 #include "stdafx.h"
 #import "cocoa_touch_v.h"
-
+#import "../../os/ios/OpenTTD/AppDelegate.h"
 #include "openttd.h"
 #include "debug.h"
 #include "factory.hpp"

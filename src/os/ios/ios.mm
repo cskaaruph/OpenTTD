@@ -24,6 +24,7 @@
 #include <pthread.h>
 
 #include "safeguards.h"
+#import "../../../OpenTTD/AppDelegate.h"
 
 const char * _globalDataDir;
 
