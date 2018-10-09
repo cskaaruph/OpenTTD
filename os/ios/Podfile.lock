@@ -6,10 +6,15 @@ DEPENDENCIES:
   - freetype
   - libpng
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - freetype
+    - libpng
+
 SPEC CHECKSUMS:
   freetype: f1607aa45440e7cc17c85c32e901f32b7b801fad
   libpng: 9c661ee692282485a9cf7fcf0159458c91b4f943
 
-PODFILE CHECKSUM: 2cc7ba5e1b4db01983b16e2936c93e713b62ccb2
+PODFILE CHECKSUM: 0da757b5ad3a6130b848d12bc763db6598324de1
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.5.3
