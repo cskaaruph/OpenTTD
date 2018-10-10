@@ -1,20 +1,27 @@
 PODS:
   - freetype (2.6.4)
   - libpng (1.6.18)
+  - lzo2 (2.10)
 
 DEPENDENCIES:
   - freetype
   - libpng
+  - lzo2 (from `lzo2.podspec`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - freetype
     - libpng
 
+EXTERNAL SOURCES:
+  lzo2:
+    :podspec: lzo2.podspec
+
 SPEC CHECKSUMS:
   freetype: f1607aa45440e7cc17c85c32e901f32b7b801fad
   libpng: 9c661ee692282485a9cf7fcf0159458c91b4f943
+  lzo2: f17bd172ae6d58d019b21574b64882e7e141b18b
 
-PODFILE CHECKSUM: 0da757b5ad3a6130b848d12bc763db6598324de1
+PODFILE CHECKSUM: d615af07d30d92f5abb3b35bbf4cfc04cfc86def
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.0.beta.1
