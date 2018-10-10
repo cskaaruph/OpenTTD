@@ -327,8 +327,8 @@ bool VideoDriver_CocoaTouch::ChangeResolution(int w, int h)
 	_screen.pitch = _screen.width;
 #ifdef WITH_METAL
 	BOOL usingMetal = [_cocoa_touch_layer isKindOfClass:[CAMetalLayer class]];
-	if (usingMetal && _screen.pitch % 4) {
-		_screen.pitch += (4 - (_screen.pitch % 4));
+	if (usingMetal && _screen.pitch % 64) {
+		_screen.pitch += (64 - (_screen.pitch % 64));
 	}
 #endif
 	Blitter *blitter = BlitterFactory::GetCurrentBlitter();
