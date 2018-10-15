@@ -8,6 +8,7 @@ target 'OpenTTD' do
   pod 'freetype'
   pod 'libpng'
   pod 'lzo2', podspec: 'lzo2.podspec'
+  pod 'lzma', podspec: 'lzma.podspec'
 end
 
 post_install do |installer|
