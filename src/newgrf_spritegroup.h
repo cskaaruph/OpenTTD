@@ -15,6 +15,7 @@
 #include "town_type.h"
 #include "engine_type.h"
 #include "house_type.h"
+#include "industry_type.h"
 
 #include "newgrf_callbacks.h"
 #include "newgrf_generic.h"
@@ -276,10 +277,15 @@ struct TileLayoutSpriteGroup : SpriteGroup {
 struct IndustryProductionSpriteGroup : SpriteGroup {
 	IndustryProductionSpriteGroup() : SpriteGroup(SGT_INDUSTRY_PRODUCTION) {}
 
-	uint8 version;
-	int16 subtract_input[3];  // signed
-	uint16 add_output[2];     // unsigned
+	uint8 version;                              ///< Production callback version used, or 0xFF if marked invalid
+	uint8 num_input;                            ///< How many subtract_input values are valid
+	int16 subtract_input[INDUSTRY_NUM_INPUTS];  ///< Take this much of the input cargo (can be negative, is indirect in cb version 1+)
+	CargoID cargo_input[INDUSTRY_NUM_INPUTS];   ///< Which input cargoes to take from (only cb version 2)
+	uint8 num_output;                           ///< How many add_output values are valid
+	uint16 add_output[INDUSTRY_NUM_OUTPUTS];    ///< Add this much output cargo when successful (unsigned, is indirect in cb version 1+)
+	CargoID cargo_output[INDUSTRY_NUM_OUTPUTS]; ///< Which output cargoes to add to (only cb version 2)
 	uint8 again;
+
 };
 
 /**
@@ -310,13 +316,13 @@ struct ScopeResolver {
 struct ResolverObject {
 	/**
 	 * Resolver constructor.
-	 * @param grffile NewGRF file associated with the object (or \c NULL if none).
+	 * @param grffile NewGRF file associated with the object (or \c nullptr if none).
 	 * @param callback Callback code being resolved (default value is #CBID_NO_CALLBACK).
 	 * @param callback_param1 First parameter (var 10) of the callback (only used when \a callback is also set).
 	 * @param callback_param2 Second parameter (var 18) of the callback (only used when \a callback is also set).
 	 */
 	ResolverObject(const GRFFile *grffile, CallbackID callback = CBID_NO_CALLBACK, uint32 callback_param1 = 0, uint32 callback_param2 = 0)
-		: default_scope(*this), callback(callback), callback_param1(callback_param1), callback_param2(callback_param2), grffile(grffile), root_spritegroup(NULL)
+		: default_scope(*this), callback(callback), callback_param1(callback_param1), callback_param2(callback_param2), grffile(grffile), root_spritegroup(nullptr)
 	{
 		this->ResetState();
 	}
@@ -354,7 +360,7 @@ struct ResolverObject {
 	uint16 ResolveCallback()
 	{
 		const SpriteGroup *result = Resolve();
-		return result != NULL ? result->GetCallbackResult() : CALLBACK_FAILED;
+		return result != nullptr ? result->GetCallbackResult() : CALLBACK_FAILED;
 	}
 
 	virtual const SpriteGroup *ResolveReal(const RealSpriteGroup *group) const;

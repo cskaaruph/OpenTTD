@@ -16,6 +16,7 @@
 #include "script_station.hpp"
 #include "../../depot_map.h"
 #include "../../vehicle_base.h"
+#include "../../train.h"
 
 #include "../../safeguards.h"
 
@@ -23,7 +24,7 @@ ScriptVehicleList::ScriptVehicleList()
 {
 	const Vehicle *v;
 	FOR_ALL_VEHICLES(v) {
-		if ((v->owner == ScriptObject::GetCompany() || ScriptObject::GetCompany() == OWNER_DEITY) && v->IsPrimaryVehicle()) this->AddItem(v->index);
+		if ((v->owner == ScriptObject::GetCompany() || ScriptObject::GetCompany() == OWNER_DEITY) && (v->IsPrimaryVehicle() || (v->type == VEH_TRAIN && ::Train::From(v)->IsFreeWagon()))) this->AddItem(v->index);
 	}
 }
 
@@ -101,7 +102,7 @@ ScriptVehicleList_SharedOrders::ScriptVehicleList_SharedOrders(VehicleID vehicle
 {
 	if (!ScriptVehicle::IsValidVehicle(vehicle_id)) return;
 
-	for (const Vehicle *v = Vehicle::Get(vehicle_id)->FirstShared(); v != NULL; v = v->NextShared()) {
+	for (const Vehicle *v = Vehicle::Get(vehicle_id)->FirstShared(); v != nullptr; v = v->NextShared()) {
 		this->AddItem(v->index);
 	}
 }

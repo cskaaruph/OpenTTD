@@ -15,13 +15,47 @@
  * functions may still be available if you return an older API version
  * in GetAPIVersion() in info.nut.
  *
+ * \b 1.10.0
+ *
+ * This version is not yet released. The following changes are not set in stone yet.
+ *
+ * API additions:
+ * \li AIGroup::SetPrimaryColour
+ * \li AIGroup::SetSecondaryColour
+ * \li AIGroup::GetPrimaryColour
+ * \li AIGroup::GetSecondaryColour
+ * \li AIVehicle::BuildVehicleWithRefit
+ * \li AIVehicle::GetBuildWithRefitCapacity
+ * \li AIRoad::GetName
+ * \li AIRoad::RoadVehCanRunOnRoad
+ * \li AIRoad::RoadVehHasPowerOnRoad
+ * \li AIRoad::ConvertRoadType
+ * \li AIRoad::GetMaxSpeed
+ * \li AIEngine::CanRunOnRoad
+ * \li AIEngine::HasPowerOnRoad
+ * \li AIRoadTypeList::RoadTypeList
+ *
  * \b 1.9.0
  *
- * 1.9.0 is not yet released. The following changes are not set in stone yet.
+ * API additions:
+ * \li AIAirport::GetMonthlyMaintenanceCost
+ * \li AIGroup::SetParent
+ * \li AIGroup::GetParent
+ * \li AICompany::SetPrimaryLiveryColour
+ * \li AICompany::SetSecondaryLiveryColour
+ * \li AICompany::GetPrimaryLiveryColour
+ * \li AICompany::GetSecondaryLiveryColour
+ *
+ * Other changes:
+ * \li AIBridge::GetName takes one extra parameter to refer the vehicle type
+ * \li AIGroup::CreateGroup gains parent_group_id parameter
  *
  * \b 1.8.0
  *
- * 1.8.0 is not yet released. The following changes are not set in stone yet.
+ * No changes
+ *
+ * API additions:
+ * \li AIRoad::ERR_ROADTYPE_DISALLOWS_CROSSING
  *
  * \b 1.7.0 - 1.7.2
  *

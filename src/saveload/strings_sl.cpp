@@ -49,7 +49,7 @@ StringID RemapOldStringID(StringID s)
 }
 
 /** Location to load the old names to. */
-char *_old_name_array = NULL;
+char *_old_name_array = nullptr;
 
 /**
  * Copy and convert old custom names to UTF-8.
@@ -61,9 +61,9 @@ char *_old_name_array = NULL;
 char *CopyFromOldName(StringID id)
 {
 	/* Is this name an (old) custom name? */
-	if (GetStringTab(id) != TEXT_TAB_OLD_CUSTOM) return NULL;
+	if (GetStringTab(id) != TEXT_TAB_OLD_CUSTOM) return nullptr;
 
-	if (IsSavegameVersionBefore(37)) {
+	if (IsSavegameVersionBefore(SLV_37)) {
 		/* Allow for expansion when converted to UTF-8. */
 		char tmp[LEN_OLD_STRINGS * MAX_CHAR_LENGTH];
 		uint offs = _savegame_type == SGT_TTO ? LEN_OLD_STRINGS_TTO * GB(id, 0, 8) : LEN_OLD_STRINGS * GB(id, 0, 9);
@@ -109,7 +109,7 @@ char *CopyFromOldName(StringID id)
 void ResetOldNames()
 {
 	free(_old_name_array);
-	_old_name_array = NULL;
+	_old_name_array = nullptr;
 }
 
 /**
@@ -140,5 +140,5 @@ static void Load_NAME()
 
 /** Chunk handlers related to strings. */
 extern const ChunkHandler _name_chunk_handlers[] = {
-	{ 'NAME', NULL, Load_NAME, NULL, NULL, CH_ARRAY | CH_LAST},
+	{ 'NAME', nullptr, Load_NAME, nullptr, nullptr, CH_ARRAY | CH_LAST},
 };

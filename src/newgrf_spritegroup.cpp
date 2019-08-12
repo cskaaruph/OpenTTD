@@ -26,7 +26,7 @@ TemporaryStorageArray<int32, 0x110> _temp_store;
 /**
  * ResolverObject (re)entry point.
  * This cannot be made a call to a virtual function because virtual functions
- * do not like NULL and checking for NULL *everywhere* is more cumbersome than
+ * do not like nullptr and checking for nullptr *everywhere* is more cumbersome than
  * this little helper function.
  * @param group the group to resolve for
  * @param object information needed to resolve the group
@@ -35,7 +35,7 @@ TemporaryStorageArray<int32, 0x110> _temp_store;
  */
 /* static */ const SpriteGroup *SpriteGroup::Resolve(const SpriteGroup *group, ResolverObject &object, bool top_level)
 {
-	if (group == NULL) return NULL;
+	if (group == nullptr) return nullptr;
 	if (top_level) {
 		_temp_store.ClearChanges();
 	}
@@ -73,7 +73,7 @@ static inline uint32 GetVariable(const ResolverObject &object, ScopeResolver *sc
 		case 0x7D: return _temp_store.GetValue(parameter);
 
 		case 0x7F:
-			if (object.grffile == NULL) return 0;
+			if (object.grffile == nullptr) return 0;
 			return object.grffile->GetParam(parameter);
 
 		default:
@@ -118,7 +118,7 @@ static inline uint32 GetVariable(const ResolverObject &object, ScopeResolver *sc
 
 /**
  * Store a value into the persistent storage area (PSA). Default implementation does nothing (for newgrf classes without storage).
- * @param pos Position to store into.
+ * @param reg Position to store into.
  * @param value Value to store.
  */
 /* virtual */ void ScopeResolver::StorePSA(uint reg, int32 value) {}
@@ -130,7 +130,7 @@ static inline uint32 GetVariable(const ResolverObject &object, ScopeResolver *sc
  */
 /* virtual */ const SpriteGroup *ResolverObject::ResolveReal(const RealSpriteGroup *group) const
 {
-	return NULL;
+	return nullptr;
 }
 
 /**
@@ -143,21 +143,6 @@ static inline uint32 GetVariable(const ResolverObject &object, ScopeResolver *sc
 {
 	return &this->default_scope;
 }
-
-/**
- * Rotate val rot times to the right
- * @param val the value to rotate
- * @param rot the amount of times to rotate
- * @return the rotated value
- */
-static uint32 RotateRight(uint32 val, uint32 rot)
-{
-	/* Do not rotate more than necessary */
-	rot %= 32;
-
-	return (val >> rot) | (val << (32 - rot));
-}
-
 
 /* Evaluate an adjustment for a variable of the given size.
  * U is the unsigned type and S is the signed type to use. */
@@ -191,7 +176,7 @@ static U EvalAdjustT(const DeterministicSpriteGroupAdjust *adjust, ScopeResolver
 		case DSGA_OP_STO:  _temp_store.StoreValue((U)value, (S)last_value); return last_value;
 		case DSGA_OP_RST:  return value;
 		case DSGA_OP_STOP: scope->StorePSA((U)value, (S)last_value); return last_value;
-		case DSGA_OP_ROR:  return RotateRight(last_value, value);
+		case DSGA_OP_ROR:  return ROR<uint32>((U)last_value, (U)value & 0x1F); // mask 'value' to 5 bits, which should behave the same on all architectures.
 		case DSGA_OP_SCMP: return ((S)last_value == (S)value) ? 1 : ((S)last_value < (S)value ? 0 : 2);
 		case DSGA_OP_UCMP: return ((U)last_value == (U)value) ? 1 : ((U)last_value < (U)value ? 0 : 2);
 		case DSGA_OP_SHL:  return (uint32)(U)last_value << ((U)value & 0x1F); // Same behaviour as in ParamSet, mask 'value' to 5 bits, which should behave the same on all architectures.
@@ -222,7 +207,7 @@ const SpriteGroup *DeterministicSpriteGroup::Resolve(ResolverObject &object) con
 		bool available = true;
 		if (adjust->variable == 0x7E) {
 			const SpriteGroup *subgroup = SpriteGroup::Resolve(adjust->subroutine, object, false);
-			if (subgroup == NULL) {
+			if (subgroup == nullptr) {
 				value = CALLBACK_FAILED;
 			} else {
 				value = subgroup->GetCallbackResult();
@@ -308,24 +293,24 @@ const SpriteGroup *RealSpriteGroup::Resolve(ResolverObject &object) const
  * Process registers and the construction stage into the sprite layout.
  * The passed construction stage might get reset to zero, if it gets incorporated into the layout
  * during the preprocessing.
- * @param [in, out] stage Construction stage (0-3), or NULL if not applicable.
+ * @param[in,out] stage Construction stage (0-3), or nullptr if not applicable.
  * @return sprite layout to draw.
  */
 const DrawTileSprites *TileLayoutSpriteGroup::ProcessRegisters(uint8 *stage) const
 {
 	if (!this->dts.NeedsPreprocessing()) {
-		if (stage != NULL && this->dts.consistent_max_offset > 0) *stage = GetConstructionStageOffset(*stage, this->dts.consistent_max_offset);
+		if (stage != nullptr && this->dts.consistent_max_offset > 0) *stage = GetConstructionStageOffset(*stage, this->dts.consistent_max_offset);
 		return &this->dts;
 	}
 
 	static DrawTileSprites result;
-	uint8 actual_stage = stage != NULL ? *stage : 0;
+	uint8 actual_stage = stage != nullptr ? *stage : 0;
 	this->dts.PrepareLayout(0, 0, 0, actual_stage, false);
 	this->dts.ProcessRegisters(0, 0, false);
 	result.seq = this->dts.GetLayout(&result.ground);
 
 	/* Stage has been processed by PrepareLayout(), set it to zero. */
-	if (stage != NULL) *stage = 0;
+	if (stage != nullptr) *stage = 0;
 
 	return &result;
 }

@@ -481,6 +481,8 @@ STR_GAME_OPTIONS_RESOLUTION_OTHER                               :altra
 
 
 
+
+
 # Custom currency window
 
 
@@ -529,6 +531,7 @@ STR_CONFIG_SETTING_NONE                                         :Nulo
 
 STR_CONFIG_SETTING_PLANE_CRASHES_NONE                           :nulo
 STR_CONFIG_SETTING_PLANE_CRASHES_NORMAL                         :normala
+
 
 
 
@@ -698,6 +701,7 @@ STR_STATION_BUILD_ACCEPTS_CARGO                                 :{BLACK}Aceptas:
 
 # Road construction toolbar
 
+
 # Road depot construction window
 
 # Road vehicle station construction window
@@ -775,7 +779,7 @@ STR_LAI_OBJECT_DESCRIPTION_COMPANY_HEADQUARTERS                 :Stabeyo di komp
 
 # About OpenTTD window
 STR_ABOUT_VERSION                                               :{BLACK}OpenTTD versiono {REV}
-STR_ABOUT_COPYRIGHT_OPENTTD                                     :{BLACK}OpenTTD {COPYRIGHT}2002-2018 La kruo OpenTTD
+STR_ABOUT_COPYRIGHT_OPENTTD                                     :{BLACK}OpenTTD {COPYRIGHT}2002-2019 La kruo OpenTTD
 
 # Framerate display window
 ############ Leave those lines in this order!!
@@ -924,12 +928,7 @@ STR_COMPANY_VIEW_VEHICLES_TITLE                                 :{GOLD}Vehili:
 
 # Industry view
 
-############ range for requires starts
-############ range for requires ends
 
-
-############ range for produces starts
-############ range for produces ends
 
 
 # Vehicle lists
@@ -974,7 +973,13 @@ STR_GROUP_DEFAULT_AIRCRAFTS                                     :Negrupigita aer
 
 
 
+
 # Build vehicle window
+
+
+############ range for vehicle availability starts
+############ range for vehicle availability ends
+
 
 
 
@@ -1014,11 +1019,15 @@ STR_DEPOT_VEHICLE_TOOLTIP_CARGO                                 :{}{CARGO_LONG} 
 # Engine preview window
 
 
+
+
+
 # Autoreplace window
 STR_REPLACE_VEHICLE_TRAIN                                       :Treno
 STR_REPLACE_VEHICLE_ROAD_VEHICLE                                :Voy-vehilo
 STR_REPLACE_VEHICLE_SHIP                                        :Navo
 STR_REPLACE_VEHICLE_AIRCRAFT                                    :Aeronavo
+
 
 
 

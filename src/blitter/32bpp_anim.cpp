@@ -12,6 +12,7 @@
 #include "../stdafx.h"
 #include "../video/video_driver.hpp"
 #include "32bpp_anim.hpp"
+#include "common.hpp"
 
 #include "../table/sprites.h"
 
@@ -321,6 +322,24 @@ void Blitter_32bppAnim::SetPixel(void *video, int x, int y, uint8 colour)
 	this->anim_buf[this->ScreenToAnimOffset((uint32 *)video) + x + y * this->anim_buf_pitch] = colour | (DEFAULT_BRIGHTNESS << 8);
 }
 
+void Blitter_32bppAnim::DrawLine(void *video, int x, int y, int x2, int y2, int screen_width, int screen_height, uint8 colour, int width, int dash)
+{
+	const Colour c = LookupColourInPalette(colour);
+
+	if (_screen_disable_anim)  {
+		this->DrawLineGeneric(x, y, x2, y2, screen_width, screen_height, width, dash, [&](int x, int y) {
+			*((Colour *)video + x + y * _screen.pitch) = c;
+		});
+	} else {
+		uint16 * const offset_anim_buf = this->anim_buf + this->ScreenToAnimOffset((uint32 *)video);
+		const uint16 anim_colour = colour | (DEFAULT_BRIGHTNESS << 8);
+		this->DrawLineGeneric(x, y, x2, y2, screen_width, screen_height, width, dash, [&](int x, int y) {
+			*((Colour *)video + x + y * _screen.pitch) = c;
+			offset_anim_buf[x + y * this->anim_buf_pitch] = anim_colour;
+		});
+	}
+}
+
 void Blitter_32bppAnim::DrawRect(void *video, int width, int height, uint8 colour)
 {
 	if (_screen_disable_anim) {
@@ -395,7 +414,7 @@ void Blitter_32bppAnim::CopyToBuffer(const void *video, void *dst, int width, in
 	uint32 *udst = (uint32 *)dst;
 	const uint32 *src = (const uint32 *)video;
 
-	if (this->anim_buf == NULL) return;
+	if (this->anim_buf == nullptr) return;
 
 	const uint16 *anim_line = this->ScreenToAnimOffset((const uint32 *)video) + this->anim_buf;
 

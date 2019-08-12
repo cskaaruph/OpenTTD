@@ -16,6 +16,7 @@
 enum TownDirectoryWidgets {
 	WID_TD_SORT_ORDER,       ///< Direction of sort dropdown.
 	WID_TD_SORT_CRITERIA,    ///< Criteria of sort dropdown.
+	WID_TD_FILTER,           ///< Filter of name.
 	WID_TD_LIST,             ///< List of towns.
 	WID_TD_SCROLLBAR,        ///< Scrollbar for the town list.
 	WID_TD_WORLD_POPULATION, ///< The world's population.
@@ -39,6 +40,7 @@ enum TownViewWidgets {
 	WID_TV_CENTER_VIEW,    ///< Center the main view on this town.
 	WID_TV_SHOW_AUTHORITY, ///< Show the town authority window.
 	WID_TV_CHANGE_NAME,    ///< Change the name of this town.
+	WID_TV_CATCHMENT,      ///< Toggle catchment area highlight.
 	WID_TV_EXPAND,         ///< Expand this town (scenario editor only).
 	WID_TV_DELETE,         ///< Delete this town (scenario editor only).
 };

@@ -125,12 +125,67 @@ inline bool LinkGraphOverlay::IsPointVisible(Point pt, const DrawPixelInfo *dpi,
  */
 inline bool LinkGraphOverlay::IsLinkVisible(Point pta, Point ptb, const DrawPixelInfo *dpi, int padding) const
 {
-	return !((pta.x < dpi->left - padding && ptb.x < dpi->left - padding) ||
-			(pta.y < dpi->top - padding && ptb.y < dpi->top - padding) ||
-			(pta.x > dpi->left + dpi->width + padding &&
-					ptb.x > dpi->left + dpi->width + padding) ||
-			(pta.y > dpi->top + dpi->height + padding &&
-					ptb.y > dpi->top + dpi->height + padding));
+	const int left = dpi->left - padding;
+	const int right = dpi->left + dpi->width + padding;
+	const int top = dpi->top - padding;
+	const int bottom = dpi->top + dpi->height + padding;
+
+	/*
+	 * This method is an implementation of the Cohen-Sutherland line-clipping algorithm.
+	 * See: https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
+	 */
+
+	const uint8 INSIDE = 0; // 0000
+	const uint8 LEFT   = 1; // 0001
+	const uint8 RIGHT  = 2; // 0010
+	const uint8 BOTTOM = 4; // 0100
+	const uint8 TOP    = 8; // 1000
+
+	int x0 = pta.x;
+	int y0 = pta.y;
+	int x1 = ptb.x;
+	int y1 = ptb.y;
+
+	auto out_code = [&](int x, int y) -> uint8 {
+		uint8 out = INSIDE;
+		if (x < left) {
+			out |= LEFT;
+		} else if (x > right) {
+			out |= RIGHT;
+		}
+		if (y < top) {
+			out |= TOP;
+		} else if (y > bottom) {
+			out |= BOTTOM;
+		}
+		return out;
+	};
+
+	uint8 c0 = out_code(x0, y0);
+	uint8 c1 = out_code(x1, y1);
+
+	while (true) {
+		if (c0 == 0 || c1 == 0) return true;
+		if ((c0 & c1) != 0) return false;
+
+		if (c0 & TOP) {           // point 0 is above the clip window
+			x0 = x0 + (int)(((int64) (x1 - x0)) * ((int64) (top - y0)) / ((int64) (y1 - y0)));
+			y0 = top;
+		} else if (c0 & BOTTOM) { // point 0 is below the clip window
+			x0 = x0 + (int)(((int64) (x1 - x0)) * ((int64) (bottom - y0)) / ((int64) (y1 - y0)));
+			y0 = bottom;
+		} else if (c0 & RIGHT) {  // point 0 is to the right of clip window
+			y0 = y0 + (int)(((int64) (y1 - y0)) * ((int64) (right - x0)) / ((int64) (x1 - x0)));
+			x0 = right;
+		} else if (c0 & LEFT) {   // point 0 is to the left of clip window
+			y0 = y0 + (int)(((int64) (y1 - y0)) * ((int64) (left - x0)) / ((int64) (x1 - x0)));
+			x0 = left;
+		}
+
+		c0 = out_code(x0, y0);
+	}
+
+	NOT_REACHED();
 }
 
 /**
@@ -184,8 +239,12 @@ void LinkGraphOverlay::AddLinks(const Station *from, const Station *to)
  * Draw the linkgraph overlay or some part of it, in the area given.
  * @param dpi Area to be drawn to.
  */
-void LinkGraphOverlay::Draw(const DrawPixelInfo *dpi) const
+void LinkGraphOverlay::Draw(const DrawPixelInfo *dpi)
 {
+	if (this->dirty) {
+		this->RebuildCache();
+		this->dirty = false;
+	}
 	this->DrawLinks(dpi);
 	this->DrawStationDots(dpi);
 }
@@ -242,7 +301,7 @@ void LinkGraphOverlay::DrawStationDots(const DrawPixelInfo *dpi) const
 {
 	for (StationSupplyList::const_iterator i(this->cached_stations.begin()); i != this->cached_stations.end(); ++i) {
 		const Station *st = Station::GetIfValid(i->first);
-		if (st == NULL) continue;
+		if (st == nullptr) continue;
 		Point pt = this->GetStationMiddle(st);
 		if (!this->IsPointVisible(pt, dpi, 3 * this->scale)) continue;
 
@@ -286,7 +345,7 @@ void LinkGraphOverlay::DrawStationDots(const DrawPixelInfo *dpi) const
  */
 Point LinkGraphOverlay::GetStationMiddle(const Station *st) const
 {
-	if (this->window->viewport != NULL) {
+	if (this->window->viewport != nullptr) {
 		return GetViewportStationMiddle(this->window->viewport, st);
 	} else {
 		/* assume this is a smallmap */
@@ -340,7 +399,7 @@ NWidgetBase *MakeCargoesLegendLinkGraphGUI(int *biggest_index)
 {
 	static const uint ENTRIES_PER_ROW = CeilDiv(NUM_CARGO, 5);
 	NWidgetVertical *panel = new NWidgetVertical(NC_EQUALSIZE);
-	NWidgetHorizontal *row = NULL;
+	NWidgetHorizontal *row = nullptr;
 	for (uint i = 0; i < NUM_CARGO; ++i) {
 		if (i % ENTRIES_PER_ROW == 0) {
 			if (row) panel->Add(row);
@@ -425,7 +484,7 @@ LinkGraphLegendWindow::LinkGraphLegendWindow(WindowDesc *desc, int window_number
 
 /**
  * Set the overlay belonging to this menu and import its company/cargo settings.
- * @params overlay New overlay for this menu.
+ * @param overlay New overlay for this menu.
  */
 void LinkGraphLegendWindow::SetOverlay(LinkGraphOverlay *overlay) {
 	this->overlay = overlay;
@@ -500,11 +559,11 @@ void LinkGraphLegendWindow::DrawWidget(const Rect &r, int widget) const
 	}
 }
 
-bool LinkGraphLegendWindow::OnHoverCommon(Point pt, int widget, TooltipCloseCondition close_cond)
+bool LinkGraphLegendWindow::OnTooltip(Point pt, int widget, TooltipCloseCondition close_cond)
 {
 	if (IsInsideMM(widget, WID_LGL_COMPANY_FIRST, WID_LGL_COMPANY_LAST + 1)) {
 		if (this->IsWidgetDisabled(widget)) {
-			GuiShowTooltips(this, STR_LINKGRAPH_LEGEND_SELECT_COMPANIES, 0, NULL, close_cond);
+			GuiShowTooltips(this, STR_LINKGRAPH_LEGEND_SELECT_COMPANIES, 0, nullptr, close_cond);
 		} else {
 			uint64 params[2];
 			CompanyID cid = (CompanyID)(widget - WID_LGL_COMPANY_FIRST);
@@ -521,19 +580,6 @@ bool LinkGraphLegendWindow::OnHoverCommon(Point pt, int widget, TooltipCloseCond
 		params[0] = cargo->name;
 		GuiShowTooltips(this, STR_BLACK_STRING, 1, params, close_cond);
 		return true;
-	}
-	return false;
-}
-
-void LinkGraphLegendWindow::OnHover(Point pt, int widget)
-{
-	this->OnHoverCommon(pt, widget, TCC_HOVER);
-}
-
-bool LinkGraphLegendWindow::OnRightClick(Point pt, int widget)
-{
-	if (_settings_client.gui.hover_delay_ms == 0) {
-		return this->OnHoverCommon(pt, widget, TCC_RIGHT_CLICK);
 	}
 	return false;
 }

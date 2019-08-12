@@ -189,7 +189,7 @@ union Colour {
 
 	/**
 	 * Create a new colour.
-	 * @param The colour in the correct packed format.
+	 * @param data The colour in the correct packed format.
 	 */
 	Colour(uint data = 0) : data(data)
 	{
@@ -241,7 +241,7 @@ enum Colours {
 	COLOUR_END,
 	INVALID_COLOUR = 0xFF,
 };
-template <> struct EnumPropsT<Colours> : MakeEnumPropsT<Colours, byte, COLOUR_BEGIN, COLOUR_END, INVALID_COLOUR, 4> {};
+template <> struct EnumPropsT<Colours> : MakeEnumPropsT<Colours, byte, COLOUR_BEGIN, COLOUR_END, INVALID_COLOUR, 8> {};
 
 /** Colour of the strings, see _string_colourmap in table/string_colours.h or docs/ottd-colourtext-palette.png */
 enum TextColour {
@@ -294,7 +294,7 @@ enum PaletteType {
 };
 
 /** Types of sprites that might be loaded */
-enum SpriteType {
+enum SpriteType : byte {
 	ST_NORMAL   = 0,      ///< The most basic (normal) sprite
 	ST_MAPGEN   = 1,      ///< Special sprite for the map generator
 	ST_FONT     = 2,      ///< A sprite used for fonts

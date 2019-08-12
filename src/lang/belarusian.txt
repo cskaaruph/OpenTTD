@@ -1301,6 +1301,8 @@ STR_GAME_OPTIONS_GUI_ZOOM_DROPDOWN_NORMAL                       :Звычайн�
 STR_GAME_OPTIONS_GUI_ZOOM_DROPDOWN_2X_ZOOM                      :Падвоены
 STR_GAME_OPTIONS_GUI_ZOOM_DROPDOWN_4X_ZOOM                      :Пачацвяроны
 
+
+
 STR_GAME_OPTIONS_BASE_GRF                                       :{BLACK}Набор базавай ґрафікі
 STR_GAME_OPTIONS_BASE_GRF_TOOLTIP                               :{BLACK}Выбар базавага набору ґрафічных аб'ектаў
 STR_GAME_OPTIONS_BASE_GRF_STATUS                                :{RED}{NUM} адсутнічаюч{P ы ых ых}/пашкоджан{P ы ых ых} файл{P "" ы аў}
@@ -1567,6 +1569,7 @@ STR_CONFIG_SETTING_STOP_ON_COMPETITOR_ROAD_HELPTEXT             :Дазволі�
 STR_CONFIG_SETTING_DYNAMIC_ENGINES_EXISTING_VEHICLES            :{WHITE}Зьмена гэтага парамэтру немагчыма, калі ў гульні ёсьць транспартныя сродкі.
 STR_CONFIG_SETTING_INFRASTRUCTURE_MAINTENANCE                   :Утрыманьне iнфраструктуры: {STRING}
 STR_CONFIG_SETTING_INFRASTRUCTURE_MAINTENANCE_HELPTEXT          :Калі ўключана, інфраструктура патрабуе выдаткаў на ўтрыманьне. Кошт расьце прапарцыянальна памерам сеткі, таму гэта больш датычыць вялікіх кампаніяў, ніж малых.
+
 
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS                        :Малыя аэрапорты ніколі не састарэюць: {STRING}
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS_HELPTEXT               :Уключэньне гэтай наладкі робіць усе віды аэрапортаў даступнымі назаўжды.
@@ -2006,7 +2009,6 @@ STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST                        :{ORANGE}Раз�
 STR_CONFIG_SETTING_AI                                           :{ORANGE}Канкурэнты
 STR_CONFIG_SETTING_AI_NPC                                       :{ORANGE}Кампутарныя гульцы
 
-STR_CONFIG_SETTING_PATHFINDER_OPF                               :арыґінальны
 STR_CONFIG_SETTING_PATHFINDER_NPF                               :NPF
 STR_CONFIG_SETTING_PATHFINDER_YAPF_RECOMMENDED                  :YAPF {BLUE}(рэкамэндуецца)
 
@@ -2090,13 +2092,9 @@ STR_QUIT_NO                                                     :{BLACK}Не
 
 # Supported OSes
 STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_DOS                                                  :DOS
 STR_OSNAME_UNIX                                                 :Unix
 STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_BEOS                                                 :BeOS
 STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_MORPHOS                                              :MorphOS
-STR_OSNAME_AMIGAOS                                              :AmigaOS
 STR_OSNAME_OS2                                                  :OS/2
 STR_OSNAME_SUNOS                                                :SunOS
 
@@ -2125,7 +2123,6 @@ STR_CHEAT_CHANGE_DATE_QUERY_CAPT                                :{WHITE}Зьмя
 STR_CHEAT_SETUP_PROD                                            :{LTBLUE}Дазволіць зьмяненьне прадукцыйнасьці: {ORANGE}{STRING}
 
 # Livery window
-STR_LIVERY_CAPTION                                              :{WHITE}Новая каляровая схэма
 
 STR_LIVERY_GENERAL_TOOLTIP                                      :{BLACK}Паказаць асноўныя каляровыя схэмы
 STR_LIVERY_TRAIN_TOOLTIP                                        :{BLACK}Паказаць каляровыя схэмы цягнікоў
@@ -2387,9 +2384,9 @@ STR_NETWORK_NEED_GAME_PASSWORD_CAPTION                          :{WHITE}Сэрв
 STR_NETWORK_NEED_COMPANY_PASSWORD_CAPTION                       :{WHITE}Кампанія абароненая. Увядзіце пароль
 
 # Network company list added strings
-STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :{WHITE}Сьпіс кліентаў
-STR_NETWORK_COMPANY_LIST_SPECTATE                               :{WHITE}Назіраць
-STR_NETWORK_COMPANY_LIST_NEW_COMPANY                            :{WHITE}Новая кампанія
+STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :Сьпіс кліентаў
+STR_NETWORK_COMPANY_LIST_SPECTATE                               :Назіраць
+STR_NETWORK_COMPANY_LIST_NEW_COMPANY                            :Новая кампанія
 
 # Network client list
 STR_NETWORK_CLIENTLIST_KICK                                     :Выкінуць гульца
@@ -2404,7 +2401,6 @@ STR_NETWORK_CLIENT                                              :Кліент
 STR_NETWORK_SPECTATORS                                          :Назіральнікі
 
 STR_NETWORK_GIVE_MONEY_CAPTION                                  :{WHITE}Увядзіце суму грошай, якую вы хочаце перадаць
-STR_NETWORK_TOOLBAR_LIST_SPECTATOR                              :{BLACK}Назіральнік
 
 # Network set password
 STR_COMPANY_PASSWORD_CANCEL                                     :{BLACK}Не захоўваць уведзены пароль
@@ -2743,6 +2739,7 @@ STR_ROAD_TOOLBAR_TOOLTIP_BUILD_TRAMWAY_TUNNEL                   :{BLACK}Буда
 STR_ROAD_TOOLBAR_TOOLTIP_TOGGLE_BUILD_REMOVE_FOR_ROAD           :{BLACK}Будаўніцтва/выдаленьне аўтамабільных дарогаў
 STR_ROAD_TOOLBAR_TOOLTIP_TOGGLE_BUILD_REMOVE_FOR_TRAMWAYS       :{BLACK}Будаўніцтва/выдаленьне трамвайных каляінаў
 
+
 # Road depot construction window
 STR_BUILD_DEPOT_ROAD_ORIENTATION_CAPTION                        :{WHITE}Кірунак гаража
 STR_BUILD_DEPOT_ROAD_ORIENTATION_SELECT_TOOLTIP                 :{BLACK}Выберыце кірунак гаража
@@ -3028,7 +3025,7 @@ STR_LAI_OBJECT_DESCRIPTION_COMPANY_OWNED_LAND                   :Зямля на
 STR_ABOUT_OPENTTD                                               :{WHITE}Аб OpenTTD
 STR_ABOUT_ORIGINAL_COPYRIGHT                                    :{BLACK}Арыґінальныя аўтарскія правы {COPYRIGHT} 1995 Chris Sawyer. Усе правы абароненыя.
 STR_ABOUT_VERSION                                               :{BLACK}OpenTTD вэрсія {REV}
-STR_ABOUT_COPYRIGHT_OPENTTD                                     :{BLACK}OpenTTD {COPYRIGHT} 2002–2018 Каманда распрацоўнікаў OpenTTD
+STR_ABOUT_COPYRIGHT_OPENTTD                                     :{BLACK}OpenTTD {COPYRIGHT} 2002–2019 Каманда распрацоўнікаў OpenTTD
 
 # Framerate display window
 ############ Leave those lines in this order!!
@@ -3609,8 +3606,6 @@ STR_COMPANY_INFRASTRUCTURE_VIEW_CAPTION                         :{WHITE}Iнфр�
 STR_COMPANY_INFRASTRUCTURE_VIEW_RAIL_SECT                       :{GOLD}Чыгуначныя элемэнты:
 STR_COMPANY_INFRASTRUCTURE_VIEW_SIGNALS                         :{WHITE}Сыґналы
 STR_COMPANY_INFRASTRUCTURE_VIEW_ROAD_SECT                       :{GOLD}Дарожныя элемэнты:
-STR_COMPANY_INFRASTRUCTURE_VIEW_ROAD                            :{WHITE}Дарогi
-STR_COMPANY_INFRASTRUCTURE_VIEW_TRAMWAY                         :{WHITE}Трамваi
 STR_COMPANY_INFRASTRUCTURE_VIEW_WATER_SECT                      :{GOLD}Водныя клеткi:
 STR_COMPANY_INFRASTRUCTURE_VIEW_CANALS                          :{WHITE}Каналы
 STR_COMPANY_INFRASTRUCTURE_VIEW_STATION_SECT                    :{GOLD}Станцыi:
@@ -3634,20 +3629,10 @@ STR_INDUSTRY_VIEW_LOCATION_TOOLTIP                              :{BLACK}Пака
 STR_INDUSTRY_VIEW_PRODUCTION_LEVEL                              :{BLACK}Прадукцыйнасьць: {YELLOW}{COMMA}%
 STR_INDUSTRY_VIEW_INDUSTRY_ANNOUNCED_CLOSURE                    :{YELLOW}Прадпрыемства хутка закрываецца!
 
-############ range for requires starts
-STR_INDUSTRY_VIEW_REQUIRES_CARGO                                :{BLACK}Патрабуецца: {YELLOW}{STRING}{STRING}
-STR_INDUSTRY_VIEW_REQUIRES_CARGO_CARGO                          :{BLACK}Патрабуецца: {YELLOW}{STRING}{STRING}, {STRING}{STRING}
-STR_INDUSTRY_VIEW_REQUIRES_CARGO_CARGO_CARGO                    :{BLACK}Патрабуецца: {YELLOW}{STRING}{STRING}, {STRING}{STRING}, {STRING}{STRING}
-############ range for requires ends
 
 STR_INDUSTRY_VIEW_REQUIRES                                      :{BLACK}Патрабуецца:
 STR_INDUSTRY_VIEW_ACCEPT_CARGO                                  :{YELLOW}{STRING}{BLACK}{3:STRING}
 STR_INDUSTRY_VIEW_ACCEPT_CARGO_AMOUNT                           :{YELLOW}{STRING}{BLACK}: {CARGO_SHORT} чакае{STRING}
-
-############ range for produces starts
-STR_INDUSTRY_VIEW_PRODUCES_CARGO                                :{BLACK}Вырабляе: {YELLOW}{STRING}{STRING}
-STR_INDUSTRY_VIEW_PRODUCES_CARGO_CARGO                          :{BLACK}Вырабляе: {YELLOW}{STRING}{STRING}, {STRING}{STRING}
-############ range for produces ends
 
 STR_CONFIG_GAME_PRODUCTION                                      :{WHITE}Зьмяніць прадукцыйнасьць (кратна 8, да 2040)
 STR_CONFIG_GAME_PRODUCTION_LEVEL                                :{WHITE}Зьмяніць прадукцыйнасьць (у адсотках, да 800%)
@@ -3697,6 +3682,7 @@ STR_GROUP_DEFAULT_ROAD_VEHICLES                                 :Бяз груп
 STR_GROUP_DEFAULT_SHIPS                                         :Бяз групы
 STR_GROUP_DEFAULT_AIRCRAFTS                                     :Бяз групы
 
+
 STR_GROUPS_CLICK_ON_GROUP_FOR_TOOLTIP                           :{BLACK}Ґрупы — клікніце па назьве ґрупы, каб убачыць сьпіс транспарту ў гэтай ґрупе. Націсьніце ды перацягвайце ґрупы, каб упарадкаваць гіерархію.
 STR_GROUP_CREATE_TOOLTIP                                        :{BLACK}Стварыць групу
 STR_GROUP_DELETE_TOOLTIP                                        :{BLACK}Выдаліць выбраную групу
@@ -3722,10 +3708,13 @@ STR_BUY_VEHICLE_TRAIN_ELRAIL_CAPTION                            :Новы эле
 STR_BUY_VEHICLE_TRAIN_MONORAIL_CAPTION                          :Новы монарэйкавы цягнік
 STR_BUY_VEHICLE_TRAIN_MAGLEV_CAPTION                            :Новы маґнітарэйкавы цягнік
 
-STR_BUY_VEHICLE_TRAIN_ALL_CAPTION                               :Новы цягнiк
 STR_BUY_VEHICLE_ROAD_VEHICLE_CAPTION                            :Новы аўтамабiль
+
+############ range for vehicle availability starts
+STR_BUY_VEHICLE_TRAIN_ALL_CAPTION                               :Новы цягнiк
 STR_BUY_VEHICLE_SHIP_CAPTION                                    :Новы карабель
 STR_BUY_VEHICLE_AIRCRAFT_CAPTION                                :Новы авiятранспарт
+############ range for vehicle availability ends
 
 STR_PURCHASE_INFO_COST_WEIGHT                                   :{BLACK}Кошт: {GOLD}{CURRENCY_LONG}{BLACK} Вага: {GOLD}{WEIGHT_SHORT}
 STR_PURCHASE_INFO_SPEED_POWER                                   :{BLACK}Хуткасьць: {GOLD}{VELOCITY}{BLACK} Магутнасьць: {GOLD}{POWER}
@@ -3759,10 +3748,12 @@ STR_BUY_VEHICLE_ROAD_VEHICLE_BUY_VEHICLE_BUTTON                 :{BLACK}Купі
 STR_BUY_VEHICLE_SHIP_BUY_VEHICLE_BUTTON                         :{BLACK}Купіць
 STR_BUY_VEHICLE_AIRCRAFT_BUY_VEHICLE_BUTTON                     :{BLACK}Купіць
 
+
 STR_BUY_VEHICLE_TRAIN_BUY_VEHICLE_TOOLTIP                       :{BLACK}Набыць абраны лякаматыў/ваґон. Shift+пстрычка — ацэнка кошту набыцьця.
 STR_BUY_VEHICLE_ROAD_VEHICLE_BUY_VEHICLE_TOOLTIP                :{BLACK}Набыць абраны аўтамабіль. Shift+пстрычка — ацэнка кошту набыцьця.
 STR_BUY_VEHICLE_SHIP_BUY_VEHICLE_TOOLTIP                        :{BLACK}Набыць абраны карабель. Shift+пстрычка — ацэнка кошту набыцьця.
 STR_BUY_VEHICLE_AIRCRAFT_BUY_VEHICLE_TOOLTIP                    :{BLACK}Набыць абраны авіятранспарт. Shift+пстрычка — ацэнка кошту набыцьця.
+
 
 STR_BUY_VEHICLE_TRAIN_RENAME_BUTTON                             :{BLACK}Перайменаваць
 STR_BUY_VEHICLE_ROAD_VEHICLE_RENAME_BUTTON                      :{BLACK}Перайменаваць
@@ -3872,24 +3863,27 @@ STR_DEPOT_SELL_CONFIRMATION_TEXT                                :{YELLOW}Уве�
 # Engine preview window
 STR_ENGINE_PREVIEW_CAPTION                                      :{WHITE}Паведамленьне ад вытворцы транспарту
 STR_ENGINE_PREVIEW_MESSAGE                                      :{GOLD}Мы стварылі новую мадэль {STRING.gen}. Цi зацікаўлены Вы ў яе гадавым эксклюзіўным выкарыстаньні для праверкі перад запускам у масавую вытворчасьць?
+
 STR_ENGINE_PREVIEW_RAILROAD_LOCOMOTIVE                          :{G=m}чыгуначны лякаматыў
 STR_ENGINE_PREVIEW_RAILROAD_LOCOMOTIVE.gen                      :чыгуначнага лакаматыва
 STR_ENGINE_PREVIEW_RAILROAD_LOCOMOTIVE.acc                      :чыгуначны лякаматыў
-STR_ENGINE_PREVIEW_ROAD_VEHICLE                                 :{G=m}аўтамабiль
-STR_ENGINE_PREVIEW_ROAD_VEHICLE.gen                             :аўтамабiля
-STR_ENGINE_PREVIEW_ROAD_VEHICLE.acc                             :аўтамабіль
-STR_ENGINE_PREVIEW_AIRCRAFT                                     :{G=m}авiятранспарт
-STR_ENGINE_PREVIEW_AIRCRAFT.gen                                 :авiятранспарту
-STR_ENGINE_PREVIEW_AIRCRAFT.acc                                 :авіятранспарт
-STR_ENGINE_PREVIEW_SHIP                                         :{G=m}карабель
-STR_ENGINE_PREVIEW_SHIP.gen                                     :карабля
-STR_ENGINE_PREVIEW_SHIP.acc                                     :карабель
 STR_ENGINE_PREVIEW_MONORAIL_LOCOMOTIVE                          :{G=m}монарэйкавы лякаматыў
 STR_ENGINE_PREVIEW_MONORAIL_LOCOMOTIVE.gen                      :монарэйкавага лякаматыва
 STR_ENGINE_PREVIEW_MONORAIL_LOCOMOTIVE.acc                      :монарэйкавы лякаматыў
 STR_ENGINE_PREVIEW_MAGLEV_LOCOMOTIVE                            :{G=m}маґнітарэйкавы лякаматыў
 STR_ENGINE_PREVIEW_MAGLEV_LOCOMOTIVE.gen                        :магнiтарэйкавага лякаматыва
 STR_ENGINE_PREVIEW_MAGLEV_LOCOMOTIVE.acc                        :магнітарэйкавы лякаматыў
+
+STR_ENGINE_PREVIEW_ROAD_VEHICLE                                 :{G=m}аўтамабiль
+STR_ENGINE_PREVIEW_ROAD_VEHICLE.gen                             :аўтамабiля
+STR_ENGINE_PREVIEW_ROAD_VEHICLE.acc                             :аўтамабіль
+
+STR_ENGINE_PREVIEW_AIRCRAFT                                     :{G=m}авiятранспарт
+STR_ENGINE_PREVIEW_AIRCRAFT.gen                                 :авiятранспарту
+STR_ENGINE_PREVIEW_AIRCRAFT.acc                                 :авіятранспарт
+STR_ENGINE_PREVIEW_SHIP                                         :{G=m}карабель
+STR_ENGINE_PREVIEW_SHIP.gen                                     :карабля
+STR_ENGINE_PREVIEW_SHIP.acc                                     :карабель
 
 STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER                      :{BLACK}Кошт: {CURRENCY_LONG} Вага: {WEIGHT_SHORT}{}Хуткасьць: {VELOCITY}  Магутнасьць: {POWER}{}Кошт абслуг.: {CURRENCY_LONG}/год{}Ёмістасьць: {CARGO_LONG}
 STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER_MAX_TE               :{BLACK}Кошт: {CURRENCY_LONG} Вага: {WEIGHT_SHORT}{}Хуткасьць: {VELOCITY}  Магутнасьць: {POWER}  Макс. ЦН: {6:FORCE}{}Кошт абслуг.: {4:CURRENCY_LONG}/год{}Ёмістасьць: {5:CARGO_LONG}
@@ -3943,6 +3937,7 @@ STR_REPLACE_RAIL_VEHICLES                                       :Чыгунач�
 STR_REPLACE_ELRAIL_VEHICLES                                     :Чыгуначны транспарт на электрацязе
 STR_REPLACE_MONORAIL_VEHICLES                                   :Монарэйкавыя ТС
 STR_REPLACE_MAGLEV_VEHICLES                                     :Маґнітныя ТС
+
 
 STR_REPLACE_REMOVE_WAGON                                        :{BLACK}Выдаленьне ваґонаў: {ORANGE}{STRING}
 STR_REPLACE_REMOVE_WAGON_HELP                                   :{BLACK}Дазволіць пры аўтазамене захоўваць даўжыню цягнікоў шляхам выдаленьня ваґонаў (пачынаючы з галавы цягніка), калі пры аўтазамене лякаматыва павялічыцца даўжыня цягніка.
@@ -4588,7 +4583,6 @@ STR_ERROR_TOO_MANY_STATIONS_LOADING                             :{WHITE}Зана
 STR_ERROR_TOO_MANY_STATION_SPECS                                :{WHITE}Занадта вялікая чыгуначная станцыя
 STR_ERROR_TOO_MANY_BUS_STOPS                                    :{WHITE}Занадта шмат аўтобусных прыпынкаў
 STR_ERROR_TOO_MANY_TRUCK_STOPS                                  :{WHITE}Занадта шмат грузавых тэрмiналаў
-STR_ERROR_TOO_CLOSE_TO_ANOTHER_STATION                          :{WHITE}Занадта блізка да іншай станцыі
 STR_ERROR_TOO_CLOSE_TO_ANOTHER_DOCK                             :{WHITE}Занадта блізка да іншай прыстані
 STR_ERROR_TOO_CLOSE_TO_ANOTHER_AIRPORT                          :{WHITE}Занадта блізка да іншага аэрапорта
 STR_ERROR_CAN_T_RENAME_STATION                                  :{WHITE}Немагчыма перайменаваць станцыю...
@@ -4596,7 +4590,6 @@ STR_ERROR_DRIVE_THROUGH_ON_TOWN_ROAD                            :{WHITE}... гэ
 STR_ERROR_DRIVE_THROUGH_DIRECTION                               :{WHITE}... няправільны кірунак дарогі
 STR_ERROR_DRIVE_THROUGH_CORNER                                  :{WHITE}... на прахадных прыпынках нельга рабіць павароты
 STR_ERROR_DRIVE_THROUGH_JUNCTION                                :{WHITE}... на прахадных прыпынках нельга рабіць скрыжаваньнi
-STR_ERROR_DRIVE_THROUGH_ON_ONEWAY_ROAD                          :{WHITE}... дарога аднабаковая ці заблакавана
 
 # Station destruction related errors
 STR_ERROR_CAN_T_REMOVE_PART_OF_STATION                          :{WHITE}Немагчыма выдаліць частку станцыi...
@@ -4666,7 +4659,7 @@ STR_ERROR_MUST_REMOVE_SIGNALS_FIRST                             :{WHITE}Спач
 STR_ERROR_NO_SUITABLE_RAILROAD_TRACK                            :{WHITE}Няма прыдатных рэйкаў
 STR_ERROR_MUST_REMOVE_RAILROAD_TRACK                            :{WHITE}Спачатку выдаліце чыгунку
 STR_ERROR_CROSSING_ON_ONEWAY_ROAD                               :{WHITE}Дарога аднабаковая або блякаваная
-STR_ERROR_CROSSING_DISALLOWED                                   :{WHITE}Праз гэты від рэйкаў забаронена будаваць пераезды
+STR_ERROR_CROSSING_DISALLOWED_RAIL                              :{WHITE}Праз гэты від рэйкаў забаронена будаваць пераезды
 STR_ERROR_CAN_T_BUILD_SIGNALS_HERE                              :{WHITE}Тут немагчыма паставіць сьветлафор...
 STR_ERROR_CAN_T_BUILD_RAILROAD_TRACK                            :{WHITE}Тут немагчыма пракласьцi рэйкі...
 STR_ERROR_CAN_T_REMOVE_RAILROAD_TRACK                           :{WHITE}Не атрымалася выдаліць чыгунку...

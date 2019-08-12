@@ -19,13 +19,13 @@
 static const SaveLoad _subsidies_desc[] = {
 	    SLE_VAR(Subsidy, cargo_type, SLE_UINT8),
 	    SLE_VAR(Subsidy, remaining,  SLE_UINT8),
-	SLE_CONDVAR(Subsidy, awarded,    SLE_UINT8,                 125, SL_MAX_VERSION),
-	SLE_CONDVAR(Subsidy, src_type,   SLE_UINT8,                 125, SL_MAX_VERSION),
-	SLE_CONDVAR(Subsidy, dst_type,   SLE_UINT8,                 125, SL_MAX_VERSION),
-	SLE_CONDVAR(Subsidy, src,        SLE_FILE_U8 | SLE_VAR_U16,   0, 4),
-	SLE_CONDVAR(Subsidy, src,        SLE_UINT16,                  5, SL_MAX_VERSION),
-	SLE_CONDVAR(Subsidy, dst,        SLE_FILE_U8 | SLE_VAR_U16,   0, 4),
-	SLE_CONDVAR(Subsidy, dst,        SLE_UINT16,                  5, SL_MAX_VERSION),
+	SLE_CONDVAR(Subsidy, awarded,    SLE_UINT8,                 SLV_125, SL_MAX_VERSION),
+	SLE_CONDVAR(Subsidy, src_type,   SLE_UINT8,                 SLV_125, SL_MAX_VERSION),
+	SLE_CONDVAR(Subsidy, dst_type,   SLE_UINT8,                 SLV_125, SL_MAX_VERSION),
+	SLE_CONDVAR(Subsidy, src,        SLE_FILE_U8 | SLE_VAR_U16,   SL_MIN_VERSION, SLV_5),
+	SLE_CONDVAR(Subsidy, src,        SLE_UINT16,                  SLV_5, SL_MAX_VERSION),
+	SLE_CONDVAR(Subsidy, dst,        SLE_FILE_U8 | SLE_VAR_U16,   SL_MIN_VERSION, SLV_5),
+	SLE_CONDVAR(Subsidy, dst,        SLE_UINT16,                  SLV_5, SL_MAX_VERSION),
 	SLE_END()
 };
 
@@ -48,5 +48,5 @@ static void Load_SUBS()
 }
 
 extern const ChunkHandler _subsidy_chunk_handlers[] = {
-	{ 'SUBS', Save_SUBS, Load_SUBS, NULL, NULL, CH_ARRAY | CH_LAST},
+	{ 'SUBS', Save_SUBS, Load_SUBS, nullptr, nullptr, CH_ARRAY | CH_LAST},
 };

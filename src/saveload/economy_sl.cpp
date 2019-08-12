@@ -21,33 +21,33 @@
 static void Load_PRIC()
 {
 	/* Old games store 49 base prices, very old games store them as int32 */
-	int vt = IsSavegameVersionBefore(65) ? SLE_FILE_I32 : SLE_FILE_I64;
-	SlArray(NULL, 49, vt | SLE_VAR_NULL);
-	SlArray(NULL, 49, SLE_FILE_U16 | SLE_VAR_NULL);
+	int vt = IsSavegameVersionBefore(SLV_65) ? SLE_FILE_I32 : SLE_FILE_I64;
+	SlArray(nullptr, 49, vt | SLE_VAR_NULL);
+	SlArray(nullptr, 49, SLE_FILE_U16 | SLE_VAR_NULL);
 }
 
 /** Cargo payment rates in pre 126 savegames */
 static void Load_CAPR()
 {
-	uint num_cargo = IsSavegameVersionBefore(55) ? 12 : IsSavegameVersionBefore(199) ? 32 : NUM_CARGO;
-	int vt = IsSavegameVersionBefore(65) ? SLE_FILE_I32 : SLE_FILE_I64;
-	SlArray(NULL, num_cargo, vt | SLE_VAR_NULL);
-	SlArray(NULL, num_cargo, SLE_FILE_U16 | SLE_VAR_NULL);
+	uint num_cargo = IsSavegameVersionBefore(SLV_55) ? 12 : IsSavegameVersionBefore(SLV_EXTEND_CARGOTYPES) ? 32 : NUM_CARGO;
+	int vt = IsSavegameVersionBefore(SLV_65) ? SLE_FILE_I32 : SLE_FILE_I64;
+	SlArray(nullptr, num_cargo, vt | SLE_VAR_NULL);
+	SlArray(nullptr, num_cargo, SLE_FILE_U16 | SLE_VAR_NULL);
 }
 
 static const SaveLoad _economy_desc[] = {
-	SLE_CONDNULL(4,                                                                  0, 64),             // max_loan
-	SLE_CONDNULL(8,                                                                 65, 143), // max_loan
-	SLE_CONDVAR(Economy, old_max_loan_unround,          SLE_FILE_I32 | SLE_VAR_I64,  0, 64),
-	SLE_CONDVAR(Economy, old_max_loan_unround,          SLE_INT64,                  65, 125),
-	SLE_CONDVAR(Economy, old_max_loan_unround_fract,    SLE_UINT16,                 70, 125),
-	SLE_CONDVAR(Economy, inflation_prices,              SLE_UINT64,                126, SL_MAX_VERSION),
-	SLE_CONDVAR(Economy, inflation_payment,             SLE_UINT64,                126, SL_MAX_VERSION),
+	SLE_CONDNULL(4,                                                                  SL_MIN_VERSION, SLV_65),             // max_loan
+	SLE_CONDNULL(8,                                                                 SLV_65, SLV_144), // max_loan
+	SLE_CONDVAR(Economy, old_max_loan_unround,          SLE_FILE_I32 | SLE_VAR_I64,  SL_MIN_VERSION, SLV_65),
+	SLE_CONDVAR(Economy, old_max_loan_unround,          SLE_INT64,                  SLV_65, SLV_126),
+	SLE_CONDVAR(Economy, old_max_loan_unround_fract,    SLE_UINT16,                 SLV_70, SLV_126),
+	SLE_CONDVAR(Economy, inflation_prices,              SLE_UINT64,                SLV_126, SL_MAX_VERSION),
+	SLE_CONDVAR(Economy, inflation_payment,             SLE_UINT64,                SLV_126, SL_MAX_VERSION),
 	    SLE_VAR(Economy, fluct,                         SLE_INT16),
 	    SLE_VAR(Economy, interest_rate,                 SLE_UINT8),
 	    SLE_VAR(Economy, infl_amount,                   SLE_UINT8),
 	    SLE_VAR(Economy, infl_amount_pr,                SLE_UINT8),
-	SLE_CONDVAR(Economy, industry_daily_change_counter, SLE_UINT32,                102, SL_MAX_VERSION),
+	SLE_CONDVAR(Economy, industry_daily_change_counter, SLE_UINT32,                SLV_102, SL_MAX_VERSION),
 	    SLE_END()
 };
 
@@ -61,14 +61,14 @@ static void Save_ECMY()
 static void Load_ECMY()
 {
 	SlObject(&_economy, _economy_desc);
-	StartupIndustryDailyChanges(IsSavegameVersionBefore(102));  // old savegames will need to be initialized
+	StartupIndustryDailyChanges(IsSavegameVersionBefore(SLV_102));  // old savegames will need to be initialized
 }
 
 static const SaveLoad _cargopayment_desc[] = {
 	    SLE_REF(CargoPayment, front,           REF_VEHICLE),
 	    SLE_VAR(CargoPayment, route_profit,    SLE_INT64),
 	    SLE_VAR(CargoPayment, visual_profit,   SLE_INT64),
-	SLE_CONDVAR(CargoPayment, visual_transfer, SLE_INT64, 181, SL_MAX_VERSION),
+	SLE_CONDVAR(CargoPayment, visual_transfer, SLE_INT64, SLV_181, SL_MAX_VERSION),
 	    SLE_END()
 };
 
@@ -101,8 +101,8 @@ static void Ptrs_CAPY()
 
 
 extern const ChunkHandler _economy_chunk_handlers[] = {
-	{ 'CAPY', Save_CAPY,     Load_CAPY,     Ptrs_CAPY, NULL, CH_ARRAY},
-	{ 'PRIC', NULL,          Load_PRIC,     NULL,      NULL, CH_RIFF | CH_AUTO_LENGTH},
-	{ 'CAPR', NULL,          Load_CAPR,     NULL,      NULL, CH_RIFF | CH_AUTO_LENGTH},
-	{ 'ECMY', Save_ECMY,     Load_ECMY,     NULL,      NULL, CH_RIFF | CH_LAST},
+	{ 'CAPY', Save_CAPY,     Load_CAPY,     Ptrs_CAPY, nullptr, CH_ARRAY},
+	{ 'PRIC', nullptr,       Load_PRIC,     nullptr,   nullptr, CH_RIFF | CH_AUTO_LENGTH},
+	{ 'CAPR', nullptr,       Load_CAPR,     nullptr,   nullptr, CH_RIFF | CH_AUTO_LENGTH},
+	{ 'ECMY', Save_ECMY,     Load_ECMY,     nullptr,   nullptr, CH_RIFF | CH_LAST},
 };

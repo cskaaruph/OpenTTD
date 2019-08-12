@@ -47,7 +47,7 @@
  * second sets the major variations to that, ... until finally the smallest
  * bumps are added.
  *
- * Usefully, this routine is totally scaleable; so when 32bpp comes along, the
+ * Usefully, this routine is totally scalable; so when 32bpp comes along, the
  * terrain can be as bumpy as you like! It is also infinitely expandable; a
  * single random seed terrain continues in X & Y as far as you care to
  * calculate. In theory, we could use just one seed value, but randomly select
@@ -184,7 +184,7 @@ struct HeightMap
 };
 
 /** Global height map instance */
-static HeightMap _height_map = {NULL, 0, 0, 0, 0};
+static HeightMap _height_map = {nullptr, 0, 0, 0, 0};
 
 /** Conversion: int to height_t */
 #define I2H(i) ((i) << height_decimal_bits)
@@ -262,7 +262,7 @@ static amplitude_t GetAmplitude(int frequency)
 	 * areas with a particular gradient so that we are able to create maps without too
 	 * many steep slopes up to the wanted height level. It's definitely not perfect since
 	 * it will bring larger rectangles with similar slopes which makes the rectangular
-	 * behaviour of TGP more noticable. However, these height differentiations cannot
+	 * behaviour of TGP more noticeable. However, these height differentiations cannot
 	 * happen over much smaller areas; we basically double the "range" to give a similar
 	 * slope for every doubling of map height.
 	 */
@@ -325,7 +325,7 @@ static inline bool AllocHeightMap()
 static inline void FreeHeightMap()
 {
 	free(_height_map.h);
-	_height_map.h = NULL;
+	_height_map.h = nullptr;
 }
 
 /**
@@ -349,7 +349,7 @@ static inline height_t RandomHeight(amplitude_t rMax)
 static void HeightMapGenerate()
 {
 	/* Trying to apply noise to uninitialized height map */
-	assert(_height_map.h != NULL);
+	assert(_height_map.h != nullptr);
 
 	int start = max(MAX_TGP_FREQUENCIES - (int)min(MapLogX(), MapLogY()), 0);
 	bool first = true;
@@ -423,9 +423,9 @@ static void HeightMapGetMinMaxAvg(height_t *min_ptr, height_t *max_ptr, height_t
 	h_avg = (height_t)(h_accu / (_height_map.size_x * _height_map.size_y));
 
 	/* Return required results */
-	if (min_ptr != NULL) *min_ptr = h_min;
-	if (max_ptr != NULL) *max_ptr = h_max;
-	if (avg_ptr != NULL) *avg_ptr = h_avg;
+	if (min_ptr != nullptr) *min_ptr = h_min;
+	if (max_ptr != nullptr) *max_ptr = h_max;
+	if (avg_ptr != nullptr) *avg_ptr = h_avg;
 }
 
 /** Dill histogram and return pointer to its base point - to the count of zero heights */
@@ -977,7 +977,7 @@ static void TgenSetTileHeight(TileIndex tile, int height)
  * The main new land generator using Perlin noise. Desert landscape is handled
  * different to all others to give a desert valley between two high mountains.
  * Clearly if a low height terrain (flat/very flat) is chosen, then the tropic
- * areas wont be high enough, and there will be very little tropic on the map.
+ * areas won't be high enough, and there will be very little tropic on the map.
  * Thus Tropic works best on Hilly or Mountainous.
  */
 void GenerateTerrainPerlin()
@@ -995,8 +995,8 @@ void GenerateTerrainPerlin()
 
 	/* First make sure the tiles at the north border are void tiles if needed. */
 	if (_settings_game.construction.freeform_edges) {
-		for (int y = 0; y < _height_map.size_y - 1; y++) MakeVoid(_height_map.size_x * y);
-		for (int x = 0; x < _height_map.size_x;     x++) MakeVoid(x);
+		for (uint x = 0; x < MapSizeX(); x++) MakeVoid(TileXY(x, 0));
+		for (uint y = 0; y < MapSizeY(); y++) MakeVoid(TileXY(0, y));
 	}
 
 	int max_height = H2I(TGPGetMaxHeight());
@@ -1011,5 +1011,5 @@ void GenerateTerrainPerlin()
 	IncreaseGeneratingWorldProgress(GWP_LANDSCAPE);
 
 	FreeHeightMap();
-	GenerateWorldSetAbortCallback(NULL);
+	GenerateWorldSetAbortCallback(nullptr);
 }

@@ -318,9 +318,6 @@
     <ClCompile Include="..\src\screenshot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\sdl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -433,6 +430,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\base_station_base.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\bitmap_type.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\bmp.h">
@@ -651,6 +651,9 @@
     <ClInclude Include="..\src\gui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\guitimer_func.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\heightmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -837,6 +840,9 @@
     <ClInclude Include="..\src\newgrf_railtype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\newgrf_roadtype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\newgrf_sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -927,6 +933,9 @@
     <ClInclude Include="..\src\rev.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\road.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\road_cmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -952,9 +961,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\screenshot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\sdl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\sound\sdl_s.h">
@@ -1024,6 +1030,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\station_gui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\station_kdtree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\station_type.h">
@@ -1128,6 +1137,9 @@
     <ClInclude Include="..\src\town_type.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\town_kdtree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\townname_func.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1174,6 +1186,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\viewport_func.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\viewport_kdtree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\viewport_sprite_sorter.h">
@@ -1260,6 +1275,9 @@
     <ClInclude Include="..\src\core\geometry_type.hpp">
       <Filter>Core Source Code</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\core\kdtree.hpp">
+      <Filter>Core Source Code</Filter>
+    </ClInclude>
     <ClCompile Include="..\src\core\math_func.cpp">
       <Filter>Core Source Code</Filter>
     </ClCompile>
@@ -1300,9 +1318,6 @@
       <Filter>Core Source Code</Filter>
     </ClInclude>
     <ClInclude Include="..\src\core\smallvec_type.hpp">
-      <Filter>Core Source Code</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\core\sort_func.hpp">
       <Filter>Core Source Code</Filter>
     </ClInclude>
     <ClInclude Include="..\src\core\string_compare_type.hpp">
@@ -1932,6 +1947,9 @@
     <ClInclude Include="..\src\table\roadveh_movement.h">
       <Filter>Tables</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\table\roadtypes.h">
+      <Filter>Tables</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\..\objs\settings\table\settings.h">
       <Filter>Tables</Filter>
     </ClInclude>
@@ -2346,6 +2364,9 @@
     <ClInclude Include="..\src\script\api\script_road.hpp">
       <Filter>Script API</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\script\api\script_roadtypelist.hpp">
+      <Filter>Script API</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\script\api\script_sign.hpp">
       <Filter>Script API</Filter>
     </ClInclude>
@@ -2544,6 +2565,9 @@
     <ClCompile Include="..\src\script\api\script_road.cpp">
       <Filter>Script API Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\script\api\script_roadtypelist.cpp">
+      <Filter>Script API Implementation</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\script\api\script_sign.cpp">
       <Filter>Script API Implementation</Filter>
     </ClCompile>
@@ -2688,10 +2712,10 @@
     <ClInclude Include="..\src\blitter\8bpp_simple.hpp">
       <Filter>Blitters</Filter>
     </ClInclude>
-    <ClCompile Include="..\src\blitter\base.cpp">
-      <Filter>Blitters</Filter>
-    </ClCompile>
     <ClInclude Include="..\src\blitter\base.hpp">
+      <Filter>Blitters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\blitter\common.hpp">
       <Filter>Blitters</Filter>
     </ClInclude>
     <ClInclude Include="..\src\blitter\factory.hpp">
@@ -2761,6 +2785,9 @@
       <Filter>NewGRF</Filter>
     </ClCompile>
     <ClCompile Include="..\src\newgrf_railtype.cpp">
+      <Filter>NewGRF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\newgrf_roadtype.cpp">
       <Filter>NewGRF</Filter>
     </ClCompile>
     <ClCompile Include="..\src\newgrf_sound.cpp">
@@ -2949,12 +2976,6 @@
     <ClInclude Include="..\src\pathfinder\follow_track.hpp">
       <Filter>Pathfinder</Filter>
     </ClInclude>
-    <ClCompile Include="..\src\pathfinder\opf\opf_ship.cpp">
-      <Filter>Pathfinder</Filter>
-    </ClCompile>
-    <ClInclude Include="..\src\pathfinder\opf\opf_ship.h">
-      <Filter>Pathfinder</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\pathfinder\pathfinder_func.h">
       <Filter>Pathfinder</Filter>
     </ClInclude>
@@ -3084,12 +3105,9 @@
     <ClCompile Include="..\src\os\windows\win32.cpp">
       <Filter>Windows files</Filter>
     </ClCompile>
-    <ClInclude Include="..\src\thread\thread.h">
+    <ClInclude Include="..\src\thread.h">
       <Filter>Threading</Filter>
     </ClInclude>
-    <ClCompile Include="..\src\thread\thread_win32.cpp">
-      <Filter>Threading</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\media\openttd.ico" />

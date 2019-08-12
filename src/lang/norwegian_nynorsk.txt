@@ -986,6 +986,8 @@ STR_GAME_OPTIONS_GUI_ZOOM_DROPDOWN_NORMAL                       :Normal
 STR_GAME_OPTIONS_GUI_ZOOM_DROPDOWN_2X_ZOOM                      :Dobbel størrelse
 STR_GAME_OPTIONS_GUI_ZOOM_DROPDOWN_4X_ZOOM                      :Firedobbel størrelse
 
+
+
 STR_GAME_OPTIONS_BASE_GRF                                       :{BLACK}Grafikksett
 STR_GAME_OPTIONS_BASE_GRF_TOOLTIP                               :{BLACK}Vel grafikksett som skal nyttast
 STR_GAME_OPTIONS_BASE_GRF_STATUS                                :{RED}{NUM} manglande/øydelagd{P "" e} fil{P "" er}
@@ -1239,6 +1241,7 @@ STR_CONFIG_SETTING_STOP_ON_COMPETITOR_ROAD                      :Tillet stoppest
 STR_CONFIG_SETTING_STOP_ON_COMPETITOR_ROAD_HELPTEXT             :Tillatt bygging av stopp med gjennomkøyring på vegar eigd av andre firma
 STR_CONFIG_SETTING_DYNAMIC_ENGINES_EXISTING_VEHICLES            :{WHITE}Endring av denne instillinga er ikkje mogleg når det finst køyretøy
 STR_CONFIG_SETTING_INFRASTRUCTURE_MAINTENANCE                   :Vedlikehald av infrastruktur: {STRING}
+
 
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS                        :Flyplassar utgår aldri: {STRING}
 
@@ -1604,7 +1607,6 @@ STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST                        :{ORANGE}Varefor
 STR_CONFIG_SETTING_AI                                           :{ORANGE}Motstandarar
 STR_CONFIG_SETTING_AI_NPC                                       :{ORANGE}Datamaskinspelarar
 
-STR_CONFIG_SETTING_PATHFINDER_OPF                               :Original
 STR_CONFIG_SETTING_PATHFINDER_NPF                               :NPF
 STR_CONFIG_SETTING_PATHFINDER_YAPF_RECOMMENDED                  :YAPF {BLUE}(Anbefalt)
 
@@ -1687,13 +1689,9 @@ STR_QUIT_NO                                                     :{BLACK}Nei
 
 # Supported OSes
 STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_DOS                                                  :DOS
 STR_OSNAME_UNIX                                                 :Unix
 STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_BEOS                                                 :BeOS
 STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_MORPHOS                                              :MorphOS
-STR_OSNAME_AMIGAOS                                              :AmigaOS
 STR_OSNAME_OS2                                                  :OS/2
 STR_OSNAME_SUNOS                                                :SunOS
 
@@ -1722,7 +1720,6 @@ STR_CHEAT_CHANGE_DATE_QUERY_CAPT                                :{WHITE}Byt nove
 STR_CHEAT_SETUP_PROD                                            :{LTBLUE}Tillet endring av produksjonsmengder: {ORANGE}{STRING}
 
 # Livery window
-STR_LIVERY_CAPTION                                              :{WHITE}Ny firmafarge
 
 STR_LIVERY_GENERAL_TOOLTIP                                      :{BLACK}Syne generelle fargetema
 STR_LIVERY_TRAIN_TOOLTIP                                        :{BLACK}Syne togfargetema
@@ -1984,9 +1981,9 @@ STR_NETWORK_NEED_GAME_PASSWORD_CAPTION                          :{WHITE}Tenaren 
 STR_NETWORK_NEED_COMPANY_PASSWORD_CAPTION                       :{WHITE}Firmaet er beskytta. Skriv inn passord
 
 # Network company list added strings
-STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :{WHITE}Liste over klientar
-STR_NETWORK_COMPANY_LIST_SPECTATE                               :{WHITE}Vær tilskodar
-STR_NETWORK_COMPANY_LIST_NEW_COMPANY                            :{WHITE}Nytt firma
+STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :Liste over klientar
+STR_NETWORK_COMPANY_LIST_SPECTATE                               :Vær tilskodar
+STR_NETWORK_COMPANY_LIST_NEW_COMPANY                            :Nytt firma
 
 # Network client list
 STR_NETWORK_CLIENTLIST_KICK                                     :Kast ut
@@ -2001,7 +1998,6 @@ STR_NETWORK_CLIENT                                              :Klient
 STR_NETWORK_SPECTATORS                                          :Tilskodarar
 
 STR_NETWORK_GIVE_MONEY_CAPTION                                  :{WHITE}Skriv inn kor mykje pengar du ønskar å gje
-STR_NETWORK_TOOLBAR_LIST_SPECTATOR                              :{BLACK}Tilskodar
 
 # Network set password
 STR_COMPANY_PASSWORD_CANCEL                                     :{BLACK}Ikkje lagre passordet
@@ -2323,6 +2319,7 @@ STR_ROAD_TOOLBAR_TOOLTIP_BUILD_TRAMWAY_TUNNEL                   :{BLACK}Bygg tri
 STR_ROAD_TOOLBAR_TOOLTIP_TOGGLE_BUILD_REMOVE_FOR_ROAD           :{BLACK}Byt mellom bygging/fjerning for vegbygging
 STR_ROAD_TOOLBAR_TOOLTIP_TOGGLE_BUILD_REMOVE_FOR_TRAMWAYS       :{BLACK}Byt mellom bygge/fjerne for trikkesporbygging
 
+
 # Road depot construction window
 STR_BUILD_DEPOT_ROAD_ORIENTATION_CAPTION                        :{WHITE}Garasjens retning
 STR_BUILD_DEPOT_ROAD_ORIENTATION_SELECT_TOOLTIP                 :{BLACK}Vel retning på garasje
@@ -2603,7 +2600,7 @@ STR_LAI_OBJECT_DESCRIPTION_COMPANY_OWNED_LAND                   :Feltet eigast a
 STR_ABOUT_OPENTTD                                               :{WHITE}Om OpenTTD
 STR_ABOUT_ORIGINAL_COPYRIGHT                                    :{BLACK}Opphaveleg opphavsbeskytta av {COPYRIGHT} 1995 Chris Sawyer, Alle rettigheiter reservert
 STR_ABOUT_VERSION                                               :{BLACK}OpenTTD versjon {REV}. Oversett til nynorsk av Thor Morten Skogrand med fleire.
-STR_ABOUT_COPYRIGHT_OPENTTD                                     :{BLACK}OpenTTD {COPYRIGHT} 2002-2018 OpenTTD-teamet
+STR_ABOUT_COPYRIGHT_OPENTTD                                     :{BLACK}OpenTTD {COPYRIGHT} 2002-2019 OpenTTD-teamet
 
 # Framerate display window
 ############ Leave those lines in this order!!
@@ -3178,8 +3175,6 @@ STR_COMPANY_INFRASTRUCTURE_VIEW_CAPTION                         :{WHITE}Infrastr
 STR_COMPANY_INFRASTRUCTURE_VIEW_RAIL_SECT                       :{GOLD}Togsporbitar:
 STR_COMPANY_INFRASTRUCTURE_VIEW_SIGNALS                         :{WHITE}Signal
 STR_COMPANY_INFRASTRUCTURE_VIEW_ROAD_SECT                       :{GOLD}Vegstubbar:
-STR_COMPANY_INFRASTRUCTURE_VIEW_ROAD                            :{WHITE}Veg
-STR_COMPANY_INFRASTRUCTURE_VIEW_TRAMWAY                         :{WHITE}Trikkespor
 STR_COMPANY_INFRASTRUCTURE_VIEW_WATER_SECT                      :{GOLD}Vannruter:
 STR_COMPANY_INFRASTRUCTURE_VIEW_CANALS                          :{WHITE}Kanalar
 STR_COMPANY_INFRASTRUCTURE_VIEW_STATION_SECT                    :{GOLD}Stasjonar:
@@ -3203,17 +3198,7 @@ STR_INDUSTRY_VIEW_LOCATION_TOOLTIP                              :{BLACK}Midtstil
 STR_INDUSTRY_VIEW_PRODUCTION_LEVEL                              :{BLACK}Produksjonsnivå: {YELLOW}{COMMA}%
 STR_INDUSTRY_VIEW_INDUSTRY_ANNOUNCED_CLOSURE                    :{YELLOW}Verksemda legg snarleg ned drifta!
 
-############ range for requires starts
-STR_INDUSTRY_VIEW_REQUIRES_CARGO                                :{BLACK}Treng: {YELLOW}{STRING}{STRING}
-STR_INDUSTRY_VIEW_REQUIRES_CARGO_CARGO                          :{BLACK}Treng: {YELLOW}{STRING}{STRING}, {STRING}{STRING}
-STR_INDUSTRY_VIEW_REQUIRES_CARGO_CARGO_CARGO                    :{BLACK}Treng: {YELLOW}{STRING}{STRING}, {STRING}{STRING}, {STRING}{STRING}
-############ range for requires ends
 
-
-############ range for produces starts
-STR_INDUSTRY_VIEW_PRODUCES_CARGO                                :{BLACK}Lagar: {YELLOW}{STRING}{STRING}
-STR_INDUSTRY_VIEW_PRODUCES_CARGO_CARGO                          :{BLACK}Lagar: {YELLOW}{STRING}{STRING}, {STRING}{STRING}
-############ range for produces ends
 
 STR_CONFIG_GAME_PRODUCTION                                      :{WHITE}Byt produksjon (8-gongen, opptil 2040)
 STR_CONFIG_GAME_PRODUCTION_LEVEL                                :{WHITE}Endre produksjonsnivå (prosent, opp til 800%)
@@ -3263,6 +3248,7 @@ STR_GROUP_DEFAULT_ROAD_VEHICLES                                 :køyretøy utan
 STR_GROUP_DEFAULT_SHIPS                                         :Ugrupperte skip
 STR_GROUP_DEFAULT_AIRCRAFTS                                     :Luftfartøy utan gruppe
 
+
 STR_GROUPS_CLICK_ON_GROUP_FOR_TOOLTIP                           :{BLACK}Grupper - Klikk på ei gruppe for å få ei liste over alle køyretøya i den
 STR_GROUP_CREATE_TOOLTIP                                        :{BLACK}Klikk for å lage ei gruppe
 STR_GROUP_DELETE_TOOLTIP                                        :{BLACK}Slett den valde gruppa
@@ -3284,10 +3270,13 @@ STR_BUY_VEHICLE_TRAIN_ELRAIL_CAPTION                            :Nytt elektrisk 
 STR_BUY_VEHICLE_TRAIN_MONORAIL_CAPTION                          :Nye tog/vogner for monorail
 STR_BUY_VEHICLE_TRAIN_MAGLEV_CAPTION                            :Nye tog/vogner for maglev
 
-STR_BUY_VEHICLE_TRAIN_ALL_CAPTION                               :Nye tog/vogner
 STR_BUY_VEHICLE_ROAD_VEHICLE_CAPTION                            :Nye køyretøy
+
+############ range for vehicle availability starts
+STR_BUY_VEHICLE_TRAIN_ALL_CAPTION                               :Nye tog/vogner
 STR_BUY_VEHICLE_SHIP_CAPTION                                    :Nye skip
 STR_BUY_VEHICLE_AIRCRAFT_CAPTION                                :Nytt luftfartøy
+############ range for vehicle availability ends
 
 STR_PURCHASE_INFO_COST_WEIGHT                                   :{BLACK}Kostnad: {GOLD}{CURRENCY_LONG}{BLACK} Vekt: {GOLD}{WEIGHT_SHORT}
 STR_PURCHASE_INFO_SPEED_POWER                                   :{BLACK}Hastigheit: {GOLD}{VELOCITY}{BLACK} Kraft: {GOLD}{POWER}
@@ -3320,10 +3309,12 @@ STR_BUY_VEHICLE_ROAD_VEHICLE_BUY_VEHICLE_BUTTON                 :{BLACK}Kjøp k�
 STR_BUY_VEHICLE_SHIP_BUY_VEHICLE_BUTTON                         :{BLACK}Bygg skip
 STR_BUY_VEHICLE_AIRCRAFT_BUY_VEHICLE_BUTTON                     :{BLACK}Bygg luftfartøy
 
+
 STR_BUY_VEHICLE_TRAIN_BUY_VEHICLE_TOOLTIP                       :{BLACK}Bygg den valde farkosten. Skift-klikk viser prisoverslag utan å kjøpe.
 STR_BUY_VEHICLE_ROAD_VEHICLE_BUY_VEHICLE_TOOLTIP                :{BLACK}Bygg det valde køyretøyet. Skift-klikk viser prisoverslag utan å kjøpe.
 STR_BUY_VEHICLE_SHIP_BUY_VEHICLE_TOOLTIP                        :{BLACK}Bygg det valde skipet. Skift-klikk viser prisoverslag utan å kjøpe.
 STR_BUY_VEHICLE_AIRCRAFT_BUY_VEHICLE_TOOLTIP                    :{BLACK}Bygg det valde luftfartøyet. Skift-klikk viser prisoverslag utan å kjøpe.
+
 
 STR_BUY_VEHICLE_TRAIN_RENAME_BUTTON                             :{BLACK}Gje nytt namn
 STR_BUY_VEHICLE_ROAD_VEHICLE_RENAME_BUTTON                      :{BLACK}Endre namn
@@ -3433,12 +3424,15 @@ STR_DEPOT_SELL_CONFIRMATION_TEXT                                :{YELLOW}Du er i
 # Engine preview window
 STR_ENGINE_PREVIEW_CAPTION                                      :{WHITE}Melding frå køyretøysprodusent
 STR_ENGINE_PREVIEW_MESSAGE                                      :{GOLD}Me har nyleg designa eit nytt {STRING} - er du interessert i å teste denne farkosten i eit år, slik at me kan sjå korleis det verkar før me gjer han tilgjengeleg på markedet?
+
 STR_ENGINE_PREVIEW_RAILROAD_LOCOMOTIVE                          :lokomotiv
-STR_ENGINE_PREVIEW_ROAD_VEHICLE                                 :køyretøy
-STR_ENGINE_PREVIEW_AIRCRAFT                                     :luftfartøy
-STR_ENGINE_PREVIEW_SHIP                                         :skip
 STR_ENGINE_PREVIEW_MONORAIL_LOCOMOTIVE                          :monorail-lokomotiv
 STR_ENGINE_PREVIEW_MAGLEV_LOCOMOTIVE                            :maglev-lokomotiv
+
+STR_ENGINE_PREVIEW_ROAD_VEHICLE                                 :køyretøy
+
+STR_ENGINE_PREVIEW_AIRCRAFT                                     :luftfartøy
+STR_ENGINE_PREVIEW_SHIP                                         :skip
 
 STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER                      :{BLACK}Kostnad: {CURRENCY_LONG} Vekt: {WEIGHT_SHORT}{}Hastigheit: {VELOCITY}  Kraft: {POWER}{}Driftskostnader: {CURRENCY_LONG}/år{}Kapasitet: {CARGO_LONG}
 STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER_MAX_TE               :{BLACK}Pris: {CURRENCY_LONG} Vekt: {WEIGHT_SHORT}{}Hastigheit: {VELOCITY}  Kraft: {POWER}  Maks. trekkraft: {6:FORCE}{}Driftskostnad: {4:CURRENCY_LONG}/yr{}Kapasitet: {5:CARGO_LONG}
@@ -3479,6 +3473,7 @@ STR_REPLACE_RAIL_VEHICLES                                       :Jernbanekøyret
 STR_REPLACE_ELRAIL_VEHICLES                                     :Elektriske jernbanekøyretøy
 STR_REPLACE_MONORAIL_VEHICLES                                   :Monorail-køyretøy
 STR_REPLACE_MAGLEV_VEHICLES                                     :Maglev-køyretøy
+
 
 STR_REPLACE_REMOVE_WAGON                                        :{BLACK}Vognfjerning: {ORANGE}{STRING}
 STR_REPLACE_REMOVE_WAGON_HELP                                   :{BLACK}Lat den automatiske utskiftinga behalde lengda på toget ved å fjerne vogner (frå første vogn), dersom utskiftinga gjer toget lenger.
@@ -4119,7 +4114,6 @@ STR_ERROR_TOO_MANY_STATIONS_LOADING                             :{WHITE}For mang
 STR_ERROR_TOO_MANY_STATION_SPECS                                :{WHITE}For mange togstasjon-delar
 STR_ERROR_TOO_MANY_BUS_STOPS                                    :{WHITE}For mange busshaldeplassar
 STR_ERROR_TOO_MANY_TRUCK_STOPS                                  :{WHITE}For mange lasteterminalar
-STR_ERROR_TOO_CLOSE_TO_ANOTHER_STATION                          :{WHITE}For nær ein annan jernbanestasjon/lasteterminal
 STR_ERROR_TOO_CLOSE_TO_ANOTHER_DOCK                             :{WHITE}For nær ei anna hamn
 STR_ERROR_TOO_CLOSE_TO_ANOTHER_AIRPORT                          :{WHITE}For nær ein annan flyplass
 STR_ERROR_CAN_T_RENAME_STATION                                  :{WHITE}Kan ikkje endre namnet på stasjonen...
@@ -4196,7 +4190,7 @@ STR_ERROR_MUST_REMOVE_SIGNALS_FIRST                             :{WHITE}Må fjer
 STR_ERROR_NO_SUITABLE_RAILROAD_TRACK                            :{WHITE}Upassande jernbanespor
 STR_ERROR_MUST_REMOVE_RAILROAD_TRACK                            :{WHITE}Må fjerne jernbanespor først
 STR_ERROR_CROSSING_ON_ONEWAY_ROAD                               :{WHITE}Vegen er einvegskøyrd eller blokkert
-STR_ERROR_CROSSING_DISALLOWED                                   :{WHITE}Overgang ikkje tillate for denne typen jernbane
+STR_ERROR_CROSSING_DISALLOWED_RAIL                              :{WHITE}Overgang ikkje tillate for denne typen jernbane
 STR_ERROR_CAN_T_BUILD_SIGNALS_HERE                              :{WHITE}Kan ikkje byggje signaler her...
 STR_ERROR_CAN_T_BUILD_RAILROAD_TRACK                            :{WHITE}Kan ikkje byggje jernbanespor her...
 STR_ERROR_CAN_T_REMOVE_RAILROAD_TRACK                           :{WHITE}Kan ikkje fjerne jernbanespor herfrå...

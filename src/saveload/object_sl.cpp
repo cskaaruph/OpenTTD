@@ -24,9 +24,9 @@ static const SaveLoad _object_desc[] = {
 	    SLE_VAR(Object, location.h,                 SLE_FILE_U8 | SLE_VAR_U16),
 	    SLE_REF(Object, town,                       REF_TOWN),
 	    SLE_VAR(Object, build_date,                 SLE_UINT32),
-	SLE_CONDVAR(Object, colour,                     SLE_UINT8,                  148, SL_MAX_VERSION),
-	SLE_CONDVAR(Object, view,                       SLE_UINT8,                  155, SL_MAX_VERSION),
-	SLE_CONDVAR(Object, type,                       SLE_UINT16,                 186, SL_MAX_VERSION),
+	SLE_CONDVAR(Object, colour,                     SLE_UINT8,                  SLV_148, SL_MAX_VERSION),
+	SLE_CONDVAR(Object, view,                       SLE_UINT8,                  SLV_155, SL_MAX_VERSION),
+	SLE_CONDVAR(Object, type,                       SLE_UINT16,                 SLV_186, SL_MAX_VERSION),
 
 	SLE_END()
 };
@@ -56,7 +56,7 @@ static void Ptrs_OBJS()
 	Object *o;
 	FOR_ALL_OBJECTS(o) {
 		SlObject(o, _object_desc);
-		if (IsSavegameVersionBefore(148) && !IsTileType(o->location.tile, MP_OBJECT)) {
+		if (IsSavegameVersionBefore(SLV_148) && !IsTileType(o->location.tile, MP_OBJECT)) {
 			/* Due to a small bug stale objects could remain. */
 			delete o;
 		}
@@ -74,6 +74,6 @@ static void Load_OBID()
 }
 
 extern const ChunkHandler _object_chunk_handlers[] = {
-	{ 'OBID', Save_OBID, Load_OBID, NULL,      NULL, CH_ARRAY },
-	{ 'OBJS', Save_OBJS, Load_OBJS, Ptrs_OBJS, NULL, CH_ARRAY | CH_LAST},
+	{ 'OBID', Save_OBID, Load_OBID, nullptr,   nullptr, CH_ARRAY },
+	{ 'OBJS', Save_OBJS, Load_OBJS, Ptrs_OBJS, nullptr, CH_ARRAY | CH_LAST},
 };

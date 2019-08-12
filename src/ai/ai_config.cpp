@@ -31,9 +31,18 @@ ScriptConfigItem _start_date_config = {
 	AI::START_NEXT_DEVIATION,
 	30,
 	SCRIPTCONFIG_NONE,
-	NULL,
+	nullptr,
 	false
 };
+
+AIConfig::AIConfig(const AIConfig *config) : ScriptConfig(config)
+{
+	/* Override start_date as per AIConfig::AddRandomDeviation().
+	 * This is necessary because the ScriptConfig constructor will instead call
+	 * ScriptConfig::AddRandomDeviation(). */
+	int start_date = config->GetSetting("start_date");
+	this->SetSetting("start_date", start_date != 0 ? max(1, this->GetSetting("start_date")) : 0);
+}
 
 /* static */ AIConfig *AIConfig::GetConfig(CompanyID company, ScriptSettingSource source)
 {
@@ -43,7 +52,7 @@ ScriptConfigItem _start_date_config = {
 	} else {
 		config = &_settings_game.ai_config[company];
 	}
-	if (*config == NULL) *config = new AIConfig();
+	if (*config == nullptr) *config = new AIConfig();
 	return *config;
 }
 
@@ -60,7 +69,7 @@ ScriptInfo *AIConfig::FindInfo(const char *name, int version, bool force_exact_m
 bool AIConfig::ResetInfo(bool force_exact_match)
 {
 	this->info = (ScriptInfo *)AI::FindInfo(this->name, force_exact_match ? this->version : -1, force_exact_match);
-	return this->info != NULL;
+	return this->info != nullptr;
 }
 
 void AIConfig::PushExtraConfigList()
@@ -81,7 +90,7 @@ void AIConfig::ClearConfigList()
 
 int AIConfig::GetSetting(const char *name) const
 {
-	if (this->info == NULL) {
+	if (this->info == nullptr) {
 		SettingValueList::const_iterator it = this->settings.find(name);
 		if (it == this->settings.end()) {
 			assert(strcmp("start_date", name) == 0);
@@ -102,7 +111,7 @@ int AIConfig::GetSetting(const char *name) const
 
 void AIConfig::SetSetting(const char *name, int value)
 {
-	if (this->info == NULL) {
+	if (this->info == nullptr) {
 		if (strcmp("start_date", name) != 0) return;
 		value = Clamp(value, AI::START_NEXT_MIN, AI::START_NEXT_MAX);
 
@@ -117,4 +126,15 @@ void AIConfig::SetSetting(const char *name, int value)
 	}
 
 	ScriptConfig::SetSetting(name, value);
+}
+
+void AIConfig::AddRandomDeviation()
+{
+	int start_date = this->GetSetting("start_date");
+
+	ScriptConfig::AddRandomDeviation();
+
+	/* start_date = 0 is a special case, where random deviation does not occur.
+	 * If start_date was not already 0, then a minimum value of 1 must apply. */
+	this->SetSetting("start_date", start_date != 0 ? max(1, this->GetSetting("start_date")) : 0);
 }

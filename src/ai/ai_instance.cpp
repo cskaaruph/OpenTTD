@@ -62,6 +62,7 @@
 #include "../script/api/ai/ai_rail.hpp.sq"
 #include "../script/api/ai/ai_railtypelist.hpp.sq"
 #include "../script/api/ai/ai_road.hpp.sq"
+#include "../script/api/ai/ai_roadtypelist.hpp.sq"
 #include "../script/api/ai/ai_sign.hpp.sq"
 #include "../script/api/ai/ai_signlist.hpp.sq"
 #include "../script/api/ai/ai_station.hpp.sq"
@@ -167,6 +168,7 @@ void AIInstance::RegisterAPI()
 	SQAIRail_Register(this->engine);
 	SQAIRailTypeList_Register(this->engine);
 	SQAIRoad_Register(this->engine);
+	SQAIRoadTypeList_Register(this->engine);
 	SQAISign_Register(this->engine);
 	SQAISignList_Register(this->engine);
 	SQAIStation_Register(this->engine);
@@ -216,10 +218,10 @@ void AIInstance::Died()
 	ShowAIDebugWindow(_current_company);
 
 	const AIInfo *info = AIConfig::GetConfig(_current_company, AIConfig::SSS_FORCE_GAME)->GetInfo();
-	if (info != NULL) {
+	if (info != nullptr) {
 		ShowErrorMessage(STR_ERROR_AI_PLEASE_REPORT_CRASH, INVALID_STRING_ID, WL_WARNING);
 
-		if (info->GetURL() != NULL) {
+		if (info->GetURL() != nullptr) {
 			ScriptLog::Info("Please report the error to the following URL:");
 			ScriptLog::Info(info->GetURL());
 		}
@@ -228,6 +230,7 @@ void AIInstance::Died()
 
 void AIInstance::LoadDummyScript()
 {
+	ScriptAllocatorScope alloc_scope(this->engine);
 	extern void Script_CreateDummy(HSQUIRRELVM vm, StringID string, const char *type);
 	Script_CreateDummy(this->engine->GetVM(), STR_ERROR_AI_NO_AI_FOUND, "AI");
 }
@@ -258,7 +261,7 @@ void CcAI(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2)
 	 * when the company does not exist anymore.
 	 */
 	const Company *c = Company::GetIfValid(_current_company);
-	if (c == NULL || c->ai_instance == NULL) return;
+	if (c == nullptr || c->ai_instance == nullptr) return;
 
 	c->ai_instance->DoCommandCallback(result, tile, p1, p2);
 	c->ai_instance->Continue();

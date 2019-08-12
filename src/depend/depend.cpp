@@ -54,7 +54,7 @@
  *
  * Copies the source string to the destination buffer with respect of the
  * terminating null-character and the last pointer to the last element in
- * the destination buffer. If the last pointer is set to NULL no boundary
+ * the destination buffer. If the last pointer is set to nullptr no boundary
  * check is performed.
  *
  * @note usage: strecpy(dst, src, lastof(dst));
@@ -85,7 +85,7 @@ char *strecpy(char *dst, const char *src, const char *last)
  *
  * Appends the source string to the destination string with respect of the
  * terminating null-character and and the last pointer to the last element
- * in the destination buffer. If the last pointer is set to NULL no
+ * in the destination buffer. If the last pointer is set to nullptr no
  * boundary check is performed.
  *
  * @note usage: strecat(dst, src, lastof(dst));
@@ -163,13 +163,13 @@ public:
 	File(const char *filename)
 	{
 		this->fp = fopen(filename, "r");
-		if (this->fp == NULL) {
+		if (this->fp == nullptr) {
 			fprintf(stdout, "Could not open %s for reading\n", filename);
 			exit(1);
 		}
 		this->dirname = strdup(filename);
 		char *last = strrchr(this->dirname, '/');
-		if (last != NULL) {
+		if (last != nullptr) {
 			*last = '\0';
 		} else {
 			*this->dirname = '\0';
@@ -217,22 +217,22 @@ enum Token {
 	TOKEN_LOCAL,      ///< Read a local include
 	TOKEN_GLOBAL,     ///< Read a global include
 	TOKEN_IDENTIFIER, ///< Identifier within the data.
-	TOKEN_DEFINE,     ///< (#)define in code
-	TOKEN_IF,         ///< (#)if in code
-	TOKEN_IFDEF,      ///< (#)ifdef in code
-	TOKEN_IFNDEF,     ///< (#)ifndef in code
-	TOKEN_ELIF,       ///< (#)elif in code
-	TOKEN_ELSE,       ///< (#)else in code
-	TOKEN_ENDIF,      ///< (#)endif in code
-	TOKEN_UNDEF,      ///< (#)undef in code
-	TOKEN_OR,         ///< '||' within <tt>#if</tt> expression
-	TOKEN_AND,        ///< '&&' within <tt>#if</tt> expression
-	TOKEN_DEFINED,    ///< 'defined' within <tt>#if</tt> expression
-	TOKEN_OPEN,       ///< '(' within <tt>#if</tt> expression
-	TOKEN_CLOSE,      ///< ')' within <tt>#if</tt> expression
-	TOKEN_NOT,        ///< '!' within <tt>#if</tt> expression
-	TOKEN_ZERO,       ///< '0' within <tt>#if</tt> expression
-	TOKEN_INCLUDE,    ///< (#)include in code
+	TOKEN_DEFINE,     ///< \c \#define in code
+	TOKEN_IF,         ///< \c \#if in code
+	TOKEN_IFDEF,      ///< \c \#ifdef in code
+	TOKEN_IFNDEF,     ///< \c \#ifndef in code
+	TOKEN_ELIF,       ///< \c \#elif in code
+	TOKEN_ELSE,       ///< \c \#else in code
+	TOKEN_ENDIF,      ///< \c \#endif in code
+	TOKEN_UNDEF,      ///< \c \#undef in code
+	TOKEN_OR,         ///< '||' within \c \#if expression
+	TOKEN_AND,        ///< '&&' within \c \#if expression
+	TOKEN_DEFINED,    ///< 'defined' within \c \#if expression
+	TOKEN_OPEN,       ///< '(' within \c \#if expression
+	TOKEN_CLOSE,      ///< ')' within \c \#if expression
+	TOKEN_NOT,        ///< '!' within \c \#if expression
+	TOKEN_ZERO,       ///< '0' within \c \#if expression
+	TOKEN_INCLUDE,    ///< \c \#include in code
 };
 
 /** Mapping from a C-style keyword representation to a Token. */
@@ -247,7 +247,7 @@ public:
 	 * Create the lexer and fill the keywords table.
 	 * @param file the file to read from.
 	 */
-	Lexer(const File *file) : file(file), current_char('\0'), string(NULL), token(TOKEN_UNKNOWN)
+	Lexer(const File *file) : file(file), current_char('\0'), string(nullptr), token(TOKEN_UNKNOWN)
 	{
 		this->keywords["define"]  = TOKEN_DEFINE;
 		this->keywords["defined"] = TOKEN_DEFINED;
@@ -293,7 +293,7 @@ public:
 
 	/**
 	 * Read the currenty processed string.
-	 * @return the string, can be NULL.
+	 * @return the string, can be nullptr.
 	 */
 	const char *GetString() const
 	{
@@ -308,7 +308,7 @@ public:
 	{
 		for (;;) {
 			free(this->string);
-			this->string = NULL;
+			this->string = nullptr;
 			this->token  = TOKEN_UNKNOWN;
 
 			switch (this->current_char) {
@@ -503,10 +503,13 @@ private:
  * @param dirname the directory to look in.
  * @param filename the file to look for.
  * @param local whether to look locally (in dirname) for the file.
- * @return the absolute path, or NULL if the file doesn't exist.
+ * @return the absolute path, or nullptr if the file doesn't exist.
  */
 const char *GeneratePath(const char *dirname, const char *filename, bool local)
 {
+	/* Ignore C++ standard library headers. */
+	if (strchr(filename, '.') == nullptr) return nullptr;
+
 	if (local) {
 		if (access(filename, R_OK) == 0) return strdup(filename);
 
@@ -517,7 +520,7 @@ const char *GeneratePath(const char *dirname, const char *filename, bool local)
 		while (*p == '.') {
 			if (*(++p) == '.') {
 				char *s = strrchr(path, '/');
-				if (s != NULL) *s = '\0';
+				if (s != nullptr) *s = '\0';
 				p += 2;
 			}
 		}
@@ -535,7 +538,7 @@ const char *GeneratePath(const char *dirname, const char *filename, bool local)
 		while (*p == '.') {
 			if (*(++p) == '.') {
 				char *s = strrchr(path, '/');
-				if (s != NULL) *s = '\0';
+				if (s != nullptr) *s = '\0';
 				p += 2;
 			}
 		}
@@ -545,7 +548,7 @@ const char *GeneratePath(const char *dirname, const char *filename, bool local)
 		if (access(path, R_OK) == 0) return strdup(path);
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 /**
@@ -681,8 +684,8 @@ bool ExpressionOr(Lexer *lexer, StringSet *defines, bool verbose)
 /** Enumerator to tell how long to ignore 'stuff'. */
 enum Ignore {
 	NOT_IGNORE,         ///< No ignoring.
-	IGNORE_UNTIL_ELSE,  ///< Ignore till a #else is reached.
-	IGNORE_UNTIL_ENDIF, ///< Ignore till a #endif is reached.
+	IGNORE_UNTIL_ELSE,  ///< Ignore till a \c \#else is reached.
+	IGNORE_UNTIL_ENDIF, ///< Ignore till a \c \#endif is reached.
 };
 
 /**
@@ -730,7 +733,7 @@ void ScanFile(const char *filename, const char *ext, bool header, bool verbose)
 									break;
 								}
 								const char *h = GeneratePath(file.GetDirname(), lexer.GetString(), lexer.GetToken() == TOKEN_LOCAL);
-								if (h != NULL) {
+								if (h != nullptr) {
 									StringMap::iterator it = _headers.find(h);
 									if (it == _headers.end()) {
 										it = (_headers.insert(StringMapItem(strdup(h), new StringSet()))).first;
@@ -745,7 +748,7 @@ void ScanFile(const char *filename, const char *ext, bool header, bool verbose)
 										char path[PATH_MAX];
 										strecpy(path, filename, lastof(path));
 										*(strrchr(path, '.')) = '\0';
-										strecat(path, ext != NULL ? ext : ".o", lastof(path));
+										strecat(path, ext != nullptr ? ext : ".o", lastof(path));
 										curfile = _files.find(path);
 										if (curfile == _files.end()) {
 											curfile = (_files.insert(StringMapItem(strdup(path), new StringSet()))).first;
@@ -909,9 +912,9 @@ void ScanFile(const char *filename, const char *ext, bool header, bool verbose)
 int main(int argc, char *argv[])
 {
 	bool ignorenext = true;
-	char *filename = NULL;
-	char *ext = NULL;
-	char *delimiter = NULL;
+	char *filename = nullptr;
+	char *ext = nullptr;
+	char *delimiter = nullptr;
 	bool append = false;
 	bool verbose = false;
 
@@ -936,25 +939,25 @@ int main(int argc, char *argv[])
 			/* Define */
 			if (strncmp(argv[i], "-D", 2) == 0) {
 				char *p = strchr(argv[i], '=');
-				if (p != NULL) *p = '\0';
+				if (p != nullptr) *p = '\0';
 				_defines.insert(strdup(&argv[i][2]));
 				continue;
 			}
 			/* Output file */
 			if (strncmp(argv[i], "-f", 2) == 0) {
-				if (filename != NULL) continue;
+				if (filename != nullptr) continue;
 				filename = strdup(&argv[i][2]);
 				continue;
 			}
 			/* Object file extension */
 			if (strncmp(argv[i], "-o", 2) == 0) {
-				if (ext != NULL) continue;
+				if (ext != nullptr) continue;
 				ext = strdup(&argv[i][2]);
 				continue;
 			}
 			/* Starting string delimiter */
 			if (strncmp(argv[i], "-s", 2) == 0) {
-				if (delimiter != NULL) continue;
+				if (delimiter != nullptr) continue;
 				delimiter = strdup(&argv[i][2]);
 				continue;
 			}
@@ -966,22 +969,22 @@ int main(int argc, char *argv[])
 	}
 
 	/* Default output file is Makefile */
-	if (filename == NULL) filename = strdup("Makefile");
+	if (filename == nullptr) filename = strdup("Makefile");
 
 	/* Default delimiter string */
-	if (delimiter == NULL) delimiter = strdup("# DO NOT DELETE");
+	if (delimiter == nullptr) delimiter = strdup("# DO NOT DELETE");
 
 	char backup[PATH_MAX];
 	strecpy(backup, filename, lastof(backup));
 	strecat(backup, ".bak", lastof(backup));
 
-	char *content = NULL;
+	char *content = nullptr;
 	long size = 0;
 
 	/* Read in the current file; so we can overwrite everything from the
 	 * end of non-depend data marker down till the end. */
 	FILE *src = fopen(filename, "rb");
-	if (src != NULL) {
+	if (src != nullptr) {
 		fseek(src, 0, SEEK_END);
 		if ((size = ftell(src)) < 0) {
 			fprintf(stderr, "Could not read %s\n", filename);
@@ -1008,8 +1011,8 @@ int main(int argc, char *argv[])
 		fclose(src);
 
 		/* Then append it to the real file. */
-		src = fopen(backup, "rb");
-		while (fgets(content, size, src) != NULL) {
+		src = fopen(backup, "r");
+		while (fgets(content, size, src) != nullptr) {
 			fputs(content, dst);
 			if (!strncmp(content, delimiter, strlen(delimiter))) found_delimiter = true;
 			if (!append && found_delimiter) break;

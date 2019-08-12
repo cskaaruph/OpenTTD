@@ -124,7 +124,7 @@ CommandCost CmdCreateStoryPage(TileIndex tile, DoCommandFlag flags, uint32 p1, u
 		s->date = _date;
 		s->company = company;
 		if (StrEmpty(text)) {
-			s->title = NULL;
+			s->title = nullptr;
 		} else {
 			s->title = stredup(text);
 		}
@@ -154,7 +154,7 @@ CommandCost CmdCreateStoryPageElement(TileIndex tile, DoCommandFlag flags, uint3
 {
 	if (!StoryPageElement::CanAllocateItem()) return CMD_ERROR;
 
-	StoryPageID page_id = (CompanyID)GB(p1, 0, 16);
+	StoryPageID page_id = (StoryPageID)GB(p1, 0, 16);
 	StoryPageElementType type = Extract<StoryPageElementType, 16, 8>(p1);
 
 	/* Allow at most 128 elements per page. */
@@ -241,7 +241,7 @@ CommandCost CmdSetStoryPageTitle(TileIndex tile, DoCommandFlag flags, uint32 p1,
 		StoryPage *p = StoryPage::Get(page_id);
 		free(p->title);
 		if (StrEmpty(text)) {
-			p->title = NULL;
+			p->title = nullptr;
 		} else {
 			p->title = stredup(text);
 		}

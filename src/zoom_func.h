@@ -23,7 +23,6 @@
  */
 static inline int ScaleByZoom(int value, ZoomLevel zoom)
 {
-	assert(zoom >= 0);
 	return value << zoom;
 }
 
@@ -36,7 +35,6 @@ static inline int ScaleByZoom(int value, ZoomLevel zoom)
  */
 static inline int UnScaleByZoom(int value, ZoomLevel zoom)
 {
-	assert(zoom >= 0);
 	return (value + (1 << zoom) - 1) >> zoom;
 }
 
@@ -48,7 +46,6 @@ static inline int UnScaleByZoom(int value, ZoomLevel zoom)
  */
 static inline int ScaleByZoomLower(int value, ZoomLevel zoom)
 {
-	assert(zoom >= 0);
 	return value << zoom;
 }
 
@@ -60,7 +57,6 @@ static inline int ScaleByZoomLower(int value, ZoomLevel zoom)
  */
 static inline int UnScaleByZoomLower(int value, ZoomLevel zoom)
 {
-	assert(zoom >= 0);
 	return value >> zoom;
 }
 
@@ -82,6 +78,26 @@ static inline int UnScaleGUI(int value)
 static inline int ScaleGUITrad(int value)
 {
 	return UnScaleGUI(value * ZOOM_LVL_BASE);
+}
+
+/**
+ * Short-hand to apply font zoom level.
+ * @param value Pixel amount at #ZOOM_LVL_BEGIN (full zoom in).
+ * @return Pixel amount at #ZOOM_LVL_FONT (current interface size).
+ */
+static inline int UnScaleFont(int value)
+{
+	return UnScaleByZoom(value, ZOOM_LVL_FONT);
+}
+
+/**
+ * Scale traditional pixel dimensions to Font zoom level.
+ * @param value Pixel amount at #ZOOM_LVL_BASE (traditional "normal" interface size).
+ * @return Pixel amount at #ZOOM_LVL_FONT (current interface size).
+ */
+static inline int ScaleFontTrad(int value)
+{
+	return UnScaleFont(value * ZOOM_LVL_BASE);
 }
 
 #endif /* ZOOM_FUNC_H */

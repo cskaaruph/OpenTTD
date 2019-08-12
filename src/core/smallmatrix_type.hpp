@@ -46,13 +46,13 @@ protected:
 
 public:
 
-	SmallMatrix() : data(NULL), width(0), height(0), capacity(0) {}
+	SmallMatrix() : data(nullptr), width(0), height(0), capacity(0) {}
 
 	/**
 	 * Copy constructor.
 	 * @param other The other matrix to copy.
 	 */
-	SmallMatrix(const SmallMatrix &other) : data(NULL), width(0), height(0), capacity(0)
+	SmallMatrix(const SmallMatrix &other) : data(nullptr), width(0), height(0), capacity(0)
 	{
 		this->Assign(other);
 	}
@@ -112,7 +112,7 @@ public:
 		this->width = 0;
 		this->capacity = 0;
 		free(this->data);
-		this->data = NULL;
+		this->data = nullptr;
 	}
 
 	/**
@@ -159,7 +159,7 @@ public:
 
 	/**
 	 * Erase a row, replacing it with the last one.
-	 * @param x Position of the row.
+	 * @param y Position of the row.
 	 */
 	void EraseRow(uint y)
 	{
@@ -174,7 +174,7 @@ public:
 
 	/**
 	 * Remove columns from the matrix while preserving the order of other columns.
-	 * @param x First column to remove.
+	 * @param y First column to remove.
 	 * @param count Number of consecutive columns to remove.
 	 */
 	void EraseRowPreservingOrder(uint y, uint count = 1)
@@ -210,14 +210,14 @@ public:
 	/**
 	 * Set the size to a specific width and height, preserving item positions
 	 * as far as possible in the process.
-	 * @param width Target width.
-	 * @param height Target height.
+	 * @param new_width Target width.
+	 * @param new_height Target height.
 	 */
 	inline void Resize(uint new_width, uint new_height)
 	{
 		uint new_capacity = new_width * new_height;
-		T *new_data = NULL;
-		void (*copy)(T *dest, const T *src, size_t count) = NULL;
+		T *new_data = nullptr;
+		void (*copy)(T *dest, const T *src, size_t count) = nullptr;
 		if (new_capacity > this->capacity) {
 			/* If the data doesn't fit into current capacity, resize and copy ... */
 			new_data = MallocT<T>(new_capacity);
@@ -297,7 +297,7 @@ public:
 	/**
 	 * Get column "number" (const)
 	 *
-	 * @param X Position of the column.
+	 * @param x Position of the column.
 	 * @return Column at "number".
 	 */
 	inline const T *operator[](uint x) const
@@ -309,7 +309,7 @@ public:
 	/**
 	 * Get column "number" (const)
 	 *
-	 * @param X Position of the column.
+	 * @param x Position of the column.
 	 * @return Column at "number".
 	 */
 	inline T *operator[](uint x)

@@ -56,7 +56,7 @@ static const SpriteID SPR_LARGE_SMALL_WINDOW = 682;
 
 /** Extra graphic spritenumbers */
 static const SpriteID SPR_OPENTTD_BASE   = 4896;
-static const uint16 OPENTTD_SPRITE_COUNT = 175;
+static const uint16 OPENTTD_SPRITE_COUNT = 184;
 
 /* Halftile-selection sprites */
 static const SpriteID SPR_HALFTILE_SELECTION_FLAT = SPR_OPENTTD_BASE;
@@ -148,6 +148,11 @@ static const SpriteID SPR_GROUP_REPLACE_OFF_TRAIN    = SPR_OPENTTD_BASE + 130;
 static const SpriteID SPR_GROUP_REPLACE_OFF_ROADVEH  = SPR_OPENTTD_BASE + 131;
 static const SpriteID SPR_GROUP_REPLACE_OFF_SHIP     = SPR_OPENTTD_BASE + 132;
 static const SpriteID SPR_GROUP_REPLACE_OFF_AIRCRAFT = SPR_OPENTTD_BASE + 133;
+
+static const SpriteID SPR_GROUP_LIVERY_TRAIN         = SPR_OPENTTD_BASE + 175;
+static const SpriteID SPR_GROUP_LIVERY_ROADVEH       = SPR_OPENTTD_BASE + 176;
+static const SpriteID SPR_GROUP_LIVERY_SHIP          = SPR_OPENTTD_BASE + 177;
+static const SpriteID SPR_GROUP_LIVERY_AIRCRAFT      = SPR_OPENTTD_BASE + 178;
 
 static const SpriteID SPR_TOWN_RATING_NA             = SPR_OPENTTD_BASE + 162;
 static const SpriteID SPR_TOWN_RATING_APALLING       = SPR_OPENTTD_BASE + 163;
@@ -268,13 +273,15 @@ static const SpriteID SPR_TRAMWAY_BUS_STOP_DT_X_W      = SPR_TRAMWAY_BASE + 24;
 static const SpriteID SPR_TRAMWAY_BUS_STOP_DT_X_E      = SPR_TRAMWAY_BASE + 26;
 static const SpriteID SPR_TRAMWAY_PAVED_STRAIGHT_Y     = SPR_TRAMWAY_BASE + 46;
 static const SpriteID SPR_TRAMWAY_PAVED_STRAIGHT_X     = SPR_TRAMWAY_BASE + 47;
+static const SpriteID SPR_TRAMWAY_DEPOT_WITH_TRACK     = SPR_TRAMWAY_BASE + 49;
 static const SpriteID SPR_TRAMWAY_BACK_WIRES_STRAIGHT  = SPR_TRAMWAY_BASE + 55;
 static const SpriteID SPR_TRAMWAY_FRONT_WIRES_STRAIGHT = SPR_TRAMWAY_BASE + 56;
 static const SpriteID SPR_TRAMWAY_BACK_WIRES_SLOPED    = SPR_TRAMWAY_BASE + 72;
 static const SpriteID SPR_TRAMWAY_FRONT_WIRES_SLOPED   = SPR_TRAMWAY_BASE + 68;
 static const SpriteID SPR_TRAMWAY_TUNNEL_WIRES         = SPR_TRAMWAY_BASE + 80;
 static const SpriteID SPR_TRAMWAY_BRIDGE               = SPR_TRAMWAY_BASE + 107;
-static const uint16 TRAMWAY_SPRITE_COUNT = 113;
+static const SpriteID SPR_TRAMWAY_DEPOT_NO_TRACK       = SPR_TRAMWAY_BASE + 113;
+static const uint16 TRAMWAY_SPRITE_COUNT = 119;
 
 /** One way road sprites */
 static const SpriteID SPR_ONEWAY_BASE = SPR_TRAMWAY_BASE + TRAMWAY_SPRITE_COUNT;
@@ -397,8 +404,11 @@ static const SpriteID SPR_MONO_SINGLE_SOUTH             = 1090;
 static const SpriteID SPR_MONO_SINGLE_EAST              = 1091;
 static const SpriteID SPR_MONO_SINGLE_WEST              = 1092;
 static const SpriteID SPR_MONO_TRACK_Y                  = 1093;
+static const SpriteID SPR_MONO_TRACK_X                  = 1094;
 static const SpriteID SPR_MONO_TRACK_BASE               = 1100;
 static const SpriteID SPR_MONO_TRACK_N_S                = 1117;
+static const SpriteID SPR_MONO_TRACK_Y_SNOW             = 1119;
+static const SpriteID SPR_MONO_TRACK_X_SNOW             = 1120;
 static const SpriteID SPR_MGLV_SINGLE_X                 = 1169;
 static const SpriteID SPR_MGLV_SINGLE_Y                 = 1170;
 static const SpriteID SPR_MGLV_SINGLE_NORTH             = 1171;
@@ -406,7 +416,10 @@ static const SpriteID SPR_MGLV_SINGLE_SOUTH             = 1172;
 static const SpriteID SPR_MGLV_SINGLE_EAST              = 1173;
 static const SpriteID SPR_MGLV_SINGLE_WEST              = 1174;
 static const SpriteID SPR_MGLV_TRACK_Y                  = 1175;
+static const SpriteID SPR_MGLV_TRACK_X                  = 1176;
 static const SpriteID SPR_MGLV_TRACK_BASE               = 1182;
+static const SpriteID SPR_MGLV_TRACK_Y_SNOW             = 1184;
+static const SpriteID SPR_MGLV_TRACK_X_SNOW             = 1185;
 static const SpriteID SPR_MGLV_TRACK_N_S                = 1199;
 static const SpriteID SPR_WAYPOINT_X_1            = SPR_OPENTTD_BASE + 78;
 static const SpriteID SPR_WAYPOINT_X_2            = SPR_OPENTTD_BASE + 79;
@@ -552,6 +565,7 @@ static const SpriteID SPR_ROAD_SLOPE_START        = 1343;
 static const SpriteID SPR_ROAD_Y_SNOW             = 1351;
 static const SpriteID SPR_ROAD_X_SNOW             = 1352;
 /* see _road_sloped_sprites_offset in road_cmd.cpp for offsets for sloped road tiles */
+static const SpriteID SPR_ROAD_DEPOT              = 1408;
 
 static const SpriteID SPR_EXCAVATION_X = 1414;
 static const SpriteID SPR_EXCAVATION_Y = 1415;
@@ -1088,6 +1102,7 @@ static const SpriteID SPR_IMG_ZOOMIN          = 735;
 static const SpriteID SPR_IMG_ZOOMOUT         = 736;
 static const SpriteID SPR_IMG_BUILDRAIL       = 727;
 static const SpriteID SPR_IMG_BUILDROAD       = 728;
+static const SpriteID SPR_IMG_BUILDTRAMS      = SPR_OPENTTD_BASE + 179;
 static const SpriteID SPR_IMG_BUILDWATER      = 729;
 static const SpriteID SPR_IMG_BUILDAIR        = 730;
 static const SpriteID SPR_IMG_LANDSCAPING     = 4083;
@@ -1331,6 +1346,11 @@ static const SpriteID SPR_IMG_VIEW_LOCATION  = SPR_OPENTTD_BASE + 170;
 static const SpriteID SPR_IMG_GOAL           = SPR_OPENTTD_BASE + 171;
 static const SpriteID SPR_IMG_GOAL_COMPLETED = SPR_OPENTTD_BASE + 172;
 static const SpriteID SPR_IMG_GOAL_BROKEN_REF= SPR_OPENTTD_BASE + 173;
+
+static const SpriteID SPR_IMG_CONVERT_ROAD           = SPR_OPENTTD_BASE + 180;
+static const CursorID SPR_CURSOR_CONVERT_ROAD        = SPR_OPENTTD_BASE + 181;
+static const SpriteID SPR_IMG_CONVERT_TRAM           = SPR_OPENTTD_BASE + 182;
+static const CursorID SPR_CURSOR_CONVERT_TRAM        = SPR_OPENTTD_BASE + 183;
 
 /* intro_gui.cpp, genworld_gui.cpp */
 static const SpriteID SPR_SELECT_TEMPERATE           = 4882;

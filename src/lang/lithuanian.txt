@@ -1189,6 +1189,8 @@ STR_GAME_OPTIONS_GUI_ZOOM_DROPDOWN_NORMAL                       :Normalus
 STR_GAME_OPTIONS_GUI_ZOOM_DROPDOWN_2X_ZOOM                      :Dvigubas
 STR_GAME_OPTIONS_GUI_ZOOM_DROPDOWN_4X_ZOOM                      :Trigubas
 
+
+
 STR_GAME_OPTIONS_BASE_GRF                                       :{BLACK}Bazinis grafikos rinkinys
 STR_GAME_OPTIONS_BASE_GRF_TOOLTIP                               :{BLACK}Pasirinkti naudojimui bazinę grafikos rinkinį
 STR_GAME_OPTIONS_BASE_GRF_STATUS                                :{RED}{NUM} trūkstam{P a ų os}/sugadint{P a ų os} byl{P a ų os}
@@ -1455,6 +1457,7 @@ STR_CONFIG_SETTING_STOP_ON_COMPETITOR_ROAD_HELPTEXT             :Leidžia statyt
 STR_CONFIG_SETTING_DYNAMIC_ENGINES_EXISTING_VEHICLES            :{WHITE}Neįmanoma pakeisti nuostatos kai yra tr. priemonių.
 STR_CONFIG_SETTING_INFRASTRUCTURE_MAINTENANCE                   :Infrastruktūros priežiūra reikalauja išlaidų: {STRING}
 STR_CONFIG_SETTING_INFRASTRUCTURE_MAINTENANCE_HELPTEXT          :Infrastruktūros (kelių, geležinkelių, stotelių, angarą ir kitų objektų) priežiūra kainuoja. Kaštai auga proporcingai kompanijos dydžiui, taigi didesnėms kompanijoms infrastruktūros priežiūra kainuos daugiau, nei mažesnėms
+
 
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS                        :Oro uostai niekada nepasensta: {STRING}
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS_HELPTEXT               :Kartą atsiradę, oro uostų tipai niekada nebepasens ir galimybė juos statyti niekuomet nebus pašalinta
@@ -1900,7 +1903,6 @@ STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST                        :{ORANGE}Krovini
 STR_CONFIG_SETTING_AI                                           :{ORANGE}Konkurentai
 STR_CONFIG_SETTING_AI_NPC                                       :{ORANGE}Kompiuterio žaidėjai
 
-STR_CONFIG_SETTING_PATHFINDER_OPF                               :Originalus
 STR_CONFIG_SETTING_PATHFINDER_NPF                               :NPF
 STR_CONFIG_SETTING_PATHFINDER_YAPF_RECOMMENDED                  :YAPF {BLUE}(Rekomenduojama)
 
@@ -1983,13 +1985,9 @@ STR_QUIT_NO                                                     :{BLACK}Ne
 
 # Supported OSes
 STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_DOS                                                  :DOS
 STR_OSNAME_UNIX                                                 :Unix
 STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_BEOS                                                 :BeOS
 STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_MORPHOS                                              :MorphOS
-STR_OSNAME_AMIGAOS                                              :AmigaOS
 STR_OSNAME_OS2                                                  :OS/2
 STR_OSNAME_SUNOS                                                :SunOS
 
@@ -2018,7 +2016,6 @@ STR_CHEAT_CHANGE_DATE_QUERY_CAPT                                :{WHITE}Pakeisti
 STR_CHEAT_SETUP_PROD                                            :{LTBLUE}Leisti keisti produkcijos vertes: {ORANGE}{STRING}
 
 # Livery window
-STR_LIVERY_CAPTION                                              :{WHITE}Naujos spalvos
 
 STR_LIVERY_GENERAL_TOOLTIP                                      :{BLACK}Rodyti pagrinidines spalvų parinktis
 STR_LIVERY_TRAIN_TOOLTIP                                        :{BLACK}Rodyti traukiniš spalvas
@@ -2280,9 +2277,9 @@ STR_NETWORK_NEED_GAME_PASSWORD_CAPTION                          :{WHITE}Serveris
 STR_NETWORK_NEED_COMPANY_PASSWORD_CAPTION                       :{WHITE}Kompanija apsaugota. Įvesk slaptažodį
 
 # Network company list added strings
-STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :{WHITE}Žaidėjų sąrašas
-STR_NETWORK_COMPANY_LIST_SPECTATE                               :{WHITE}Stebėti
-STR_NETWORK_COMPANY_LIST_NEW_COMPANY                            :{WHITE}Nauja įmonė
+STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :Žaidėjų sąrašas
+STR_NETWORK_COMPANY_LIST_SPECTATE                               :Stebėti
+STR_NETWORK_COMPANY_LIST_NEW_COMPANY                            :Nauja įmonė
 
 # Network client list
 STR_NETWORK_CLIENTLIST_KICK                                     :Išmesti (Kick)
@@ -2297,7 +2294,6 @@ STR_NETWORK_CLIENT                                              :Žaidėjas
 STR_NETWORK_SPECTATORS                                          :Stebėtojai
 
 STR_NETWORK_GIVE_MONEY_CAPTION                                  :{WHITE}Įveskite kiekį pinigų, kurį norite gauti
-STR_NETWORK_TOOLBAR_LIST_SPECTATOR                              :{BLACK}Stebėtojas
 
 # Network set password
 STR_COMPANY_PASSWORD_CANCEL                                     :{BLACK}Neišsaugotas įvestas slaptažodis
@@ -2619,6 +2615,7 @@ STR_ROAD_TOOLBAR_TOOLTIP_BUILD_TRAMWAY_TUNNEL                   :{BLACK}Statyti 
 STR_ROAD_TOOLBAR_TOOLTIP_TOGGLE_BUILD_REMOVE_FOR_ROAD           :{BLACK}Aktyvinti automobilių kelių ir stotelių šalinimo veikseną
 STR_ROAD_TOOLBAR_TOOLTIP_TOGGLE_BUILD_REMOVE_FOR_TRAMWAYS       :{BLACK}Aktyvinti tramvajaus bėgių ir stotelių šalinimo veikseną
 
+
 # Road depot construction window
 STR_BUILD_DEPOT_ROAD_ORIENTATION_CAPTION                        :{WHITE}Pasirinkite garažo kryptį
 STR_BUILD_DEPOT_ROAD_ORIENTATION_SELECT_TOOLTIP                 :{BLACK}Pasirinkite automobilių garažo kryptį
@@ -2899,7 +2896,7 @@ STR_LAI_OBJECT_DESCRIPTION_COMPANY_OWNED_LAND                   :Kompanijos žem
 STR_ABOUT_OPENTTD                                               :{WHITE}Apie OpenTTD
 STR_ABOUT_ORIGINAL_COPYRIGHT                                    :{BLACK}Pradinės versijos teisės priklauso {COPYRIGHT} 1995 Chris Sawyer, Visos teisės saugomos
 STR_ABOUT_VERSION                                               :{BLACK}OpenTTD versija {REV}
-STR_ABOUT_COPYRIGHT_OPENTTD                                     :{BLACK}OpenTTD {COPYRIGHT}2002-2018 OpenTTD komanda
+STR_ABOUT_COPYRIGHT_OPENTTD                                     :{BLACK}OpenTTD {COPYRIGHT}2002-2019 OpenTTD komanda
 
 # Framerate display window
 ############ Leave those lines in this order!!
@@ -3478,8 +3475,6 @@ STR_COMPANY_INFRASTRUCTURE_VIEW_CAPTION                         :{WHITE}{COMPANY
 STR_COMPANY_INFRASTRUCTURE_VIEW_RAIL_SECT                       :{GOLD}Bėgių dalys:
 STR_COMPANY_INFRASTRUCTURE_VIEW_SIGNALS                         :{WHITE}Signalai
 STR_COMPANY_INFRASTRUCTURE_VIEW_ROAD_SECT                       :{GOLD}Kelio dalys:
-STR_COMPANY_INFRASTRUCTURE_VIEW_ROAD                            :{WHITE}Kelias
-STR_COMPANY_INFRASTRUCTURE_VIEW_TRAMWAY                         :{WHITE}Tramvajus
 STR_COMPANY_INFRASTRUCTURE_VIEW_WATER_SECT                      :{GOLD}Vandens langeliai:
 STR_COMPANY_INFRASTRUCTURE_VIEW_CANALS                          :{WHITE}Kanalai
 STR_COMPANY_INFRASTRUCTURE_VIEW_STATION_SECT                    :{GOLD}Stotys:
@@ -3503,17 +3498,7 @@ STR_INDUSTRY_VIEW_LOCATION_TOOLTIP                              :{BLACK}Centruot
 STR_INDUSTRY_VIEW_PRODUCTION_LEVEL                              :{BLACK}Gamybos sparta: {YELLOW}{COMMA}%
 STR_INDUSTRY_VIEW_INDUSTRY_ANNOUNCED_CLOSURE                    :{YELLOW}Pramonės įmonė paskelbė apie jos neišvengiamą uždarymą!
 
-############ range for requires starts
-STR_INDUSTRY_VIEW_REQUIRES_CARGO                                :{BLACK}Reikalauja: {YELLOW}{STRING.ko}{STRING}
-STR_INDUSTRY_VIEW_REQUIRES_CARGO_CARGO                          :{BLACK}Reikalauja: {YELLOW}{STRING.ko}{STRING}, {STRING.ko}{STRING}
-STR_INDUSTRY_VIEW_REQUIRES_CARGO_CARGO_CARGO                    :{BLACK}Reikalauja: {YELLOW}{STRING.ko}{STRING}, {STRING.ko}{STRING}, {STRING.ko}{STRING}
-############ range for requires ends
 
-
-############ range for produces starts
-STR_INDUSTRY_VIEW_PRODUCES_CARGO                                :{BLACK}Gamina: {YELLOW}{STRING}{STRING}
-STR_INDUSTRY_VIEW_PRODUCES_CARGO_CARGO                          :{BLACK}Gamina: {YELLOW}{STRING}{STRING}, {STRING}{STRING}
-############ range for produces ends
 
 STR_CONFIG_GAME_PRODUCTION                                      :{WHITE}Keisti gamybos apimtį (8 daugiklis, iki 2040)
 STR_CONFIG_GAME_PRODUCTION_LEVEL                                :{WHITE}Pakeisti gamybos spartą (procentais, iki 800%)
@@ -3563,6 +3548,7 @@ STR_GROUP_DEFAULT_ROAD_VEHICLES                                 :Nesugrupuoti au
 STR_GROUP_DEFAULT_SHIPS                                         :Nesugrupuoti laivai
 STR_GROUP_DEFAULT_AIRCRAFTS                                     :Nesugrupuoti lėktuvai
 
+
 STR_GROUPS_CLICK_ON_GROUP_FOR_TOOLTIP                           :{BLACK}Grupės - Spragtelk ant grupės jai priklausančių transporto priemonių peržiūrai
 STR_GROUP_CREATE_TOOLTIP                                        :{BLACK}Spragtelk, kad sukurti grupę
 STR_GROUP_DELETE_TOOLTIP                                        :{BLACK}Pašalinti pasirinktą grupę
@@ -3584,10 +3570,13 @@ STR_BUY_VEHICLE_TRAIN_ELRAIL_CAPTION                            :Nauji elektrini
 STR_BUY_VEHICLE_TRAIN_MONORAIL_CAPTION                          :Nauji vienbėgiai lokomotyvai
 STR_BUY_VEHICLE_TRAIN_MAGLEV_CAPTION                            :Nauji „Maglev“ lokomotyvai
 
-STR_BUY_VEHICLE_TRAIN_ALL_CAPTION                               :Nauji lokomotyvai
 STR_BUY_VEHICLE_ROAD_VEHICLE_CAPTION                            :Nauji automobiliai
+
+############ range for vehicle availability starts
+STR_BUY_VEHICLE_TRAIN_ALL_CAPTION                               :Nauji lokomotyvai
 STR_BUY_VEHICLE_SHIP_CAPTION                                    :Nauji laivai
 STR_BUY_VEHICLE_AIRCRAFT_CAPTION                                :Nauji lėktuvai
+############ range for vehicle availability ends
 
 STR_PURCHASE_INFO_COST_WEIGHT                                   :{BLACK}Kaina: {GOLD}{CURRENCY_LONG}{BLACK} Svoris: {GOLD}{WEIGHT_SHORT}
 STR_PURCHASE_INFO_SPEED_POWER                                   :{BLACK}Greitis: {GOLD}{VELOCITY}{BLACK} Galia: {GOLD}{POWER}
@@ -3620,10 +3609,12 @@ STR_BUY_VEHICLE_ROAD_VEHICLE_BUY_VEHICLE_BUTTON                 :{BLACK}Pirkti
 STR_BUY_VEHICLE_SHIP_BUY_VEHICLE_BUTTON                         :{BLACK}Pirkti
 STR_BUY_VEHICLE_AIRCRAFT_BUY_VEHICLE_BUTTON                     :{BLACK}Pirkti
 
+
 STR_BUY_VEHICLE_TRAIN_BUY_VEHICLE_TOOLTIP                       :{BLACK}Pirkti pažymėtą lokomotyvą ir/ar vagonus. Spragtelėjus laikant nuspaustą Shift klavišą, bus parodyta pirkinio kaina nieko realiai nenuperkant
 STR_BUY_VEHICLE_ROAD_VEHICLE_BUY_VEHICLE_TOOLTIP                :{BLACK}Pirkti pažymėtą automobilį. Spragtelėjus laikant nuspaustą Shift klavišą, bus parodyta pirkinio kaina nieko realiai nenuperkant
 STR_BUY_VEHICLE_SHIP_BUY_VEHICLE_TOOLTIP                        :{BLACK}Pirkti pažymėtą laivą. Spragtelėjus laikant nuspaustą Shift klavišą, bus parodyta pirkinio kaina nieko realiai nenuperkant
 STR_BUY_VEHICLE_AIRCRAFT_BUY_VEHICLE_TOOLTIP                    :{BLACK}Pirkti pažymėtą lėktuvą. Spragtelėjus laikant nuspaustą Shift klavišą, bus parodyta pirkinio kaina nieko realiai nenuperkant
+
 
 STR_BUY_VEHICLE_TRAIN_RENAME_BUTTON                             :{BLACK}Pervardinti
 STR_BUY_VEHICLE_ROAD_VEHICLE_RENAME_BUTTON                      :{BLACK}Pervardinti
@@ -3733,6 +3724,7 @@ STR_DEPOT_SELL_CONFIRMATION_TEXT                                :{YELLOW}Ar tikr
 # Engine preview window
 STR_ENGINE_PREVIEW_CAPTION                                      :{WHITE}Žinutė nuo transporto priemonių gamintojo
 STR_ENGINE_PREVIEW_MESSAGE                                      :{GOLD}Mes ką tik sukūrėme naują {STRING.ka}! Ar norėtumėte vienerius metus išskirtinėmis teisėmis bandyti šią transporto priemonę, kol dar nepradėta jos serijinė gamyba?
+
 STR_ENGINE_PREVIEW_RAILROAD_LOCOMOTIVE                          :lokomotyvas
 STR_ENGINE_PREVIEW_RAILROAD_LOCOMOTIVE.kas                      :lokomotyvas
 STR_ENGINE_PREVIEW_RAILROAD_LOCOMOTIVE.ko                       :lokomotyvo
@@ -3740,27 +3732,6 @@ STR_ENGINE_PREVIEW_RAILROAD_LOCOMOTIVE.kam                      :lokomotyvui
 STR_ENGINE_PREVIEW_RAILROAD_LOCOMOTIVE.ka                       :lokomotyvą
 STR_ENGINE_PREVIEW_RAILROAD_LOCOMOTIVE.kuo                      :lokomotyvu
 STR_ENGINE_PREVIEW_RAILROAD_LOCOMOTIVE.kur                      :lokomotyve
-STR_ENGINE_PREVIEW_ROAD_VEHICLE                                 :automobilis
-STR_ENGINE_PREVIEW_ROAD_VEHICLE.kas                             :automobilis
-STR_ENGINE_PREVIEW_ROAD_VEHICLE.ko                              :automobilio
-STR_ENGINE_PREVIEW_ROAD_VEHICLE.kam                             :automobiliui
-STR_ENGINE_PREVIEW_ROAD_VEHICLE.ka                              :automobilį
-STR_ENGINE_PREVIEW_ROAD_VEHICLE.kuo                             :automobiliu
-STR_ENGINE_PREVIEW_ROAD_VEHICLE.kur                             :automobilyje
-STR_ENGINE_PREVIEW_AIRCRAFT                                     :lėktuvas
-STR_ENGINE_PREVIEW_AIRCRAFT.kas                                 :lėktuvas
-STR_ENGINE_PREVIEW_AIRCRAFT.ko                                  :lėktuvo
-STR_ENGINE_PREVIEW_AIRCRAFT.kam                                 :lėktuvui
-STR_ENGINE_PREVIEW_AIRCRAFT.ka                                  :lėktuvą
-STR_ENGINE_PREVIEW_AIRCRAFT.kuo                                 :lėktuvu
-STR_ENGINE_PREVIEW_AIRCRAFT.kur                                 :lėktuve
-STR_ENGINE_PREVIEW_SHIP                                         :laivas
-STR_ENGINE_PREVIEW_SHIP.kas                                     :laivas
-STR_ENGINE_PREVIEW_SHIP.ko                                      :laivo
-STR_ENGINE_PREVIEW_SHIP.kam                                     :laivui
-STR_ENGINE_PREVIEW_SHIP.ka                                      :laivą
-STR_ENGINE_PREVIEW_SHIP.kuo                                     :laivu
-STR_ENGINE_PREVIEW_SHIP.kur                                     :laive
 STR_ENGINE_PREVIEW_MONORAIL_LOCOMOTIVE                          :vienbėgis lokomotyvas
 STR_ENGINE_PREVIEW_MONORAIL_LOCOMOTIVE.kas                      :vienbėgis lokomotyvas
 STR_ENGINE_PREVIEW_MONORAIL_LOCOMOTIVE.ko                       :vienbėgio lokomotyvo
@@ -3775,6 +3746,29 @@ STR_ENGINE_PREVIEW_MAGLEV_LOCOMOTIVE.kam                        :„Maglev“ lo
 STR_ENGINE_PREVIEW_MAGLEV_LOCOMOTIVE.ka                         :„Maglev“ lokomotyvą
 STR_ENGINE_PREVIEW_MAGLEV_LOCOMOTIVE.kuo                        :„Maglev“ lokomotyvu
 STR_ENGINE_PREVIEW_MAGLEV_LOCOMOTIVE.kur                        :„Maglev“ lokomotyve
+
+STR_ENGINE_PREVIEW_ROAD_VEHICLE                                 :automobilis
+STR_ENGINE_PREVIEW_ROAD_VEHICLE.kas                             :automobilis
+STR_ENGINE_PREVIEW_ROAD_VEHICLE.ko                              :automobilio
+STR_ENGINE_PREVIEW_ROAD_VEHICLE.kam                             :automobiliui
+STR_ENGINE_PREVIEW_ROAD_VEHICLE.ka                              :automobilį
+STR_ENGINE_PREVIEW_ROAD_VEHICLE.kuo                             :automobiliu
+STR_ENGINE_PREVIEW_ROAD_VEHICLE.kur                             :automobilyje
+
+STR_ENGINE_PREVIEW_AIRCRAFT                                     :lėktuvas
+STR_ENGINE_PREVIEW_AIRCRAFT.kas                                 :lėktuvas
+STR_ENGINE_PREVIEW_AIRCRAFT.ko                                  :lėktuvo
+STR_ENGINE_PREVIEW_AIRCRAFT.kam                                 :lėktuvui
+STR_ENGINE_PREVIEW_AIRCRAFT.ka                                  :lėktuvą
+STR_ENGINE_PREVIEW_AIRCRAFT.kuo                                 :lėktuvu
+STR_ENGINE_PREVIEW_AIRCRAFT.kur                                 :lėktuve
+STR_ENGINE_PREVIEW_SHIP                                         :laivas
+STR_ENGINE_PREVIEW_SHIP.kas                                     :laivas
+STR_ENGINE_PREVIEW_SHIP.ko                                      :laivo
+STR_ENGINE_PREVIEW_SHIP.kam                                     :laivui
+STR_ENGINE_PREVIEW_SHIP.ka                                      :laivą
+STR_ENGINE_PREVIEW_SHIP.kuo                                     :laivu
+STR_ENGINE_PREVIEW_SHIP.kur                                     :laive
 
 STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER                      :{BLACK}Kaina: {CURRENCY_LONG} Svoris: {WEIGHT_SHORT}{}Greitis: {VELOCITY}  Galia: {POWER}{}Eksploatavimo išlaidos: {CURRENCY_LONG} per metus{}Talpa: {CARGO_LONG}
 STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER_MAX_TE               :{BLACK}Kaina: {CURRENCY_LONG} Svoris: {WEIGHT_SHORT}{}Greitis: {VELOCITY}  Galia: {POWER}  Maks. T.E.: {6:FORCE}{}Einamosios išlaidos: {4:CURRENCY_LONG}/yr{}Talpa: {5:CARGO_LONG}
@@ -3817,6 +3811,7 @@ STR_REPLACE_RAIL_VEHICLES                                       :Paprasti trauki
 STR_REPLACE_ELRAIL_VEHICLES                                     :Elektrifikuoti Traukiniai
 STR_REPLACE_MONORAIL_VEHICLES                                   :Vienbegiai traukiniai
 STR_REPLACE_MAGLEV_VEHICLES                                     :„Maglev“ traukiniai
+
 
 STR_REPLACE_REMOVE_WAGON                                        :{BLACK}Vagono pašalinimas: {ORANGE}{STRING}
 STR_REPLACE_REMOVE_WAGON_HELP                                   :{BLACK}Pakeitimo metu išlaikyti traukinio ilgį atjungiant vagonus (pradedant nuo priekio), jeigu pakeitus garvežį traukinys pailgėtų
@@ -4478,7 +4473,6 @@ STR_ERROR_TOO_MANY_STATIONS_LOADING                             :{WHITE}Per daug
 STR_ERROR_TOO_MANY_STATION_SPECS                                :{WHITE}Perdaug traukinių stoties dalių
 STR_ERROR_TOO_MANY_BUS_STOPS                                    :{WHITE}Per daug autobusų stotelių
 STR_ERROR_TOO_MANY_TRUCK_STOPS                                  :{WHITE}Per daug sunkvežimių pakrovimo aikstelių
-STR_ERROR_TOO_CLOSE_TO_ANOTHER_STATION                          :{WHITE}Per arti kitos stotelės
 STR_ERROR_TOO_CLOSE_TO_ANOTHER_DOCK                             :{WHITE}Per arti kitos prieplaukos
 STR_ERROR_TOO_CLOSE_TO_ANOTHER_AIRPORT                          :{WHITE}Per arti kito oro uosto
 STR_ERROR_CAN_T_RENAME_STATION                                  :{WHITE}Stotelės pervardinti negalima...
@@ -4555,7 +4549,7 @@ STR_ERROR_MUST_REMOVE_SIGNALS_FIRST                             :{WHITE}Pirma re
 STR_ERROR_NO_SUITABLE_RAILROAD_TRACK                            :{WHITE}Netinkamas bėgis
 STR_ERROR_MUST_REMOVE_RAILROAD_TRACK                            :{WHITE}Pirmiau pašalinkite geležinkelio bėgius
 STR_ERROR_CROSSING_ON_ONEWAY_ROAD                               :{WHITE}Kelias vienpusis ar užblokuotas
-STR_ERROR_CROSSING_DISALLOWED                                   :{WHITE}Sankryžos tame pačiame aukštyje neleidžiamos šiam bėgių tipui
+STR_ERROR_CROSSING_DISALLOWED_RAIL                              :{WHITE}Sankryžos tame pačiame aukštyje neleidžiamos šiam bėgių tipui
 STR_ERROR_CAN_T_BUILD_SIGNALS_HERE                              :{WHITE}Šviesoforo čia statyti negalima ...
 STR_ERROR_CAN_T_BUILD_RAILROAD_TRACK                            :{WHITE}Begių čia statyti negalima...
 STR_ERROR_CAN_T_REMOVE_RAILROAD_TRACK                           :{WHITE}Šių bėgių pašalinti negalima...

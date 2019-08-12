@@ -293,6 +293,19 @@ static const IndustryTileTable _tile_table_oil_rig_0[] = {
 	MK(-2, -4, 255),
 	MK(-3, -4, 255),
 	MK(2, 0, 255),
+	MK(2, -1, 255),
+	MK(1, -1, 255),
+	MK(0, -1, 255),
+	MK(-1, -1, 255),
+	MK(-1, 0, 255),
+	MK(-1, 1, 255),
+	MK(-1, 2, 255),
+	MK(-1, 3, 255),
+	MK(0, 3, 255),
+	MK(1, 3, 255),
+	MK(2, 3, 255),
+	MK(2, 2, 255),
+	MK(2, 1, 255),
 	MKEND
 };
 
@@ -1182,8 +1195,12 @@ enum IndustryTypes {
 
 #define MI(tbl, sndc, snd, d, pc, ai1, ai2, ai3, ai4, ag1, ag2, ag3, ag4, col, \
 			c1, c2, c3, proc, p1, r1, p2, r2, m, a1, im1, a2, im2, a3, im3, pr, clim, bev, in, intx, s1, s2, s3) \
-		{tbl, lengthof(tbl), d, 0, pc, {c1, c2, c3}, proc, {p1, p2}, {r1, r2}, m, \
-		{a1, a2, a3}, {{im1, 0}, {im2, 0}, {im3, 0}}, pr, clim, bev, col, in, intx, s1, s2, s3, STR_UNDEFINED, {ai1, ai2, ai3, ai4}, {ag1, ag2, ag3, ag4}, \
+		{tbl, lengthof(tbl), d, 0, pc, {c1, c2, c3}, proc, \
+		{p1, p2, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID}, \
+		{r1, r2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, m, \
+		{a1, a2, a3, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID}, \
+		{{im1, 0}, {im2, 0}, {im3, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}}, \
+		pr, clim, bev, col, in, intx, s1, s2, s3, STR_UNDEFINED, {ai1, ai2, ai3, ai4}, {ag1, ag2, ag3, ag4}, \
 		sndc, snd, 0, 0, true, GRFFileProps(INVALID_INDUSTRYTYPE)}
 	/* Format:
 	   tile table                              count and sounds table
@@ -1196,7 +1213,7 @@ enum IndustryTypes {
 	   industry name                           building text
 	   messages : Closure                      production up                      production down   */
 static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
-	MI(_tile_table_coal_mine,                  0, NULL,
+	MI(_tile_table_coal_mine,                  0, nullptr,
 	   210,  0xB3333333,                       2, 3, 0, 0,    8, 8, 0, 0,          1,
 	   IT_POWER_STATION,  IT_INVALID,          IT_INVALID,       CHECK_NOTHING,
 	   CT_COAL,       15, CT_INVALID,       0, 5,
@@ -1206,7 +1223,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_COAL_MINE,                     STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_COAL,   STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_power_station,              0, NULL,
+	MI(_tile_table_power_station,              0, nullptr,
 	   240,  0xFFFFFFFF,                       2, 2, 0, 0,    5, 5, 0, 0,        184,
 	   IT_COAL_MINE,      IT_INVALID,          IT_INVALID,       CHECK_NOTHING,
 	   CT_INVALID,     0, CT_INVALID,       0, 5,
@@ -1226,7 +1243,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_SAWMILL,                       STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_SUPPLY_PROBLEMS,      STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_forest,                     0, NULL,
+	MI(_tile_table_forest,                     0, nullptr,
 	   200,  0xBFFFFFFF,                       3, 4, 0, 0,    5, 5, 0, 0,         86,
 	   IT_SAWMILL,        IT_PAPER_MILL,       IT_INVALID,       CHECK_FOREST,
 	   CT_WOOD,       13, CT_INVALID,       0, 30,
@@ -1236,7 +1253,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_FOREST,                        STR_NEWS_INDUSTRY_PLANTED,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_FARM),
 
-	MI(_tile_table_oil_refinery,               0, NULL,
+	MI(_tile_table_oil_refinery,               0, nullptr,
 	   244,  0xFFFFFFFF,                       2, 2, 2, 0,    4, 4, 4, 0,        191,
 	   IT_OIL_RIG,        IT_INVALID,          IT_INVALID,       CHECK_REFINERY,
 	   CT_GOODS,       0, CT_INVALID,       0, 5,
@@ -1246,7 +1263,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_OIL_REFINERY,                  STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_SUPPLY_PROBLEMS,      STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_oil_rig,                    0, NULL,
+	MI(_tile_table_oil_rig,                    0, nullptr,
 	   240,  0x99999999,                       6, 0, 0, 0,    0, 0, 0, 0,        152,
 	   IT_OIL_REFINERY,   IT_INVALID,          IT_INVALID,       CHECK_OIL_RIG,
 	   CT_OIL,        15, CT_PASSENGERS,    2, 5,
@@ -1276,7 +1293,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_PRINTING_WORKS,                STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_SUPPLY_PROBLEMS,      STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_steel_mill,                 0, NULL,
+	MI(_tile_table_steel_mill,                 0, nullptr,
 	   215,  0xFFFFFFFF,                       2, 0, 0, 0,    5, 0, 0, 0,         10,
 	   IT_IRON_MINE,      IT_FACTORY,          IT_INVALID,       CHECK_NOTHING,
 	   CT_STEEL,       0, CT_INVALID,       0, 5,
@@ -1296,7 +1313,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_FARM,                          STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_FARM, STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_FARM),
 
-	MI(_tile_table_copper_mine,                0, NULL,
+	MI(_tile_table_copper_mine,                0, nullptr,
 	   205,  0xB3333333,                       0, 0, 3, 0,    0, 0, 4, 0,         10,
 	   IT_FACTORY_2,      IT_INVALID,          IT_INVALID,       CHECK_NOTHING,
 	   CT_COPPER_ORE, 10, CT_INVALID,       0, 5,
@@ -1306,7 +1323,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_COPPER_ORE_MINE,               STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_oil_well,                   0, NULL,
+	MI(_tile_table_oil_well,                   0, nullptr,
 	   220,  0x99999999,                       0, 5, 3, 0,    4, 5, 5, 0,        152,
 	   IT_OIL_REFINERY,   IT_INVALID,          IT_INVALID,       CHECK_NOTHING,
 	   CT_OIL,        12, CT_INVALID,       0, 5,
@@ -1316,7 +1333,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_OIL_WELLS,                     STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_OIL,   STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_bank,                       0, NULL,
+	MI(_tile_table_bank,                       0, nullptr,
 	   255,  0xA6666666,                       7, 0, 0, 0,    0, 0, 0, 0,         15,
 	   IT_BANK_TEMP,      IT_INVALID,          IT_INVALID,       CHECK_NOTHING,
 	   CT_VALUABLES,   6, CT_INVALID,       0, 5,
@@ -1326,7 +1343,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_BANK,                          STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_food_process,               0, NULL,
+	MI(_tile_table_food_process,               0, nullptr,
 	   206,  0xFFFFFFFF,                       0, 2, 2, 0,    0, 3, 4, 0,         55,
 	   IT_FRUIT_PLANTATION, IT_FARM,           IT_FARM_2,        CHECK_NOTHING,
 	   CT_FOOD,        0, CT_INVALID,       0, 5,
@@ -1346,7 +1363,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_PAPER_MILL,                    STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_SUPPLY_PROBLEMS,      STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_gold_mine,                  0, NULL,
+	MI(_tile_table_gold_mine,                  0, nullptr,
 	   208,  0x99999999,                       0, 3, 0, 0,    0, 4, 0, 0,        194,
 	   IT_BANK_TROPIC_ARCTIC, IT_INVALID,      IT_INVALID,       CHECK_NOTHING,
 	   CT_GOLD,        7, CT_INVALID,       0, 5,
@@ -1356,7 +1373,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_GOLD_MINE,                     STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_bank2,                      0, NULL,
+	MI(_tile_table_bank2,                      0, nullptr,
 	   151,  0xA6666666,                       0, 3, 3, 0,    0, 6, 5, 0,         15,
 	   IT_GOLD_MINE,      IT_DIAMOND_MINE,     IT_INVALID,       CHECK_NOTHING,
 	   CT_INVALID,     0, CT_INVALID,       0, 5,
@@ -1366,7 +1383,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_BANK_TROPIC_ARCTIC,                          STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_diamond_mine,               0, NULL,
+	MI(_tile_table_diamond_mine,               0, nullptr,
 	   213,  0x99999999,                       0, 0, 3, 0,    0, 0, 4, 0,        184,
 	   IT_BANK_TROPIC_ARCTIC, IT_INVALID,      IT_INVALID,       CHECK_NOTHING,
 	   CT_DIAMONDS,    7, CT_INVALID,       0, 5,
@@ -1376,7 +1393,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_DIAMOND_MINE,                  STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_iron_mine,                  0, NULL,
+	MI(_tile_table_iron_mine,                  0, nullptr,
 	   220,  0xB3333333,                       2, 0, 0, 0,    5, 0, 0, 0,         55,
 	   IT_STEEL_MILL,     IT_INVALID,          IT_INVALID,       CHECK_NOTHING,
 	   CT_IRON_ORE,   10, CT_INVALID,       0, 5,
@@ -1386,7 +1403,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_IRON_ORE_MINE,                 STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_fruit_plantation,           0, NULL,
+	MI(_tile_table_fruit_plantation,           0, nullptr,
 	   225,  0xBFFFFFFF,                       0, 0, 2, 0,    0, 0, 4, 0,         86,
 	   IT_FOOD_PROCESS,   IT_INVALID,          IT_INVALID,       CHECK_PLANTATION,
 	   CT_FRUIT,      10, CT_INVALID,       0, 15,
@@ -1396,7 +1413,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_FRUIT_PLANTATION,              STR_NEWS_INDUSTRY_PLANTED,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_FARM, STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_FARM),
 
-	MI(_tile_table_rubber_plantation,          0, NULL,
+	MI(_tile_table_rubber_plantation,          0, nullptr,
 	   218,  0xBFFFFFFF,                       0, 0, 3, 0,    0, 0, 4, 0,         39,
 	   IT_FACTORY_2,      IT_INVALID,          IT_INVALID,       CHECK_PLANTATION,
 	   CT_RUBBER,     10, CT_INVALID,       0, 15,
@@ -1406,7 +1423,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_RUBBER_PLANTATION,             STR_NEWS_INDUSTRY_PLANTED,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_FARM, STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_FARM),
 
-	MI(_tile_table_water_supply,               0, NULL,
+	MI(_tile_table_water_supply,               0, nullptr,
 	   199,  0xB3333333,                       0, 0, 3, 0,    0, 0, 4, 0,         37,
 	   IT_WATER_TOWER,    IT_INVALID,          IT_INVALID,       CHECK_WATER,
 	   CT_WATER,      12, CT_INVALID,       0, 5,
@@ -1416,7 +1433,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_WATER_SUPPLY,                  STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_water_tower,                0, NULL,
+	MI(_tile_table_water_tower,                0, nullptr,
 	   115,  0xFFFFFFFF,                       0, 0, 4, 0,    0, 0, 8, 0,        208,
 	   IT_WATER_SUPPLY,   IT_INVALID,          IT_INVALID,       CHECK_WATER,
 	   CT_INVALID,     0, CT_INVALID,       0, 5,
@@ -1436,7 +1453,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_FACTORY_2,                       STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_SUPPLY_PROBLEMS,      STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_farm2,                      0, NULL,
+	MI(_tile_table_farm2,                      0, nullptr,
 	   250,  0xD9999999,                       0, 0, 1, 0,    0, 0, 2, 0,         48,
 	   IT_FOOD_PROCESS,   IT_INVALID,          IT_INVALID,       CHECK_PLANTATION,
 	   CT_MAIZE,      11, CT_INVALID,       0, 5,
@@ -1446,7 +1463,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_FARM_2,                          STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_FARM, STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_FARM),
 
-	MI(_tile_table_lumber_mill,                0, NULL,
+	MI(_tile_table_lumber_mill,                0, nullptr,
 	   135,  0xFFFFFFFF,                       0, 0, 0, 0,    0, 0, 0, 0,        194,
 	   IT_FACTORY_2,      IT_INVALID,          IT_INVALID,       CHECK_LUMBERMILL,
 	   CT_WOOD,        0, CT_INVALID,       0, 5,
@@ -1456,7 +1473,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_LUMBER_MILL,                   STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_LACK_OF_TREES,   STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_cotton_candy,               0, NULL,
+	MI(_tile_table_cotton_candy,               0, nullptr,
 	   195,  0xBFFFFFFF,                       0, 0, 0, 3,    0, 0, 0, 5,         48,
 	   IT_CANDY_FACTORY,  IT_INVALID,          IT_INVALID,       CHECK_NOTHING,
 	   CT_COTTON_CANDY, 13, CT_INVALID,    0, 30,
@@ -1466,7 +1483,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_COTTON_CANDY_FOREST,           STR_NEWS_INDUSTRY_PLANTED,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_FARM, STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_candy_factory,              0, NULL,
+	MI(_tile_table_candy_factory,              0, nullptr,
 	   206,  0xFFFFFFFF,                       0, 0, 0, 3,    0, 0, 0, 5,        174,
 	   IT_COTTON_CANDY,   IT_TOFFEE_QUARRY,    IT_SUGAR_MINE,    CHECK_NOTHING,
 	   CT_CANDY,       0, CT_INVALID,       0, 5,
@@ -1476,7 +1493,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_CANDY_FACTORY,                 STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_SUPPLY_PROBLEMS,      STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_battery_farm,               0, NULL,
+	MI(_tile_table_battery_farm,               0, nullptr,
 	   187,  0xB3333333,                       0, 0, 0, 3,    0, 0, 0, 4,         39,
 	   IT_TOY_FACTORY,    IT_INVALID,          IT_INVALID,       CHECK_NOTHING,
 	   CT_BATTERIES,  11, CT_INVALID,       0, 30,
@@ -1486,7 +1503,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_BATTERY_FARM,                  STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_FARM, STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_FARM),
 
-	MI(_tile_table_cola_wells,                 0, NULL,
+	MI(_tile_table_cola_wells,                 0, nullptr,
 	   193,  0x99999999,                       0, 0, 0, 3,    0, 0, 0, 5,         55,
 	   IT_FIZZY_DRINK_FACTORY, IT_INVALID,     IT_INVALID,       CHECK_NOTHING,
 	   CT_COLA,       12, CT_INVALID,       0, 5,
@@ -1496,7 +1513,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_COLA_WELLS,                    STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_toy_shop,                   0, NULL,
+	MI(_tile_table_toy_shop,                   0, nullptr,
 	   133,  0xFFFFFFFF,                       0, 0, 0, 3,    0, 0, 0, 4,        208,
 	   IT_TOY_FACTORY,    IT_INVALID,          IT_INVALID,       CHECK_NOTHING,
 	   CT_INVALID,     0, CT_INVALID,       0, 5,
@@ -1506,7 +1523,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_TOY_SHOP,                      STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_SUPPLY_PROBLEMS,      STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_toy_factory,                0, NULL,
+	MI(_tile_table_toy_factory,                0, nullptr,
 	   163,  0xFFFFFFFF,                       0, 0, 0, 3,    0, 0, 0, 5,          10,
 	   IT_PLASTIC_FOUNTAINS, IT_BATTERY_FARM,  IT_TOY_SHOP,     CHECK_NOTHING,
 	   CT_TOYS,        0, CT_INVALID,       0, 5,
@@ -1526,7 +1543,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_PLASTIC_FOUNTAINS,             STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_fizzy_drink,                0, NULL,
+	MI(_tile_table_fizzy_drink,                0, nullptr,
 	   177,  0xFFFFFFFF,                       0, 0, 0, 3,    0, 0, 0, 4,        184,
 	   IT_COLA_WELLS,     IT_BUBBLE_GENERATOR, IT_INVALID,       CHECK_NOTHING,
 	   CT_FIZZY_DRINKS, 0, CT_INVALID,      0, 5,
@@ -1536,7 +1553,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_FIZZY_DRINK_FACTORY,           STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_SUPPLY_PROBLEMS,      STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_bubble_generator,           0, NULL,
+	MI(_tile_table_bubble_generator,           0, nullptr,
 	   203,  0xB3333333,                       0, 0, 0, 3,    0, 0, 0, 5,        152,
 	   IT_FIZZY_DRINK_FACTORY, IT_INVALID,     IT_INVALID,       CHECK_BUBBLEGEN,
 	   CT_BUBBLES,    13, CT_INVALID,       0, 5,
@@ -1546,7 +1563,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_BUBBLE_GENERATOR,              STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_toffee_quarry,              0, NULL,
+	MI(_tile_table_toffee_quarry,              0, nullptr,
 	   213,  0xCCCCCCCC,                       0, 0, 0, 3,    0, 0, 0, 5,        194,
 	   IT_CANDY_FACTORY,  IT_INVALID,          IT_INVALID,       CHECK_NOTHING,
 	   CT_TOFFEE,     10, CT_INVALID,       0, 5,
@@ -1556,7 +1573,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
 	   STR_INDUSTRY_NAME_TOFFEE_QUARRY,                 STR_NEWS_INDUSTRY_CONSTRUCTION,
 	   STR_NEWS_INDUSTRY_CLOSURE_GENERAL,    STR_NEWS_INDUSTRY_PRODUCTION_INCREASE_GENERAL,     STR_NEWS_INDUSTRY_PRODUCTION_DECREASE_GENERAL),
 
-	MI(_tile_table_sugar_mine,                 0, NULL,
+	MI(_tile_table_sugar_mine,                 0, nullptr,
 	   210,  0xBFFFFFFF,                       0, 0, 0, 2,    0, 0, 0, 4,         15,
 	   IT_CANDY_FACTORY,  IT_INVALID,          IT_INVALID,       CHECK_NOTHING,
 	   CT_SUGAR,      11, CT_INVALID,       0, 5,
@@ -1581,7 +1598,7 @@ static const IndustrySpec _origin_industry_specs[NEW_INDUSTRYOFFSET] = {
  * @param a2  next frame of animation
  * @param a3  chooses between animation or construction state
  */
-#define MT(ca1, c1, ca2, c2, ca3, c3, sl, a1, a2, a3) {{c1, c2, c3}, {ca1, ca2, ca3}, sl, a1, a2, a3, 0, {0, ANIM_STATUS_NO_ANIMATION, 2, 0}, INDTILE_SPECIAL_NONE, true, GRFFileProps(INVALID_INDUSTRYTILE)}
+#define MT(ca1, c1, ca2, c2, ca3, c3, sl, a1, a2, a3) {{c1, c2, c3, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID, CT_INVALID}, {ca1, ca2, ca3}, sl, a1, a2, a3, 0, {0, ANIM_STATUS_NO_ANIMATION, 2, 0}, INDTILE_SPECIAL_NONE, true, GRFFileProps(INVALID_INDUSTRYTILE)}
 static const IndustryTileSpec _origin_industry_tile_specs[NEW_INDUSTRYTILEOFFSET] = {
 	/* Coal Mine */
 	MT(0, CT_INVALID,      0, CT_INVALID,      0, CT_INVALID,     SLOPE_STEEP, INDUSTRYTILE_NOANIM, INDUSTRYTILE_NOANIM, false),

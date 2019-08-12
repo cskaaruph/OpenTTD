@@ -86,10 +86,15 @@ enum SelectCompanyLiveryWidgets {
 	WID_SCL_CLASS_ROAD,       ///< Class road.
 	WID_SCL_CLASS_SHIP,       ///< Class ship.
 	WID_SCL_CLASS_AIRCRAFT,   ///< Class aircraft.
+	WID_SCL_GROUPS_RAIL,      ///< Rail groups.
+	WID_SCL_GROUPS_ROAD,      ///< Road groups.
+	WID_SCL_GROUPS_SHIP,      ///< Ship groups.
+	WID_SCL_GROUPS_AIRCRAFT,  ///< Aircraft groups.
 	WID_SCL_SPACER_DROPDOWN,  ///< Spacer for dropdown.
 	WID_SCL_PRI_COL_DROPDOWN, ///< Dropdown for primary colour.
 	WID_SCL_SEC_COL_DROPDOWN, ///< Dropdown for secondary colour.
 	WID_SCL_MATRIX,           ///< Matrix.
+	WID_SCL_MATRIX_SCROLLBAR, ///< Matrix scrollbar.
 };
 
 
@@ -172,6 +177,8 @@ enum CompanyInfrastructureWidgets {
 	WID_CI_RAIL_COUNT,    ///< Count of rail.
 	WID_CI_ROAD_DESC,     ///< Description of road.
 	WID_CI_ROAD_COUNT,    ///< Count of road.
+	WID_CI_TRAM_DESC,     ///< Description of tram.
+	WID_CI_TRAM_COUNT,    ///< Count of tram.
 	WID_CI_WATER_DESC,    ///< Description of water.
 	WID_CI_WATER_COUNT,   ///< Count of water.
 	WID_CI_STATION_DESC,  ///< Description of station.

@@ -34,16 +34,16 @@ struct IndustriesScopeResolver : public ScopeResolver {
 	{
 	}
 
-	/* virtual */ uint32 GetRandomBits() const;
-	/* virtual */ uint32 GetVariable(byte variable, uint32 parameter, bool *available) const;
-	/* virtual */ uint32 GetTriggers() const;
-	/* virtual */ void StorePSA(uint pos, int32 value);
+	uint32 GetRandomBits() const override;
+	uint32 GetVariable(byte variable, uint32 parameter, bool *available) const override;
+	uint32 GetTriggers() const override;
+	void StorePSA(uint pos, int32 value) override;
 };
 
 /** Resolver for industries. */
 struct IndustriesResolverObject : public ResolverObject {
 	IndustriesScopeResolver industries_scope; ///< Scope resolver for the industry.
-	TownScopeResolver *town_scope;            ///< Scope resolver for the associated town (if needed and available, else \c NULL).
+	TownScopeResolver *town_scope;            ///< Scope resolver for the associated town (if needed and available, else \c nullptr).
 
 	IndustriesResolverObject(TileIndex tile, Industry *indus, IndustryType type, uint32 random_bits = 0,
 			CallbackID callback = CBID_NO_CALLBACK, uint32 callback_param1 = 0, uint32 callback_param2 = 0);
@@ -51,13 +51,13 @@ struct IndustriesResolverObject : public ResolverObject {
 
 	TownScopeResolver *GetTown();
 
-	/* virtual */ ScopeResolver *GetScope(VarSpriteGroupScope scope = VSG_SCOPE_SELF, byte relative = 0)
+	ScopeResolver *GetScope(VarSpriteGroupScope scope = VSG_SCOPE_SELF, byte relative = 0) override
 	{
 		switch (scope) {
 			case VSG_SCOPE_SELF: return &industries_scope;
 			case VSG_SCOPE_PARENT: {
 				TownScopeResolver *tsr = this->GetTown();
-				if (tsr != NULL) return tsr;
+				if (tsr != nullptr) return tsr;
 			}
 			FALLTHROUGH;
 

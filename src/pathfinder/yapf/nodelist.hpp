@@ -25,7 +25,7 @@ template <class Titem_, int Thash_bits_open_, int Thash_bits_closed_>
 class CNodeList_HashTableT {
 public:
 	typedef Titem_ Titem;                                        ///< Make #Titem_ visible from outside of class.
-	typedef typename Titem_::Key Key;                            ///< Make Titem_::Key a property of #HashTable.
+	typedef typename Titem_::Key Key;                            ///< Make Titem_::Key a property of this class.
 	typedef SmallArray<Titem_, 65536, 256> CItemArray;           ///< Type that we will use as item container.
 	typedef CHashTableT<Titem_, Thash_bits_open_  > COpenList;   ///< How pointers to open nodes will be stored.
 	typedef CHashTableT<Titem_, Thash_bits_closed_> CClosedList; ///< How pointers to closed nodes will be stored.
@@ -42,7 +42,7 @@ public:
 	/** default constructor */
 	CNodeList_HashTableT() : m_open_queue(2048)
 	{
-		m_new_node = NULL;
+		m_new_node = nullptr;
 	}
 
 	/** destructor */
@@ -65,7 +65,7 @@ public:
 	/** allocate new data item from m_arr */
 	inline Titem_ *CreateNewNode()
 	{
-		if (m_new_node == NULL) m_new_node = m_arr.AppendC();
+		if (m_new_node == nullptr) m_new_node = m_arr.AppendC();
 		return m_new_node;
 	}
 
@@ -74,7 +74,7 @@ public:
 	{
 		/* for now it is enough to invalidate m_new_node if it is our given node */
 		if (&item == m_new_node) {
-			m_new_node = NULL;
+			m_new_node = nullptr;
 		}
 		/* TODO: do we need to store best nodes found in some extra list/array? Probably not now. */
 	}
@@ -82,11 +82,11 @@ public:
 	/** insert given item as open node (into m_open and m_open_queue) */
 	inline void InsertOpenNode(Titem_ &item)
 	{
-		assert(m_closed.Find(item.GetKey()) == NULL);
+		assert(m_closed.Find(item.GetKey()) == nullptr);
 		m_open.Push(item);
 		m_open_queue.Include(&item);
 		if (&item == m_new_node) {
-			m_new_node = NULL;
+			m_new_node = nullptr;
 		}
 	}
 
@@ -96,7 +96,7 @@ public:
 		if (!m_open_queue.IsEmpty()) {
 			return m_open_queue.Begin();
 		}
-		return NULL;
+		return nullptr;
 	}
 
 	/** remove and return the best open node */
@@ -107,10 +107,10 @@ public:
 			m_open.Pop(*item);
 			return item;
 		}
-		return NULL;
+		return nullptr;
 	}
 
-	/** return the open node specified by a key or NULL if not found */
+	/** return the open node specified by a key or nullptr if not found */
 	inline Titem_ *FindOpenNode(const Key &key)
 	{
 		Titem_ *item = m_open.Find(key);
@@ -129,11 +129,11 @@ public:
 	/** close node */
 	inline void InsertClosedNode(Titem_ &item)
 	{
-		assert(m_open.Find(item.GetKey()) == NULL);
+		assert(m_open.Find(item.GetKey()) == nullptr);
 		m_closed.Push(item);
 	}
 
-	/** return the closed node specified by a key or NULL if not found */
+	/** return the closed node specified by a key or nullptr if not found */
 	inline Titem_ *FindClosedNode(const Key &key)
 	{
 		Titem_ *item = m_closed.Find(key);

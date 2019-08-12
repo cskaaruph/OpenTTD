@@ -15,7 +15,7 @@
 #include "core/enum_type.hpp"
 
 typedef byte VehicleOrderID;  ///< The index of an order within its current vehicle (not pool related)
-typedef uint16 OrderID;
+typedef uint32 OrderID;
 typedef uint16 OrderListID;
 typedef uint16 DestinationID;
 
@@ -25,7 +25,7 @@ static const VehicleOrderID INVALID_VEH_ORDER_ID = 0xFF;
 static const VehicleOrderID MAX_VEH_ORDER_ID     = INVALID_VEH_ORDER_ID - 1;
 
 /** Invalid order (sentinel) */
-static const OrderID INVALID_ORDER = 0xFFFF;
+static const OrderID INVALID_ORDER = 0xFFFFFF;
 
 /**
  * Maximum number of orders in implicit-only lists before we start searching
@@ -33,8 +33,8 @@ static const OrderID INVALID_ORDER = 0xFFFF;
  */
 static const uint IMPLICIT_ORDER_ONLY_CAP = 32;
 
-/** Order types */
-enum OrderType {
+/** Order types. It needs to be 8bits, because we save and load it as such */
+enum OrderType : byte {
 	OT_BEGIN         = 0,
 	OT_NOTHING       = 0,
 	OT_GOTO_STATION  = 1,
@@ -44,13 +44,9 @@ enum OrderType {
 	OT_DUMMY         = 5,
 	OT_GOTO_WAYPOINT = 6,
 	OT_CONDITIONAL   = 7,
-	OT_IMPLICIT     = 8,
+	OT_IMPLICIT      = 8,
 	OT_END
 };
-
-/** It needs to be 8bits, because we save and load it as such */
-typedef SimpleTinyEnumT<OrderType, byte> OrderTypeByte;
-
 
 /**
  * Flags related to the unloading order.
@@ -123,6 +119,7 @@ enum OrderConditionVariable {
 	OCV_REQUIRES_SERVICE,   ///< Skip when the vehicle requires service
 	OCV_UNCONDITIONALLY,    ///< Always skip
 	OCV_REMAINING_LIFETIME, ///< Skip based on the remaining lifetime
+	OCV_MAX_RELIABILITY,    ///< Skip based on the maximum reliability
 	OCV_END
 };
 

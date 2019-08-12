@@ -21,8 +21,8 @@ static const SaveLoad _goals_desc[] = {
 	    SLE_VAR(Goal, type,      SLE_FILE_U16 | SLE_VAR_U8),
 	    SLE_VAR(Goal, dst,       SLE_UINT32),
 	    SLE_STR(Goal, text,      SLE_STR | SLF_ALLOW_CONTROL, 0),
-	SLE_CONDSTR(Goal, progress,  SLE_STR | SLF_ALLOW_CONTROL, 0, 182, SL_MAX_VERSION),
-	SLE_CONDVAR(Goal, completed, SLE_BOOL, 182, SL_MAX_VERSION),
+	SLE_CONDSTR(Goal, progress,  SLE_STR | SLF_ALLOW_CONTROL, 0, SLV_182, SL_MAX_VERSION),
+	SLE_CONDVAR(Goal, completed, SLE_BOOL, SLV_182, SL_MAX_VERSION),
 	    SLE_END()
 };
 
@@ -45,5 +45,5 @@ static void Load_GOAL()
 }
 
 extern const ChunkHandler _goal_chunk_handlers[] = {
-	{ 'GOAL', Save_GOAL, Load_GOAL, NULL, NULL, CH_ARRAY | CH_LAST},
+	{ 'GOAL', Save_GOAL, Load_GOAL, nullptr, nullptr, CH_ARRAY | CH_LAST},
 };

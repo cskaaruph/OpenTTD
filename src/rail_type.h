@@ -26,7 +26,7 @@ static const RailTypeLabel RAILTYPE_MAGLEV_LABEL   = 'MGLV';
  *
  * This enumeration defines all 4 possible railtypes.
  */
-enum RailType {
+enum RailType : byte {
 	RAILTYPE_BEGIN    = 0,          ///< Used for iterations
 	RAILTYPE_RAIL     = 0,          ///< Standard non-electric rails
 	RAILTYPE_ELECTRIC = 1,          ///< Electric rails
@@ -44,12 +44,12 @@ enum RailType {
 DECLARE_POSTFIX_INCREMENT(RailType)
 /** Define basic enum properties */
 template <> struct EnumPropsT<RailType> : MakeEnumPropsT<RailType, byte, RAILTYPE_BEGIN, RAILTYPE_END, INVALID_RAILTYPE, 6> {};
-typedef TinyEnumT<RailType> RailTypeByte;
 
 /**
- * The different roadtypes we support, but then a bitmask of them
+ * The different railtypes we support, but then a bitmask of them.
+ * @note Must be treated as a uint64 type, narrowing it causes bit membership tests to give wrong results, as in bug #6951.
  */
-enum RailTypes {
+enum RailTypes : uint64 {
 	RAILTYPES_NONE     = 0,                      ///< No rail types
 	RAILTYPES_RAIL     = 1 << RAILTYPE_RAIL,     ///< Non-electrified rails
 	RAILTYPES_ELECTRIC = 1 << RAILTYPE_ELECTRIC, ///< Electrified rails
