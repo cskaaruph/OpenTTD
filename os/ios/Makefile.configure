@@ -1,7 +1,7 @@
 all: Makefile src/rev.cpp objs/lang/table/strings.h objs/setting/table/settings.h
 
 Makefile:
-	./configure --os=unix --enable-dedicated
+	./configure --os=unix --enable-dedicated --without-liblzo2
 
 objs/lang/table/strings.h:
 	make -C objs/lang

@@ -1431,6 +1431,7 @@
 		28FDA4E01E6A2F7700F740B8 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../../bin/scripts; sourceTree = "<group>"; };
 		28FDA4E71E6A36AF00F740B8 /* cocoa_touch_v.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = cocoa_touch_v.mm; sourceTree = "<group>"; };
 		28FDA4E91E6A36BA00F740B8 /* cocoa_touch_v.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cocoa_touch_v.h; sourceTree = "<group>"; };
+		300B086B23020619000C5530 /* Makefile.configure */ = {isa = PBXFileReference; lastKnownFileType = text; path = Makefile.configure; sourceTree = SOURCE_ROOT; };
 		A8F7F225C8EA0DBB0C31EDF4 /* Pods-OpenTTD.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenTTD.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenTTD/Pods-OpenTTD.release.xcconfig"; sourceTree = "<group>"; };
 		CB83C3D329CF0AE9A4938036 /* Pods-OpenTTD.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenTTD.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OpenTTD/Pods-OpenTTD.debug.xcconfig"; sourceTree = "<group>"; };
 		E025A9A6ABF2380933237256 /* libPods-OpenTTD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OpenTTD.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1487,6 +1488,7 @@
 		286628641E6625A100D12DB9 /* OpenTTD */ = {
 			isa = PBXGroup;
 			children = (
+				300B086B23020619000C5530 /* Makefile.configure */,
 				28999E761E77495000BD8797 /* Shaders.metal */,
 				28999E781E78923700BD8797 /* Fragment.glsl */,
 				28999E791E78923700BD8797 /* Vertex.glsl */,
@@ -2854,7 +2856,7 @@
 				TargetAttributes = {
 					286628611E6625A100D12DB9 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = UJXNDZ5TNU;
+						DevelopmentTeam = T4S638758C;
 						ProvisioningStyle = Automatic;
 					};
 					28999D6F1E74A09100BD8797 = {
@@ -2868,6 +2870,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -3483,7 +3486,7 @@
 			baseConfigurationReference = CB83C3D329CF0AE9A4938036 /* Pods-OpenTTD.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = UJXNDZ5TNU;
+				DEVELOPMENT_TEAM = T4S638758C;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../../src/3rdparty/squirrel/include",
 					"$(SRCROOT)/../../objs/lang",
@@ -3518,7 +3521,7 @@
 			baseConfigurationReference = A8F7F225C8EA0DBB0C31EDF4 /* Pods-OpenTTD.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = UJXNDZ5TNU;
+				DEVELOPMENT_TEAM = T4S638758C;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../../src/3rdparty/squirrel/include",
 					"$(SRCROOT)/../../objs/lang",
