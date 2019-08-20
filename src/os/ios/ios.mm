@@ -25,6 +25,7 @@
 
 #include "safeguards.h"
 #import "../../../OpenTTD/AppDelegate.h"
+#import "MIDIManager.h"
 
 const char * _globalDataDir;
 
@@ -79,6 +80,11 @@ bool FiosIsHiddenFile(const struct dirent *ent)
     return ent->d_name[0] == '.';
 }
 
+const char *SF2() {
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"OPL-3_FM_128M" ofType:@"sf2"];
+//    NSString *path = [[NSBundle mainBundle] pathForResource:@"gs_instruments" ofType:@"dls"];
+	return [path UTF8String];
+}
 const char *FS2OTTD(const char *name) {return name;}
 const char *OTTD2FS(const char *name) {return name;}
 
@@ -159,7 +165,9 @@ int main(int argc, char * argv[])
     @autoreleasepool
     {
         _globalDataDir = [[ NSBundle mainBundle ].resourcePath stringByAppendingString:@"/"].fileSystemRepresentation;
-        
+		
+		[MIDIManager.sharedManager loadManager];
+		
         SetRandomSeed(time(NULL));
         
         signal(SIGPIPE, SIG_IGN);
@@ -180,4 +188,25 @@ void MacOSSetThreadName(const char *name)
 	if (cur != NULL && [ cur respondsToSelector:@selector(setName:) ]) {
 		[ cur performSelector:@selector(setName:) withObject:[ NSString stringWithUTF8String:name ] ];
 	}
+}
+
+void loadMIDISong(CFURLRef url) {
+	NSURL *nsurl = (NSURL *)CFBridgingRelease(url);
+	[MIDIManager.sharedManager loadSongWith:nsurl];
+}
+
+void playMIDI() {
+	[MIDIManager.sharedManager play];
+}
+
+void stopMIDI() {
+	[MIDIManager.sharedManager stop];
+}
+
+bool isPlayningMIDI() {
+	return [MIDIManager.sharedManager playing];
+}
+
+void setMIDIVolume(UInt8 volume) {
+	[MIDIManager.sharedManager setVolume:volume];
 }

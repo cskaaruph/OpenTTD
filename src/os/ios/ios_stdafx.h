@@ -29,6 +29,8 @@
 #define _SQ64
 #endif
 
+
+const char *SF2();
 extern const char * _globalDataDir;
 #define GLOBAL_DATA_DIR _globalDataDir
 
@@ -63,5 +65,11 @@ extern const char * _globalDataDir;
 #define GetTime OTTD_GetTime
 
 #define SL_ERROR OSX_SL_ERROR
+
+void loadMIDISong(CFURLRef url);
+void playMIDI();
+bool isPlayningMIDI();
+void stopMIDI();
+void setMIDIVolume(UInt8 volume);
 
 #endif /* IOS_STDAFX_H */
