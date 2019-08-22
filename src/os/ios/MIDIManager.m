@@ -96,7 +96,7 @@
 	}
 }
 
-- (void)play {
+- (void)playSong {
 	NSError* error = nil;
 	self.sequencer.currentPositionInBeats = 0;
 	[self.sequencer startAndReturnError:&error];
@@ -109,11 +109,11 @@
 	return self.sequencer == nil ? false : self.maxTrackTime > [self.sequencer currentPositionInSeconds];
 }
 
-- (void)stop {
+- (void)stopSong {
 	[self.sequencer stop];
 }
 
-- (void)setVolume:(UInt8)volume {
+- (void)setVolumeOfMIDI:(UInt8)volume {
 	float f = ((float)volume)/255.0f;
 	[[self.engineMIDI mainMixerNode] setOutputVolume:f];
 }

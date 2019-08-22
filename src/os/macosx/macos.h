@@ -28,11 +28,11 @@ static inline bool MacOSVersionIsAtLeast(long major, long minor, long bugfix)
 {
 	int version_major, version_minor, version_bugfix;
 	GetMacOSVersion(&version_major, &version_minor, &version_bugfix);
-
+	
 	if (version_major < major) return false;
 	if (version_major == major && version_minor < minor) return false;
 	if (version_major == major && version_minor == minor && version_bugfix < bugfix) return false;
-
+	
 	return true;
 }
 

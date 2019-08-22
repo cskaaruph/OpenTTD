@@ -29,8 +29,6 @@
 #define _SQ64
 #endif
 
-
-const char *SF2();
 extern const char * _globalDataDir;
 #define GLOBAL_DATA_DIR _globalDataDir
 

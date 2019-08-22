@@ -9,23 +9,33 @@
 
 /** @file cocoa_touch_v.mm Code related to the cocoa touch video driver(s). */
 
+#import <Foundation/Foundation.h>
+
+#if TARGET_OS_MAC && !TARGET_OS_SIMULATOR
+#import <AppKit/AppKit.h>
+#import "AppDelegate.h"
+#else
 #import <UIKit/UIKit.h>
+#import "../../os/ios/OpenTTD/AppDelegate.h"
+#endif
+
 #ifdef WITH_METAL
 #import <Metal/Metal.h>
+#import <Quartz/Quartz.h>
 #endif
-#ifdef WITH_OPENGL
+#if WITH_OPENGL && !TARGET_OS_MAC
 #import <OpenGLES/gltypes.h>
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 #endif
 #include "stdafx.h"
 #import "cocoa_touch_v.h"
-#import "../../os/ios/OpenTTD/AppDelegate.h"
+
 #include "openttd.h"
 #include "debug.h"
 #include "factory.hpp"
 #include "gfx_func.h"
-#include "fontcache.h"
+//#include "fontcache.h"
 
 void HideOnScreenKeyboard();
 static FVideoDriver_CocoaTouch iFVideoDriver_CocoaTouch;
@@ -44,8 +54,9 @@ static id<MTLBuffer> screenBuffer = nil;
 static id<MTLTexture> screenTexture = nil;
 #endif
 
-#ifdef WITH_OPENGL
-static EAGLContext *glContext = nil;
+#if WITH_OPENGL && !TARGET_OS_MAC
+
+static NSOpenGLContext *glContext = nil;
 static GLuint positionSlot = 0;
 static GLuint texcoordSlot = 0;
 static GLuint textureUniform = 0;
@@ -74,10 +85,19 @@ const char *VideoDriver_CocoaTouch::Start(const char * const *parm)
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults registerDefaults:@{@"Video": @"metal",
 								 @"NativeResolution": @NO}];
+#if TARGET_OS_MAC && !TARGET_OS_SIMULATOR
+	NSScreen *mainScreen = [NSScreen mainScreen];
+	CGFloat scaleFactor = mainScreen.backingScaleFactor;
+	CGRect rect = [NSApplication sharedApplication].keyWindow.frame;
+#else
 	UIScreen *mainScreen = [UIScreen mainScreen];
-	CGFloat scale = [defaults boolForKey:@"NativeResolution"] ? mainScreen.nativeScale : 1.0;
-	_resolutions[0].width = mainScreen.bounds.size.width * scale;
-	_resolutions[0].height = mainScreen.bounds.size.height * scale;
+	CGFloat scaleFactor = mainScreen.nativeScale;
+	CGRect rect = mainScreen.bounds;
+#endif
+	
+	CGFloat scale = [defaults boolForKey:@"NativeResolution"] ? scaleFactor : 1.0;
+	_resolutions[0].width = rect.size.width * scale;
+	_resolutions[0].height = rect.size.height * scale;
 	_num_resolutions = 1;
 	_fullscreen = true;
 	_cocoa_touch_driver = this;
@@ -88,7 +108,14 @@ const char *VideoDriver_CocoaTouch::Start(const char * const *parm)
 	if (_cocoa_touch_layer == NULL && [selectedDriver isEqualToString:@"metal"]) {
 		id<MTLDevice> device = MTLCreateSystemDefaultDevice();
 		CAMetalLayer *metalLayer = nil;
-		if (device && [device supportsFeatureSet:MTLFeatureSet_iOS_GPUFamily1_v1]) {
+		
+#if TARGET_OS_MAC && !TARGET_OS_SIMULATOR
+		MTLFeatureSet supportsFeatureSet = MTLFeatureSet_macOS_GPUFamily1_v1;
+#else
+		MTLFeatureSet supportsFeatureSet = MTLFeatureSet_iOS_GPUFamily1_v1;
+#endif
+		
+		if (device && [device supportsFeatureSet:supportsFeatureSet]) {
 			metalLayer = [CAMetalLayer layer];
 			metalLayer.device = device;
 			metalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm;
@@ -120,6 +147,7 @@ const char *VideoDriver_CocoaTouch::Start(const char * const *parm)
 			NSLog(@"Error initializing pipeline state: %@", error.localizedDescription);
 			goto metal_fail;
 		}
+		metalLayer.frame = CGRectMake(0, 0, 800, 600);
 		_cocoa_touch_layer = metalLayer;
 	}
 metal_fail:
@@ -131,7 +159,7 @@ metal_fail:
 	}
 #endif
 	
-#if WITH_OPENGL
+#if WITH_OPENGL && !TARGET_OS_MAC
 	if (_cocoa_touch_layer == NULL && ![selectedDriver isEqualToString:@"quartz"]) {
 		glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 		CAEAGLLayer *eaglLayer = NULL;
@@ -272,7 +300,7 @@ void VideoDriver_CocoaTouch::Stop()
 	}
 #endif
 	
-#ifdef WITH_OPENGL
+#if WITH_OPENGL && !TARGET_OS_MAC
 	if (glContext) {
 		[EAGLContext setCurrentContext:glContext];
 		glDeleteTextures(1, &glScreenTexture);
@@ -304,9 +332,18 @@ void VideoDriver_CocoaTouch::ExitMainLoop()
 void VideoDriver_CocoaTouch::MainLoop()
 {
 	if (setjmp(main_loop_jmp) == 0) {
+#if TARGET_OS_MAC && !TARGET_OS_SIMULATOR
+		NSApplication *app = [NSApplication sharedApplication];
+#else
 		UIApplication *app = [UIApplication sharedApplication];
+#endif
+		
 		if (app == nil) {
+#if TARGET_OS_MAC && !TARGET_OS_SIMULATOR
+			NSApplicationLoad();
+#else
 			UIApplicationMain(*_NSGetArgc(), *_NSGetArgv(), nil, @"AppDelegate");
+#endif
 		} else {
 			// this only happens after bootstrap
 			[app.delegate performSelector:@selector(startGameLoop)];
@@ -322,8 +359,8 @@ void VideoDriver_CocoaTouch::MakeDirty(int left, int top, int width, int height)
 
 bool VideoDriver_CocoaTouch::ChangeResolution(int w, int h)
 {
-	_screen.width = w;
-	_screen.height = h;
+	_screen.width = w == 0 ? 1024 : w;
+	_screen.height = h == 0 ? 768 : w;
 	_screen.pitch = _screen.width;
 #ifdef WITH_METAL
 	BOOL usingMetal = [_cocoa_touch_layer isKindOfClass:[CAMetalLayer class]];
@@ -333,7 +370,7 @@ bool VideoDriver_CocoaTouch::ChangeResolution(int w, int h)
 #endif
 	Blitter *blitter = BlitterFactory::GetCurrentBlitter();
 	assert(blitter->GetScreenDepth() == 32);
-	size_t buffer_size = _screen.pitch * _screen.height * 4;
+	size_t buffer_size = _screen.pitch * _screen.height;
 	if (pixel_buffer) {
 		free(pixel_buffer);
 	}
@@ -355,7 +392,8 @@ bool VideoDriver_CocoaTouch::ChangeResolution(int w, int h)
 		
 		MTLTextureDescriptor *textureDescriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatBGRA8Unorm width:w height:h mipmapped:NO];
 		screenBuffer = [metalLayer.device newBufferWithBytesNoCopy:pixel_buffer length:buffer_size options:MTLResourceOptionCPUCacheModeDefault deallocator:nil];
-		screenTexture = [screenBuffer newTextureWithDescriptor:textureDescriptor offset:0 bytesPerRow:(_screen.pitch * 4)];
+		
+//		screenTexture = [screenBuffer newTextureWithDescriptor:textureDescriptor offset:0 bytesPerRow:(_screen.pitch)];
 		
 		BlitterFactory::GetCurrentBlitter()->PostResize();
 		GameSizeChanged();
@@ -363,7 +401,7 @@ bool VideoDriver_CocoaTouch::ChangeResolution(int w, int h)
 	}
 #endif
 	
-#ifdef WITH_OPENGL
+#if WITH_OPENGL && !TARGET_OS_MAC
 	if ([_cocoa_touch_layer isKindOfClass:[CAEAGLLayer class]]) {
 		BlitterFactory::GetCurrentBlitter()->PostResize();
 		GameSizeChanged();
@@ -440,7 +478,7 @@ void VideoDriver_CocoaTouch::Draw()
 	}
 #endif
 	
-#ifdef WITH_OPENGL
+#if WITH_OPENGL && !TARGET_OS_MAC
 	if ([_cocoa_touch_layer isKindOfClass:[CAEAGLLayer class]]) {
 		CAEAGLLayer *eaglLayer = (CAEAGLLayer *)_cocoa_touch_layer;
 		if (![EAGLContext setCurrentContext:glContext])

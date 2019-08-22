@@ -16,10 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadManager;
 - (void)loadSongWith:(NSURL *)url;
-- (void)play;
-- (void)stop;
+- (void)playSong;
+- (void)stopSong;
 - (BOOL)playing;
-- (void)setVolume:(UInt8)volume;
+- (void)setVolumeOfMIDI:(UInt8)volume;
 
 @end
 

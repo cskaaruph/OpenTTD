@@ -54,7 +54,6 @@
 @end
 
 
-static NSAutoreleasePool *_ottd_autorelease_pool;
 static OTTDMain *_ottd_main;
 static bool _cocoa_video_started = false;
 static bool _cocoa_video_dialog = false;
@@ -162,10 +161,6 @@ static void setApplicationMenu()
 	 * This interesting Objective-C construct is used because not all SDK
 	 * versions define this method publicly. */
 	[ NSApp performSelector:@selector(setAppleMenu:) withObject:appleMenu ];
-
-	/* Finally give up our references to the objects */
-	[ appleMenu release ];
-	[ menuItem release ];
 }
 
 /**
@@ -190,10 +185,6 @@ static void setupWindowMenu()
 
 	/* Tell the application object that this is now the window menu */
 	[ NSApp setWindowsMenu:windowMenu ];
-
-	/* Finally give up our references to the objects */
-	[ windowMenu release ];
-	[ menuItem release ];
 }
 
 /**
@@ -400,11 +391,11 @@ void QZ_GameSizeChanged()
  */
 static CocoaSubdriver *QZ_CreateWindowSubdriver(int width, int height, int bpp)
 {
-#if defined(ENABLE_COCOA_QUARTZ) || defined(ENABLE_COCOA_QUICKDRAW)
+#if defined(ENABLE_COCOA_QUARTZ) || defined(ENABLE_COCOA_QUICKDRAW) || defined(ENABLE_COCOA_METAL)
 	CocoaSubdriver *ret;
 #endif
 
-#if defined(ENABLE_COCOA_QUARTZ) && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4)
+#if (defined(ENABLE_COCOA_QUARTZ) || defined(ENABLE_COCOA_METAL)) && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4)
 	/* The reason for the version mismatch is due to the fact that the 10.4 binary needs to work on 10.5 as well. */
 	if (MacOSVersionIsAtLeast(10, 5, 0)) {
 		ret = QZ_CreateWindowQuartzSubdriver(width, height, bpp);
@@ -417,7 +408,7 @@ static CocoaSubdriver *QZ_CreateWindowSubdriver(int width, int height, int bpp)
 	if (ret != NULL) return ret;
 #endif
 
-#if defined(ENABLE_COCOA_QUARTZ) && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4)
+#if (defined(ENABLE_COCOA_QUARTZ) || defined(ENABLE_COCOA_METAL)) && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4)
 	/*
 	 * If we get here we are running 10.4 or earlier and either openttd was compiled without the QuickDraw driver
 	 * or it failed to load for some reason. Fall back to Quartz if possible even though that driver is slower.
@@ -490,8 +481,6 @@ void VideoDriver_Cocoa::Stop()
 
 	delete _cocoa_subdriver;
 	_cocoa_subdriver = NULL;
-
-	[ _ottd_main release ];
 
 	_cocoa_video_started = false;
 }
@@ -667,7 +656,6 @@ void CocoaDialog(const char *title, const char *message, const char *buttonLabel
 		[ alert setInformativeText:[ NSString stringWithUTF8String:message ] ];
 		[ alert addButtonWithTitle: [ NSString stringWithUTF8String:buttonLabel ] ];
 		[ alert runModal ];
-		[ alert release ];
 	} else
 #endif
 	{
@@ -699,26 +687,6 @@ void cocoaSetApplicationBundleDir()
 
 	CFRelease(url);
 }
-
-/**
- * Setup autorelease for the application pool.
- *
- * These are called from main() to prevent a _NSAutoreleaseNoPool error when
- * exiting before the cocoa video driver has been loaded
- */
-void cocoaSetupAutoreleasePool()
-{
-	_ottd_autorelease_pool = [ [ NSAutoreleasePool alloc ] init ];
-}
-
-/**
- * Autorelease the application pool.
- */
-void cocoaReleaseAutoreleasePool()
-{
-	[ _ottd_autorelease_pool release ];
-}
-
 
 /**
  * Re-implement the system cursor in order to allow hiding and showing it nicely
@@ -1080,7 +1048,7 @@ static const char *Utf8AdvanceByUtf16Units(const char *str, NSUInteger count)
 	if (actualRange != NULL) *actualRange = valid_range;
 	if (valid_range.length == 0) return nil;
 
-	return [ [ [ NSAttributedString alloc ] initWithString:[ s substringWithRange:valid_range ] ] autorelease ];
+	return [ [ NSAttributedString alloc ] initWithString:[ s substringWithRange:valid_range ] ];
 }
 
 /** Get a string corresponding to the given range. */
@@ -1092,9 +1060,9 @@ static const char *Utf8AdvanceByUtf16Units(const char *str, NSUInteger count)
 /** Get the current edit box string. */
 - (NSAttributedString *)attributedString
 {
-	if (!EditBoxInGlobalFocus()) return [ [ [ NSAttributedString alloc ] initWithString:@"" ] autorelease ];
+	if (!EditBoxInGlobalFocus()) return [ [ NSAttributedString alloc ] initWithString:@"" ];
 
-	return [ [ [ NSAttributedString alloc ] initWithString:[ NSString stringWithUTF8String:_focused_window->GetFocusedText() ] ] autorelease ];
+	return [ [ NSAttributedString alloc ] initWithString:[ NSString stringWithUTF8String:_focused_window->GetFocusedText() ]];
 }
 
 /** Get the character that is rendered at the given point. */
@@ -1359,7 +1327,6 @@ static const char *Utf8AdvanceByUtf16Units(const char *str, NSUInteger count)
 		/* We don't care about the event, but the compiler does. */
 		NSEvent *e = [ [ NSEvent alloc ] init ];
 		[ driver->cocoaview mouseEntered:e ];
-		[ e release ];
 	}
 }
 

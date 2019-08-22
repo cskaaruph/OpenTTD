@@ -202,6 +202,12 @@ CocoaSubdriver *QZ_CreateWindowQuartzSubdriver(int width, int height, int bpp);
 #endif
 #endif
 
+#ifdef ENABLE_COCOA_METAL
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_11
+CocoaSubdriver *QZ_CreateWindowQuartzSubdriver(int width, int height, int bpp);
+#endif
+#endif
+
 void QZ_GameSizeChanged();
 
 void QZ_GameLoop();

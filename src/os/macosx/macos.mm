@@ -16,6 +16,16 @@
 #include "../../string_func.h"
 #include <pthread.h>
 
+#include "fileio_func.h"
+#include "fios.h"
+
+#include <dirent.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <time.h>
+#include <signal.h>
+#include <sys/mount.h>
+
 #define Rect  OTTDRect
 #define Point OTTDPoint
 #include <AppKit/AppKit.h>
@@ -26,11 +36,16 @@
 #define __bridge
 #endif
 
+#import <Foundation/Foundation.h>
+
 /*
  * This file contains objective C
  * Apple uses objective C instead of plain C to interact with OS specific/native functions
  */
 
+const char * globalDataDir() {
+	return [[ NSBundle mainBundle ].resourcePath stringByAppendingString:@"/"].fileSystemRepresentation;
+}
 
 #if (MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_10)
 typedef struct {
@@ -55,18 +70,18 @@ void GetMacOSVersion(int *return_major, int *return_minor, int *return_bugfix)
 	*return_major = -1;
 	*return_minor = -1;
 	*return_bugfix = -1;
-
+	
 	if ([[ NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion) ]) {
 		IMP sel = [ [ NSProcessInfo processInfo] methodForSelector:@selector(operatingSystemVersion) ];
 		NSOperatingSystemVersion ver = ((NSOperatingSystemVersion (*)(id, SEL))sel)([ NSProcessInfo processInfo], @selector(operatingSystemVersion));
-
+		
 		*return_major = (int)ver.majorVersion;
 		*return_minor = (int)ver.minorVersion;
 		*return_bugfix = (int)ver.patchVersion;
-
+		
 		return;
 	}
-
+	
 #if (MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_10)
 	SInt32 systemVersion, version_major, version_minor, version_bugfix;
 	if (Gestalt(gestaltSystemVersion, &systemVersion) == noErr) {
@@ -112,7 +127,6 @@ void ShowMacDialog(const char *title, const char *message, const char *buttonLab
 {
 	CocoaDialog(title, message, buttonLabel);
 }
-
 
 #else
 
@@ -162,7 +176,7 @@ const char *GetCurrentLocale(const char *)
 	NSArray *languages = [ defs objectForKey:@"AppleLanguages" ];
 	NSString *preferredLang = [ languages objectAtIndex:0 ];
 	/* preferredLang is either 2 or 5 characters long ("xx" or "xx_YY"). */
-
+	
 	/* Since Apple introduced encoding to CString in OSX 10.4 we have to make a few conditions
 	 * to get the right code for the used version of OSX. */
 #if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4)
@@ -193,15 +207,15 @@ bool GetClipboardContents(char *buffer, const char *last)
 	NSPasteboard *pb = [ NSPasteboard generalPasteboard ];
 	NSArray *types = [ NSArray arrayWithObject:NSStringPboardType ];
 	NSString *bestType = [ pb availableTypeFromArray:types ];
-
+	
 	/* Clipboard has no text data available. */
 	if (bestType == nil) return false;
-
+	
 	NSString *string = [ pb stringForType:NSStringPboardType ];
 	if (string == nil || [ string length ] == 0) return false;
-
+	
 	strecpy(buffer, [ string UTF8String ], last);
-
+	
 	return true;
 }
 #endif
@@ -219,7 +233,7 @@ uint GetCPUCoreCount()
 		count = MPProcessorsScheduled();
 #endif
 	}
-
+	
 	return count;
 }
 
@@ -231,7 +245,7 @@ uint GetCPUCoreCount()
 bool IsMonospaceFont(CFStringRef name)
 {
 	NSFont *font = [ NSFont fontWithName:(__bridge NSString *)name size:0.0f ];
-
+	
 	return font != NULL ? [ font isFixedPitch ] : false;
 }
 
@@ -246,9 +260,11 @@ void MacOSSetThreadName(const char *name)
 		pthread_setname_np(name);
 	}
 #endif
-
+	
 	NSThread *cur = [ NSThread currentThread ];
 	if (cur != NULL && [ cur respondsToSelector:@selector(setName:) ]) {
 		[ cur performSelector:@selector(setName:) withObject:[ NSString stringWithUTF8String:name ] ];
 	}
 }
+
+

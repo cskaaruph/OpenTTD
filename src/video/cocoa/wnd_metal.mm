@@ -1,3 +1,11 @@
+//
+//  wnd_metal.mm
+//  OpenTTD_Mac
+//
+//  Created by Christian Skaarup Enevoldsen on 22/08/2019.
+//  Copyright © 2019 OpenTTD. All rights reserved.
+//
+
 /* $Id$ */
 
 /*
@@ -14,7 +22,7 @@
  ******************************************************************************/
 
 #ifdef WITH_COCOA
-#ifdef ENABLE_COCOA_QUARTZ
+#ifdef ENABLE_COCOA_METAL
 
 #include "../../stdafx.h"
 #include "../../os/macosx/macos.h"
@@ -69,38 +77,38 @@ private:
 	 * @param bottom The y coord for the bottom edge of the box to blit.
 	 */
 	void BlitIndexedToView32(int left, int top, int right, int bottom);
-
+	
 	virtual void GetDeviceInfo();
 	virtual bool SetVideoMode(int width, int height, int bpp);
-
+	
 public:
 	WindowQuartzSubdriver();
 	virtual ~WindowQuartzSubdriver();
-
+	
 	virtual void Draw(bool force_update);
 	virtual void MakeDirty(int left, int top, int width, int height);
 	virtual void UpdatePalette(uint first_color, uint num_colors);
-
+	
 	virtual uint ListModes(OTTD_Point *modes, uint max_modes);
-
+	
 	virtual bool ChangeResolution(int w, int h, int bpp);
-
+	
 	virtual bool IsFullscreen() { return false; }
 	virtual bool ToggleFullscreen(); /* Full screen mode on OSX 10.7 */
-
+	
 	virtual int GetWidth() { return window_width; }
 	virtual int GetHeight() { return window_height; }
 	virtual void *GetPixelBuffer() { return buffer_depth == 8 ? pixel_buffer : window_buffer; }
-
+	
 	/* Convert local coordinate to window server (CoreGraphics) coordinate */
 	virtual CGPoint PrivateLocalToCG(NSPoint *p);
-
+	
 	virtual NSPoint GetMouseLocation(NSEvent *event);
 	virtual bool MouseIsInsideView(NSPoint *pt);
-
+	
 	virtual bool IsActive() { return active; }
-
-
+	
+	
 	void SetPortAlphaOpaque();
 	bool WindowResized();
 	
@@ -111,7 +119,7 @@ public:
 static CGColorSpaceRef QZ_GetCorrectColorSpace()
 {
 	static CGColorSpaceRef colorSpace = NULL;
-
+	
 	if (colorSpace == NULL) {
 #if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 		if (MacOSVersionIsAtLeast(10, 5, 0)) {
@@ -127,12 +135,12 @@ static CGColorSpaceRef QZ_GetCorrectColorSpace()
 			}
 #endif
 		}
-
+		
 		if (colorSpace == NULL) colorSpace = CGColorSpaceCreateDeviceRGB();
-
+		
 		if (colorSpace == NULL) error("Could not get system colour space. You might need to recalibrate your monitor.");
 	}
-
+	
 	return colorSpace;
 }
 
@@ -146,25 +154,25 @@ static CGColorSpaceRef QZ_GetCorrectColorSpace()
 - (void)drawRect:(NSRect)invalidRect
 {
 	if (driver->cgcontext == NULL) return;
-
+	
 	CGContextRef viewContext = (CGContextRef)[ [ NSGraphicsContext currentContext ] graphicsPort ];
 	CGContextSetShouldAntialias(viewContext, FALSE);
 	CGContextSetInterpolationQuality(viewContext, kCGInterpolationNone);
-
+	
 	/* The obtained 'rect' is actually a union of all dirty rects, let's ask for an explicit list of rects instead */
 	const NSRect *dirtyRects;
 	NSInteger     dirtyRectCount;
 	[ self getRectsBeingDrawn:&dirtyRects count:&dirtyRectCount ];
-
+	
 	/* We need an Image in order to do blitting, but as we don't touch the context between this call and drawing no copying will actually be done here */
 	CGImageRef fullImage = CGBitmapContextCreateImage(driver->cgcontext);
-
+	
 	/* Calculate total area we are blitting */
 	uint32 blitArea = 0;
 	for (int n = 0; n < dirtyRectCount; n++) {
 		blitArea += (uint32)(dirtyRects[n].size.width * dirtyRects[n].size.height);
 	}
-
+	
 	/*
 	 * This might be completely stupid, but in my extremely subjective opinion it feels faster
 	 * The point is, if we're blitting less than 50% of the dirty rect union then it's still a good idea to blit each dirty
@@ -176,18 +184,18 @@ static CGColorSpaceRef QZ_GetCorrectColorSpace()
 		NSRect rect = invalidRect;
 		CGRect clipRect;
 		CGRect blitRect;
-
+		
 		blitRect.origin.x = rect.origin.x;
 		blitRect.origin.y = rect.origin.y;
 		blitRect.size.width = rect.size.width;
 		blitRect.size.height = rect.size.height;
-
+		
 		clipRect.origin.x = rect.origin.x;
 		clipRect.origin.y = frameRect.size.height - rect.origin.y - rect.size.height;
-
+		
 		clipRect.size.width = rect.size.width;
 		clipRect.size.height = rect.size.height;
-
+		
 		/* Blit dirty part of image */
 		CGImageRef clippedImage = CGImageCreateWithImageInRect(fullImage, clipRect);
 		CGContextDrawImage(viewContext, blitRect, clippedImage);
@@ -197,25 +205,25 @@ static CGColorSpaceRef QZ_GetCorrectColorSpace()
 			NSRect rect = dirtyRects[n];
 			CGRect clipRect;
 			CGRect blitRect;
-
+			
 			blitRect.origin.x = rect.origin.x;
 			blitRect.origin.y = rect.origin.y;
 			blitRect.size.width = rect.size.width;
 			blitRect.size.height = rect.size.height;
-
+			
 			clipRect.origin.x = rect.origin.x;
 			clipRect.origin.y = frameRect.size.height - rect.origin.y - rect.size.height;
-
+			
 			clipRect.size.width = rect.size.width;
 			clipRect.size.height = rect.size.height;
-
+			
 			/* Blit dirty part of image */
 			CGImageRef clippedImage = CGImageCreateWithImageInRect(fullImage, clipRect);
 			CGContextDrawImage(viewContext, blitRect, clippedImage);
 			CGImageRelease(clippedImage);
 		}
 	}
-
+	
 	CGImageRelease(fullImage);
 }
 
@@ -226,29 +234,29 @@ void WindowQuartzSubdriver::GetDeviceInfo()
 {
 	/* Initialize the video settings; this data persists between mode switches
 	 * and gather some information that is useful to know about the display */
-
+	
 #	if MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_6
 	/* This way is deprecated as of OSX 10.6 but continues to work.Thus use it
 	 * always, unless allowed to skip compatibility with 10.5 and earlier */
 	CFDictionaryRef cur_mode = CGDisplayCurrentMode(kCGDirectMainDisplay);
-
+	
 	CFNumberGetValue(
-		(const __CFNumber*)CFDictionaryGetValue(cur_mode, kCGDisplayWidth),
-		kCFNumberSInt32Type, &this->device_width
-	);
-
+					 (const __CFNumber*)CFDictionaryGetValue(cur_mode, kCGDisplayWidth),
+					 kCFNumberSInt32Type, &this->device_width
+					 );
+	
 	CFNumberGetValue(
-		(const __CFNumber*)CFDictionaryGetValue(cur_mode, kCGDisplayHeight),
-		kCFNumberSInt32Type, &this->device_height
-	);
+					 (const __CFNumber*)CFDictionaryGetValue(cur_mode, kCGDisplayHeight),
+					 kCFNumberSInt32Type, &this->device_height
+					 );
 #	else
 	/* Use the new API when compiling for OSX 10.6 or later */
 	CGDisplayModeRef cur_mode = CGDisplayCopyDisplayMode(kCGDirectMainDisplay);
 	if (cur_mode == NULL) { return; }
-
+	
 	this->device_width = CGDisplayModeGetWidth(cur_mode);
 	this->device_height = CGDisplayModeGetHeight(cur_mode);
-
+	
 	CGDisplayModeRelease(cur_mode);
 #	endif
 }
@@ -262,7 +270,7 @@ bool WindowQuartzSubdriver::ToggleFullscreen()
 		[ this->window performSelector:@selector(toggleFullScreen:) withObject:this->window ];
 		return true;
 	}
-
+	
 	return false;
 }
 
@@ -270,32 +278,32 @@ bool WindowQuartzSubdriver::SetVideoMode(int width, int height, int bpp)
 {
 	this->setup = true;
 	this->GetDeviceInfo();
-
+	
 	if (width > this->device_width) width = this->device_width;
 	if (height > this->device_height) height = this->device_height;
-
+	
 	NSRect contentRect = NSMakeRect(0, 0, width, height);
-
+	
 	/* Check if we should recreate the window */
 	if (this->window == nil) {
 		/* Set the window style */
 		unsigned int style = NSTitledWindowMask;
 		style |= (NSMiniaturizableWindowMask | NSClosableWindowMask);
 		style |= NSResizableWindowMask;
-
+		
 		/* Manually create a window, avoids having a nib file resource */
 		this->window = [ [ OTTD_CocoaWindow alloc ]
-							initWithContentRect:contentRect
-							styleMask:style
-							backing:NSBackingStoreBuffered
-							defer:NO ];
-
+						initWithContentRect:contentRect
+						styleMask:style
+						backing:NSBackingStoreBuffered
+						defer:NO ];
+		
 		if (this->window == nil) {
 			DEBUG(driver, 0, "Could not create the Cocoa window.");
 			this->setup = false;
 			return false;
 		}
-
+		
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5
 		/* Add built in full-screen support when available (OS X 10.7 and higher)
 		 * This code actually compiles for 10.5 and later, but only makes sense in conjunction
@@ -307,58 +315,58 @@ bool WindowQuartzSubdriver::SetVideoMode(int width, int height, int bpp)
 			const int NSWindowCollectionBehaviorFullScreenPrimary = 1 << 7;
 			const int NSWindowFullScreenButton = 7;
 #endif
-
+			
 			NSWindowCollectionBehavior behavior = [ this->window collectionBehavior ];
 			behavior |= NSWindowCollectionBehaviorFullScreenPrimary;
 			[ this->window setCollectionBehavior:behavior ];
-
+			
 			NSButton* fullscreenButton = [ this->window standardWindowButton:NSWindowFullScreenButton ];
 			[ fullscreenButton setAction:@selector(toggleFullScreen:) ];
 			[ fullscreenButton setTarget:this->window ];
-
+			
 			[ this->window setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary ];
 		}
 #endif
-
+		
 		[ this->window setDriver:this ];
-
+		
 		char caption[50];
 		snprintf(caption, sizeof(caption), "OpenTTD %s", _openttd_revision);
 		NSString *nsscaption = [ [ NSString alloc ] initWithUTF8String:caption ];
 		[ this->window setTitle:nsscaption ];
 		[ this->window setMiniwindowTitle:nsscaption ];
-
+		
 		[ this->window setContentMinSize:NSMakeSize(64.0f, 64.0f) ];
-
+		
 		[ this->window setAcceptsMouseMovedEvents:YES ];
 		[ this->window setViewsNeedDisplay:NO ];
-
+		
 #if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_10
 		if ([ this->window respondsToSelector:@selector(useOptimizedDrawing:) ]) [ this->window useOptimizedDrawing:YES ];
 #endif
-
+		
 		this->cocoaWindowDelegate = [ [ OTTD_CocoaWindowDelegate alloc ] init ];
 		[ this->cocoaWindowDelegate setDriver:this ];
 		[ this->window setDelegate: this->cocoaWindowDelegate ];
 	} else {
 		/* We already have a window, just change its size */
 		[ this->window setContentSize:contentRect.size ];
-
+		
 		/* Ensure frame height - title bar height >= view height */
 		contentRect.size.height = Clamp(height, 0, (int)[ this->window frame ].size.height - 22 /* 22 is the height of title bar of window*/);
-
+		
 		if (this->cocoaview != nil) {
 			height = (int)contentRect.size.height;
 			[ this->cocoaview setFrameSize:contentRect.size ];
 		}
 	}
-
+	
 	this->window_width = width;
 	this->window_height = height;
 	this->buffer_depth = bpp;
-
+	
 	[ this->window center ];
-
+	
 	/* Only recreate the view if it doesn't already exist */
 	if (this->cocoaview == nil) {
 		this->cocoaview = [ [ OTTD_QuartzView alloc ] initWithFrame:contentRect ];
@@ -367,19 +375,19 @@ bool WindowQuartzSubdriver::SetVideoMode(int width, int height, int bpp)
 			this->setup = false;
 			return false;
 		}
-
+		
 		[ this->cocoaview setDriver:this ];
-
+		
 		[ (NSView*)this->cocoaview setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable ];
 		[ this->window setContentView:cocoaview ];
 		[ this->window makeKeyAndOrderFront:nil ];
 	}
-
+	
 	bool ret = WindowResized();
 	this->UpdatePalette(0, 256);
-
+	
 	this->setup = false;
-
+	
 	return ret;
 }
 
@@ -390,7 +398,7 @@ void WindowQuartzSubdriver::BlitIndexedToView32(int left, int top, int right, in
 	uint32       *dst   = (uint32*)this->window_buffer;
 	uint          width = this->window_width;
 	uint          pitch = this->window_width;
-
+	
 	for (int y = top; y < bottom; y++) {
 		for (int x = left; x < right; x++) {
 			dst[y * pitch + x] = pal[src[y * width + x]];
@@ -408,12 +416,12 @@ WindowQuartzSubdriver::WindowQuartzSubdriver()
 	this->pixel_buffer  = NULL;
 	this->active        = false;
 	this->setup         = false;
-
+	
 	this->window = nil;
 	this->cocoaview = nil;
-
+	
 	this->cgcontext = NULL;
-
+	
 	this->num_dirty_rects = MAX_DIRTY_RECTS;
 }
 
@@ -421,9 +429,9 @@ WindowQuartzSubdriver::~WindowQuartzSubdriver()
 {
 	/* Release window mode resources */
 	if (this->window != nil) [ this->window close ];
-
+	
 	CGContextRelease(this->cgcontext);
-
+	
 	free(this->window_buffer);
 	free(this->pixel_buffer);
 }
@@ -431,10 +439,10 @@ WindowQuartzSubdriver::~WindowQuartzSubdriver()
 void WindowQuartzSubdriver::Draw(bool force_update)
 {
 	PerformanceMeasurer framerate(PFE_VIDEO);
-
+	
 	/* Check if we need to do anything */
 	if (this->num_dirty_rects == 0 || [ this->window isMiniaturized ]) return;
-
+	
 	if (this->num_dirty_rects >= MAX_DIRTY_RECTS) {
 		this->num_dirty_rects = 1;
 		this->dirty_rects[0].left = 0;
@@ -442,31 +450,31 @@ void WindowQuartzSubdriver::Draw(bool force_update)
 		this->dirty_rects[0].right = this->window_width;
 		this->dirty_rects[0].bottom = this->window_height;
 	}
-
+	
 	/* Build the region of dirty rectangles */
 	for (int i = 0; i < this->num_dirty_rects; i++) {
 		/* We only need to blit in indexed mode since in 32bpp mode the game draws directly to the image. */
 		if (this->buffer_depth == 8) {
 			BlitIndexedToView32(
-				this->dirty_rects[i].left,
-				this->dirty_rects[i].top,
-				this->dirty_rects[i].right,
-				this->dirty_rects[i].bottom
-			);
+								this->dirty_rects[i].left,
+								this->dirty_rects[i].top,
+								this->dirty_rects[i].right,
+								this->dirty_rects[i].bottom
+								);
 		}
-
+		
 		NSRect dirtyrect;
 		dirtyrect.origin.x = this->dirty_rects[i].left;
 		dirtyrect.origin.y = this->window_height - this->dirty_rects[i].bottom;
 		dirtyrect.size.width = this->dirty_rects[i].right - this->dirty_rects[i].left;
 		dirtyrect.size.height = this->dirty_rects[i].bottom - this->dirty_rects[i].top;
-
+		
 		/* Normally drawRect will be automatically called by Mac OS X during next update cycle,
 		 * and then blitting will occur. If force_update is true, it will be done right now. */
 		[ this->cocoaview setNeedsDisplayInRect:dirtyrect ];
 		if (force_update) [ this->cocoaview displayIfNeeded ];
 	}
-
+	
 	this->num_dirty_rects = 0;
 }
 
@@ -484,7 +492,7 @@ void WindowQuartzSubdriver::MakeDirty(int left, int top, int width, int height)
 void WindowQuartzSubdriver::UpdatePalette(uint first_color, uint num_colors)
 {
 	if (this->buffer_depth != 8) return;
-
+	
 	for (uint i = first_color; i < first_color + num_colors; i++) {
 		uint32 clr = 0xff000000;
 		clr |= (uint32)_cur_palette.palette[i].r << 16;
@@ -492,7 +500,7 @@ void WindowQuartzSubdriver::UpdatePalette(uint first_color, uint num_colors)
 		clr |= (uint32)_cur_palette.palette[i].b;
 		this->palette[i] = clr;
 	}
-
+	
 	this->num_dirty_rects = MAX_DIRTY_RECTS;
 }
 
@@ -506,20 +514,20 @@ bool WindowQuartzSubdriver::ChangeResolution(int w, int h, int bpp)
 	int old_width  = this->window_width;
 	int old_height = this->window_height;
 	int old_bpp    = this->buffer_depth;
-
+	
 	if (this->SetVideoMode(w, h, bpp)) return true;
 	if (old_width != 0 && old_height != 0) this->SetVideoMode(old_width, old_height, old_bpp);
-
+	
 	return false;
 }
 
 /* Convert local coordinate to window server (CoreGraphics) coordinate */
 CGPoint WindowQuartzSubdriver::PrivateLocalToCG(NSPoint *p)
 {
-
+	
 	p->y = this->window_height - p->y;
 	*p = [ this->cocoaview convertPoint:*p toView:nil ];
-
+	
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
 	if ([ this->window respondsToSelector:@selector(convertRectToScreen:) ]) {
 		*p = [ this->window convertRectToScreen:NSMakeRect(p->x, p->y, 0, 0) ].origin;
@@ -531,18 +539,18 @@ CGPoint WindowQuartzSubdriver::PrivateLocalToCG(NSPoint *p)
 #endif
 	}
 	p->y = this->device_height - p->y;
-
+	
 	CGPoint cgp;
 	cgp.x = p->x;
 	cgp.y = p->y;
-
+	
 	return cgp;
 }
 
 NSPoint WindowQuartzSubdriver::GetMouseLocation(NSEvent *event)
 {
 	NSPoint pt;
-
+	
 	if ( [ event window ] == nil) {
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7
 		if ([ [ this->cocoaview window ] respondsToSelector:@selector(convertRectFromScreen:) ]) {
@@ -558,9 +566,9 @@ NSPoint WindowQuartzSubdriver::GetMouseLocation(NSEvent *event)
 	} else {
 		pt = [ event locationInWindow ];
 	}
-
+	
 	pt.y = this->window_height - pt.y;
-
+	
 	return pt;
 }
 
@@ -578,42 +586,42 @@ void WindowQuartzSubdriver::SetPortAlphaOpaque()
 {
 	uint32 *pixels = (uint32*)this->window_buffer;
 	uint32  pitch  = this->window_width;
-
+	
 	for (int y = 0; y < this->window_height; y++)
 		for (int x = 0; x < this->window_width; x++) {
-		pixels[y * pitch + x] |= 0xFF000000;
-	}
+			pixels[y * pitch + x] |= 0xFF000000;
+		}
 }
 
 bool WindowQuartzSubdriver::WindowResized()
 {
 	if (this->window == nil || this->cocoaview == nil) return true;
-
+	
 	NSRect newframe = [ this->cocoaview frame ];
-
+	
 	this->window_width = (int)newframe.size.width;
 	this->window_height = (int)newframe.size.height;
-
+	
 	/* Create Core Graphics Context */
 	free(this->window_buffer);
 	this->window_buffer = (uint32*)malloc(this->window_width * this->window_height * 4);
-
+	
 	CGContextRelease(this->cgcontext);
 	this->cgcontext = CGBitmapContextCreate(
-		this->window_buffer,        // data
-		this->window_width,        // width
-		this->window_height,       // height
-		8,                         // bits per component
-		this->window_width * 4,    // bytes per row
-		QZ_GetCorrectColorSpace(), // color space
-		kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Host
-	);
-
+											this->window_buffer,        // data
+											this->window_width,        // width
+											this->window_height,       // height
+											8,                         // bits per component
+											this->window_width * 4,    // bytes per row
+											QZ_GetCorrectColorSpace(), // color space
+											kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Host
+											);
+	
 	assert(this->cgcontext != NULL);
 	CGContextSetShouldAntialias(this->cgcontext, FALSE);
 	CGContextSetAllowsAntialiasing(this->cgcontext, FALSE);
 	CGContextSetInterpolationQuality(this->cgcontext, kCGInterpolationNone);
-
+	
 	if (this->buffer_depth == 8) {
 		free(this->pixel_buffer);
 		this->pixel_buffer = malloc(this->window_width * this->window_height);
@@ -622,12 +630,12 @@ bool WindowQuartzSubdriver::WindowResized()
 			return false;
 		}
 	}
-
+	
 	QZ_GameSizeChanged();
-
+	
 	/* Redraw screen */
 	this->num_dirty_rects = MAX_DIRTY_RECTS;
-
+	
 	return true;
 }
 
@@ -638,23 +646,24 @@ CocoaSubdriver *QZ_CreateWindowQuartzSubdriver(int width, int height, int bpp)
 		DEBUG(driver, 0, "The cocoa quartz subdriver requires Mac OS X 10.4 or later.");
 		return NULL;
 	}
-
+	
 	if (bpp != 8 && bpp != 32) {
 		DEBUG(driver, 0, "The cocoa quartz subdriver only supports 8 and 32 bpp.");
 		return NULL;
 	}
-
+	
 	WindowQuartzSubdriver *ret = new WindowQuartzSubdriver();
-
+	
 	if (!ret->ChangeResolution(width, height, bpp)) {
 		delete ret;
 		return NULL;
 	}
-
+	
 	return ret;
 }
 
 
 #endif /* MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4 */
-#endif /* ENABLE_COCOA_QUARTZ */
+#endif /* ENABLE_COCOA_METAL */
 #endif /* WITH_COCOA */
+

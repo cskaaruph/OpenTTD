@@ -80,11 +80,6 @@ bool FiosIsHiddenFile(const struct dirent *ent)
     return ent->d_name[0] == '.';
 }
 
-const char *SF2() {
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"OPL-3_FM_128M" ofType:@"sf2"];
-//    NSString *path = [[NSBundle mainBundle] pathForResource:@"gs_instruments" ofType:@"dls"];
-	return [path UTF8String];
-}
 const char *FS2OTTD(const char *name) {return name;}
 const char *OTTD2FS(const char *name) {return name;}
 
@@ -196,11 +191,11 @@ void loadMIDISong(CFURLRef url) {
 }
 
 void playMIDI() {
-	[MIDIManager.sharedManager play];
+	[MIDIManager.sharedManager playSong];
 }
 
 void stopMIDI() {
-	[MIDIManager.sharedManager stop];
+	[MIDIManager.sharedManager stopSong];
 }
 
 bool isPlayningMIDI() {
@@ -208,5 +203,5 @@ bool isPlayningMIDI() {
 }
 
 void setMIDIVolume(UInt8 volume) {
-	[MIDIManager.sharedManager setVolume:volume];
+	[MIDIManager.sharedManager setVolumeOfMIDI:volume];
 }

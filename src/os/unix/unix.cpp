@@ -253,24 +253,25 @@ void ShowOSErrorBox(const char *buf, bool system)
 }
 #endif
 
-#ifdef WITH_COCOA
-void cocoaSetupAutoreleasePool();
-void cocoaReleaseAutoreleasePool();
-#endif
-
 int CDECL main(int argc, char *argv[])
 {
 	/* Make sure our arguments contain only valid UTF-8 characters. */
 	for (int i = 0; i < argc; i++) ValidateString(argv[i]);
 
 #ifdef WITH_COCOA
-	cocoaSetupAutoreleasePool();
 	/* This is passed if we are launched by double-clicking */
 	if (argc >= 2 && strncmp(argv[1], "-psn", 4) == 0) {
 		argv[1] = NULL;
 		argc = 1;
 	}
 #endif
+	
+#ifdef WITH_COCOA
+#ifdef DEBUG
+	argc = 1;
+#endif
+#endif
+	
 	CrashLog::InitialiseCrashLog();
 
 	SetRandomSeed(time(NULL));
@@ -278,10 +279,6 @@ int CDECL main(int argc, char *argv[])
 	signal(SIGPIPE, SIG_IGN);
 
 	int ret = openttd_main(argc, argv);
-
-#ifdef WITH_COCOA
-	cocoaReleaseAutoreleasePool();
-#endif
 
 	return ret;
 }
