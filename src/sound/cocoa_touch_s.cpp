@@ -62,11 +62,7 @@ const char *SoundDriver_CocoaTouch::Start(const char * const *parm)
 
 	/* Locate the default output audio unit */
 	desc.componentType = kAudioUnitType_Output;
-#if TARGET_OS_MAC && !TARGET_OS_SIMULATOR
-	desc.componentSubType = kAudioUnitSubType_DefaultOutput;
-#else
 	desc.componentSubType = kAudioUnitSubType_RemoteIO;
-#endif
 	desc.componentManufacturer = kAudioUnitManufacturer_Apple;
 	desc.componentFlags = 0;
 	desc.componentFlagsMask = 0;

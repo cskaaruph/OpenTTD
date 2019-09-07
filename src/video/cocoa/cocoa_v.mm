@@ -75,7 +75,7 @@ static NSString *OTTDMainLaunchGameEngine = @"ottdmain_launch_game_engine";
 	[ NSApp stop:self ];
 
 	/* Send an empty event to return from the run loop. Without that, application is stuck waiting for an event. */
-	NSEvent *event = [ NSEvent otherEventWithType:NSApplicationDefined location:NSMakePoint(0, 0) modifierFlags:0 timestamp:0.0 windowNumber:0 context:nil subtype:0 data1:0 data2:0 ];
+	NSEvent *event = [ NSEvent otherEventWithType:NSEventTypeApplicationDefined location:NSMakePoint(0, 0) modifierFlags:0 timestamp:0.0 windowNumber:0 context:nil subtype:0 data1:0 data2:0 ];
 	[ NSApp postEvent:event atStart:YES ];
 }
 
@@ -143,7 +143,7 @@ static void setApplicationMenu()
 	[ appleMenu addItemWithTitle:title action:@selector(hide:) keyEquivalent:@"h" ];
 
 	NSMenuItem *menuItem = [ appleMenu addItemWithTitle:@"Hide Others" action:@selector(hideOtherApplications:) keyEquivalent:@"h" ];
-	[ menuItem setKeyEquivalentModifierMask:(NSAlternateKeyMask | NSCommandKeyMask) ];
+	[ menuItem setKeyEquivalentModifierMask:(NSEventModifierFlagOption | NSEventModifierFlagCommand) ];
 
 	[ appleMenu addItemWithTitle:@"Show All" action:@selector(unhideAllApplications:) keyEquivalent:@"" ];
 
@@ -395,7 +395,7 @@ static CocoaSubdriver *QZ_CreateWindowSubdriver(int width, int height, int bpp)
 	CocoaSubdriver *ret;
 #endif
 
-#if (defined(ENABLE_COCOA_QUARTZ) || defined(ENABLE_COCOA_METAL)) && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4)
+#if defined(ENABLE_COCOA_QUARTZ) && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4)
 	/* The reason for the version mismatch is due to the fact that the 10.4 binary needs to work on 10.5 as well. */
 	if (MacOSVersionIsAtLeast(10, 5, 0)) {
 		ret = QZ_CreateWindowQuartzSubdriver(width, height, bpp);
@@ -408,13 +408,24 @@ static CocoaSubdriver *QZ_CreateWindowSubdriver(int width, int height, int bpp)
 	if (ret != NULL) return ret;
 #endif
 
-#if (defined(ENABLE_COCOA_QUARTZ) || defined(ENABLE_COCOA_METAL)) && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4)
+#if defined(ENABLE_COCOA_QUARTZ) && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4)
 	/*
 	 * If we get here we are running 10.4 or earlier and either openttd was compiled without the QuickDraw driver
 	 * or it failed to load for some reason. Fall back to Quartz if possible even though that driver is slower.
 	 */
 	if (MacOSVersionIsAtLeast(10, 4, 0)) {
 		ret = QZ_CreateWindowQuartzSubdriver(width, height, bpp);
+		if (ret != NULL) return ret;
+	}
+#endif
+	
+#if defined(ENABLE_COCOA_METAL) && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_11)
+	/*
+	 * If we get here we are running 10.11 or earlier and either openttd was compiled without the Metal driver
+	 * or it failed to load for some reason. Fall back to Metal if possible even though that driver is slower.
+	 */
+	if (MacOSVersionIsAtLeast(10, 11, 0)) {
+		ret = MTL_CreateWindowMetalSubdriver(width, height, bpp);
 		if (ret != NULL) return ret;
 	}
 #endif
@@ -651,7 +662,7 @@ void CocoaDialog(const char *title, const char *message, const char *buttonLabel
 #if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_3)
 	if (MacOSVersionIsAtLeast(10, 3, 0)) {
 		NSAlert *alert = [ [ NSAlert alloc ] init ];
-		[ alert setAlertStyle: NSCriticalAlertStyle ];
+		[ alert setAlertStyle: NSAlertStyleCritical ];
 		[ alert setMessageText:[ NSString stringWithUTF8String:title ] ];
 		[ alert setInformativeText:[ NSString stringWithUTF8String:message ] ];
 		[ alert addButtonWithTitle: [ NSString stringWithUTF8String:buttonLabel ] ];

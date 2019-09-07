@@ -831,6 +831,8 @@
 		306AA884230F2629006B0901 /* cocoa_v.mm in Sources */ = {isa = PBXBuildFile; fileRef = 306AA874230D2F62006B0901 /* cocoa_v.mm */; };
 		306AA885230F2785006B0901 /* unix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 306AA87A230F1DE8006B0901 /* unix.cpp */; };
 		306AA88B230F3619006B0901 /* wnd_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = 306AA88A230F3619006B0901 /* wnd_metal.mm */; };
+		306AA88E230F43E9006B0901 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 306AA88D230F43E9006B0901 /* MetalKit.framework */; };
+		306AA89123126BE0006B0901 /* cocoa_s.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 306AA88F23126BDF006B0901 /* cocoa_s.cpp */; };
 		3295104AB42C1FB94AFB2436 /* libPods-OpenTTD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E025A9A6ABF2380933237256 /* libPods-OpenTTD.a */; };
 		66F758BB91BD54251E3AC2D3 /* libPods-OpenTTD_Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 307473BC0BAC5D7783FDFEE1 /* libPods-OpenTTD_Mac.a */; };
 /* End PBXBuildFile section */
@@ -1859,7 +1861,7 @@
 		300B086B23020619000C5530 /* Makefile.configure */ = {isa = PBXFileReference; lastKnownFileType = text; path = Makefile.configure; sourceTree = SOURCE_ROOT; };
 		306AA69D2309F12C006B0901 /* MIDIManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MIDIManager.h; sourceTree = "<group>"; };
 		306AA69E2309F12C006B0901 /* MIDIManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MIDIManager.m; sourceTree = "<group>"; };
-		306AA6A8230C673C006B0901 /* OpenTTD_Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenTTD_Mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		306AA6A8230C673C006B0901 /* OpenTTD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenTTD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		306AA6B0230C673C006B0901 /* GameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
 		306AA6B1230C673C006B0901 /* GameViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = GameViewController.mm; sourceTree = "<group>"; };
 		306AA6B6230C673E006B0901 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1891,6 +1893,9 @@
 		306AA87A230F1DE8006B0901 /* unix.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = unix.cpp; sourceTree = "<group>"; };
 		306AA87B230F1DE8006B0901 /* crashlog_unix.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = crashlog_unix.cpp; sourceTree = "<group>"; };
 		306AA88A230F3619006B0901 /* wnd_metal.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = wnd_metal.mm; sourceTree = "<group>"; };
+		306AA88D230F43E9006B0901 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/MetalKit.framework; sourceTree = DEVELOPER_DIR; };
+		306AA88F23126BDF006B0901 /* cocoa_s.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cocoa_s.cpp; sourceTree = "<group>"; };
+		306AA89023126BE0006B0901 /* cocoa_s.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cocoa_s.h; sourceTree = "<group>"; };
 		307210812308826F007749CE /* gs_instruments.dls */ = {isa = PBXFileReference; lastKnownFileType = file; name = gs_instruments.dls; path = ../../../../../Downloads/gs_instruments.dls; sourceTree = "<group>"; };
 		307473BC0BAC5D7783FDFEE1 /* libPods-OpenTTD_Mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OpenTTD_Mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E225BAD5DBEF5864AE6FF48 /* Pods-OpenTTD_Mac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenTTD_Mac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OpenTTD_Mac/Pods-OpenTTD_Mac.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1917,6 +1922,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				306AA88E230F43E9006B0901 /* MetalKit.framework in Frameworks */,
 				306AA866230C80EE006B0901 /* CoreAudio.framework in Frameworks */,
 				306AA864230C80DF006B0901 /* AudioToolbox.framework in Frameworks */,
 				306AA862230C80CD006B0901 /* CoreFoundation.framework in Frameworks */,
@@ -1960,7 +1966,7 @@
 			isa = PBXGroup;
 			children = (
 				286628621E6625A100D12DB9 /* OpenTTD.app */,
-				306AA6A8230C673C006B0901 /* OpenTTD_Mac.app */,
+				306AA6A8230C673C006B0901 /* OpenTTD.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3061,6 +3067,8 @@
 		28662E211E66272500D12DB9 /* sound */ = {
 			isa = PBXGroup;
 			children = (
+				306AA88F23126BDF006B0901 /* cocoa_s.cpp */,
+				306AA89023126BE0006B0901 /* cocoa_s.h */,
 				28662E261E66272500D12DB9 /* null_s.cpp */,
 				28662E271E66272500D12DB9 /* null_s.h */,
 				28662E2A1E66272500D12DB9 /* sound_driver.hpp */,
@@ -3267,6 +3275,7 @@
 		28A8F9E91E68A73900044B53 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				306AA88D230F43E9006B0901 /* MetalKit.framework */,
 				306AA865230C80EE006B0901 /* CoreAudio.framework */,
 				306AA863230C80DF006B0901 /* AudioToolbox.framework */,
 				306AA861230C80CD006B0901 /* CoreFoundation.framework */,
@@ -3429,7 +3438,7 @@
 			);
 			name = OpenTTD_Mac;
 			productName = OpenTTD_Mac;
-			productReference = 306AA6A8230C673C006B0901 /* OpenTTD_Mac.app */;
+			productReference = 306AA6A8230C673C006B0901 /* OpenTTD.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -4196,6 +4205,7 @@
 				306AA801230C7C86006B0901 /* newgrf_object.cpp in Sources */,
 				306AA7E2230C7C86006B0901 /* heightmap.cpp in Sources */,
 				306AA75A230C7C86006B0901 /* script_cargomonitor.cpp in Sources */,
+				306AA89123126BE0006B0901 /* cocoa_s.cpp in Sources */,
 				306AA857230C7C86006B0901 /* waypoint_gui.cpp in Sources */,
 				306AA7B4230C7C86006B0901 /* cheat_gui.cpp in Sources */,
 				306AA7EC230C7C86006B0901 /* main_gui.cpp in Sources */,
@@ -4696,7 +4706,7 @@
 				);
 				INFOPLIST_FILE = OpenTTD_Mac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_CFLAGS = (
@@ -4704,20 +4714,18 @@
 					"-DUNIX",
 					"-DNO_QUICKTIME",
 					"-DWITH_COCOA",
-					"-DWITH_COCOA_TOUCH",
 					"-DWITH_METAL",
 					"-DWITH_OPENGL",
 					"-DWITH_FREETYPE",
 					"-DWITH_ZLIB",
 					"-DWITH_LZMA",
 					"-DENABLE_NETWORK",
-					"-DIOS",
 					"$(inherited)",
 					"-DENABLE_COCOA_QUARTZ_NOT",
 					"-DENABLE_COCOA_METAL",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "dk.caluclatesolutions.OpenTTD-Mac";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = OpenTTD;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -4750,27 +4758,25 @@
 				);
 				INFOPLIST_FILE = OpenTTD_Mac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_FAST_MATH = YES;
 				OTHER_CFLAGS = (
 					"-D_FORTIFY_SOURCE=2",
 					"-DUNIX",
 					"-DNO_QUICKTIME",
 					"-DWITH_COCOA",
-					"-DWITH_COCOA_TOUCH",
 					"-DWITH_METAL",
 					"-DWITH_OPENGL",
 					"-DWITH_FREETYPE",
 					"-DWITH_ZLIB",
 					"-DWITH_LZMA",
 					"-DENABLE_NETWORK",
-					"-DIOS",
 					"$(inherited)",
 					"-DENABLE_COCOA_QUARTZ_NOT",
 					"-DENABLE_COCOA_METAL",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "dk.caluclatesolutions.OpenTTD-Mac";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = OpenTTD;
 				SDKROOT = macosx;
 			};
 			name = Release;

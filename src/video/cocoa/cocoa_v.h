@@ -85,7 +85,7 @@ public:
 
 	int buffer_depth;     ///< Colour depth of used frame buffer
 	void *pixel_buffer;   ///< used for direct pixel access
-	void *window_buffer;  ///< Colour translation from palette to screen
+//	void *window_buffer;  ///< Colour translation from palette to screen
 	id window;            ///< Pointer to window object
 
 #	define MAX_DIRTY_RECTS 100
@@ -204,7 +204,7 @@ CocoaSubdriver *QZ_CreateWindowQuartzSubdriver(int width, int height, int bpp);
 
 #ifdef ENABLE_COCOA_METAL
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_11
-CocoaSubdriver *QZ_CreateWindowQuartzSubdriver(int width, int height, int bpp);
+CocoaSubdriver *MTL_CreateWindowMetalSubdriver(int width, int height, int bpp);
 #endif
 #endif
 
@@ -236,7 +236,13 @@ uint QZ_ListModes(OTTD_Point *modes, uint max_modes, CGDirectDisplayID display_i
 @end
 
 /** Subclass of NSView to fix Quartz rendering and mouse awareness */
+#ifdef ENABLE_COCOA_METAL
+#include <MetalKit/MetalKit.h>
+@interface OTTD_CocoaView : MTKView
+#else
 @interface OTTD_CocoaView : NSView
+#endif
+
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5
 #	if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
 		<NSTextInputClient, NSTextInput>

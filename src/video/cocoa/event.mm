@@ -57,7 +57,7 @@ enum RightMouseButtonEmulationState {
 };
 
 
-static unsigned int _current_mods;
+static NSEventModifierFlags _current_mods;
 static bool _tab_is_down;
 static bool _emulating_right_button;
 #if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
@@ -264,10 +264,10 @@ static uint32 QZ_MapKey(unsigned short sym)
 		}
 	}
 
-	if (_current_mods & NSShiftKeyMask)     key |= WKC_SHIFT;
-	if (_current_mods & NSControlKeyMask)   key |= (_settings_client.gui.right_mouse_btn_emulation != RMBE_CONTROL ? WKC_CTRL : WKC_META);
-	if (_current_mods & NSAlternateKeyMask) key |= WKC_ALT;
-	if (_current_mods & NSCommandKeyMask)   key |= (_settings_client.gui.right_mouse_btn_emulation != RMBE_CONTROL ? WKC_META : WKC_CTRL);
+	if (_current_mods & NSEventModifierFlagShift)     key |= WKC_SHIFT;
+	if (_current_mods & NSEventModifierFlagControl)   key |= (_settings_client.gui.right_mouse_btn_emulation != RMBE_CONTROL ? WKC_CTRL : WKC_META);
+	if (_current_mods & NSEventModifierFlagOption) key |= WKC_ALT;
+	if (_current_mods & NSEventModifierFlagCommand)   key |= (_settings_client.gui.right_mouse_btn_emulation != RMBE_CONTROL ? WKC_META : WKC_CTRL);
 
 	return key;
 }
@@ -286,18 +286,18 @@ static bool QZ_KeyEvent(unsigned short keycode, unsigned short unicode, BOOL dow
 
 		case QZ_RETURN:
 		case QZ_f:
-			if (down && (_current_mods & NSCommandKeyMask)) {
+			if (down && (_current_mods & NSEventModifierFlagCommand)) {
 				VideoDriver::GetInstance()->ToggleFullscreen(!_fullscreen);
 			}
 			break;
 
 		case QZ_v:
-			if (down && EditBoxInGlobalFocus() && (_current_mods & (NSCommandKeyMask | NSControlKeyMask))) {
+			if (down && EditBoxInGlobalFocus() && (_current_mods & (NSEventModifierFlagCommand | NSEventModifierFlagControl))) {
 				HandleKeypress(WKC_CTRL | 'V', unicode);
 			}
 			break;
 		case QZ_u:
-			if (down && EditBoxInGlobalFocus() && (_current_mods & (NSCommandKeyMask | NSControlKeyMask))) {
+			if (down && EditBoxInGlobalFocus() && (_current_mods & (NSEventModifierFlagCommand | NSEventModifierFlagControl))) {
 				HandleKeypress(WKC_CTRL | 'U', unicode);
 			}
 			break;
@@ -333,14 +333,14 @@ static bool QZ_KeyEvent(unsigned short keycode, unsigned short unicode, BOOL dow
 	return interpret_keys;
 }
 
-static void QZ_DoUnsidedModifiers(unsigned int newMods)
+static void QZ_DoUnsidedModifiers(NSEventModifierFlags newMods)
 {
 	const int mapping[] = { QZ_CAPSLOCK, QZ_LSHIFT, QZ_LCTRL, QZ_LALT, QZ_LMETA };
 
 	if (_current_mods == newMods) return;
 
 	/* Iterate through the bits, testing each against the current modifiers */
-	for (unsigned int i = 0, bit = NSAlphaShiftKeyMask; bit <= NSCommandKeyMask; bit <<= 1, ++i) {
+	for (unsigned int i = 0, bit = NSEventModifierFlagCapsLock; bit <= NSEventModifierFlagCommand; bit <<= 1, ++i) {
 		unsigned int currentMask, newMask;
 
 		currentMask = _current_mods & bit;
@@ -348,12 +348,12 @@ static void QZ_DoUnsidedModifiers(unsigned int newMods)
 
 		if (currentMask && currentMask != newMask) { // modifier up event
 			/* If this was Caps Lock, we need some additional voodoo to make SDL happy (is this needed in ottd?) */
-			if (bit == NSAlphaShiftKeyMask) QZ_KeyEvent(mapping[i], 0, YES);
+			if (bit == NSEventModifierFlagCapsLock) QZ_KeyEvent(mapping[i], 0, YES);
 			QZ_KeyEvent(mapping[i], 0, NO);
 		} else if (newMask && currentMask != newMask) { // modifier down event
 			QZ_KeyEvent(mapping[i], 0, YES);
 			/* If this was Caps Lock, we need some additional voodoo to make SDL happy (is this needed in ottd?) */
-			if (bit == NSAlphaShiftKeyMask) QZ_KeyEvent(mapping[i], 0, NO);
+			if (bit == NSEventModifierFlagCapsLock) QZ_KeyEvent(mapping[i], 0, NO);
 		}
 	}
 
@@ -404,9 +404,9 @@ static bool QZ_PollEvent()
 #ifdef _DEBUG
 	uint32 et0 = GetTick();
 #endif
-	NSEvent *event = [ NSApp nextEventMatchingMask:NSAnyEventMask
-				untilDate:[ NSDate distantPast ]
-				inMode:NSDefaultRunLoopMode dequeue:YES ];
+	NSEvent *event = [NSApp nextEventMatchingMask:NSEventMaskAny
+				untilDate:[NSDate distantPast]
+				inMode:NSDefaultRunLoopMode dequeue:YES];
 #ifdef _DEBUG
 	_tEvent += GetTick() - et0;
 #endif
@@ -417,14 +417,14 @@ static bool QZ_PollEvent()
 		return true;
 	}
 
-	QZ_DoUnsidedModifiers( [ event modifierFlags ] );
+	QZ_DoUnsidedModifiers( (unsigned int)[event modifierFlags] );
 
 	NSString *chars;
 	NSPoint  pt;
 	switch ([ event type ]) {
-		case NSMouseMoved:
-		case NSOtherMouseDragged:
-		case NSLeftMouseDragged:
+		case NSEventTypeMouseMoved:
+		case NSEventTypeOtherMouseDragged:
+		case NSEventTypeLeftMouseDragged:
 			pt = _cocoa_subdriver->GetMouseLocation(event);
 			if (!_cocoa_subdriver->MouseIsInsideView(&pt) && !_emulating_right_button) {
 				[ NSApp sendEvent:event ];
@@ -434,16 +434,16 @@ static bool QZ_PollEvent()
 			QZ_MouseMovedEvent((int)pt.x, (int)pt.y);
 			break;
 
-		case NSRightMouseDragged:
+		case NSEventTypeRightMouseDragged:
 			pt = _cocoa_subdriver->GetMouseLocation(event);
 			QZ_MouseMovedEvent((int)pt.x, (int)pt.y);
 			break;
 
-		case NSLeftMouseDown:
+		case NSEventTypeLeftMouseDown:
 		{
 			uint32 keymask = 0;
-			if (_settings_client.gui.right_mouse_btn_emulation == RMBE_COMMAND) keymask |= NSCommandKeyMask;
-			if (_settings_client.gui.right_mouse_btn_emulation == RMBE_CONTROL) keymask |= NSControlKeyMask;
+			if (_settings_client.gui.right_mouse_btn_emulation == RMBE_COMMAND) keymask |= NSEventModifierFlagCommand;
+			if (_settings_client.gui.right_mouse_btn_emulation == RMBE_CONTROL) keymask |= NSEventModifierFlagControl;
 
 			pt = _cocoa_subdriver->GetMouseLocation(event);
 
@@ -462,7 +462,7 @@ static bool QZ_PollEvent()
 			}
 			break;
 		}
-		case NSLeftMouseUp:
+		case NSEventTypeLeftMouseUp:
 			[ NSApp sendEvent:event ];
 
 			pt = _cocoa_subdriver->GetMouseLocation(event);
@@ -478,7 +478,7 @@ static bool QZ_PollEvent()
 			}
 			break;
 
-		case NSRightMouseDown:
+		case NSEventTypeRightMouseDown:
 			pt = _cocoa_subdriver->GetMouseLocation(event);
 			if (!_cocoa_subdriver->MouseIsInsideView(&pt)) {
 				[ NSApp sendEvent:event ];
@@ -489,7 +489,7 @@ static bool QZ_PollEvent()
 			QZ_MouseButtonEvent(1, YES);
 			break;
 
-		case NSRightMouseUp:
+		case NSEventTypeRightMouseUp:
 			pt = _cocoa_subdriver->GetMouseLocation(event);
 			if (!_cocoa_subdriver->MouseIsInsideView(&pt)) {
 				[ NSApp sendEvent:event ];
@@ -525,13 +525,13 @@ static bool QZ_PollEvent()
 			break;
 #endif
 
-		case NSKeyDown: {
+		case NSEventTypeKeyDown: {
 			/* Quit, hide and minimize */
 			switch ([ event keyCode ]) {
 				case QZ_q:
 				case QZ_h:
 				case QZ_m:
-					if ([ event modifierFlags ] & NSCommandKeyMask) {
+					if ([ event modifierFlags ] & NSEventModifierFlagCommand) {
 						[ NSApp sendEvent:event ];
 					}
 					break;
@@ -552,13 +552,13 @@ static bool QZ_PollEvent()
 			break;
 		}
 
-		case NSKeyUp:
+		case NSEventTypeKeyUp:
 			/* Quit, hide and minimize */
 			switch ([ event keyCode ]) {
 				case QZ_q:
 				case QZ_h:
 				case QZ_m:
-					if ([ event modifierFlags ] & NSCommandKeyMask) {
+					if ([ event modifierFlags ] & NSEventModifierFlagCommand) {
 						[ NSApp sendEvent:event ];
 					}
 					break;
@@ -568,7 +568,7 @@ static bool QZ_PollEvent()
 			QZ_KeyEvent([ event keyCode ], [ chars length ] ? [ chars characterAtIndex:0 ] : 0, NO);
 			break;
 
-		case NSScrollWheel:
+		case NSEventTypeScrollWheel:
 			if ([ event deltaY ] > 0.0) { /* Scroll up */
 				_cursor.wheel--;
 			} else if ([ event deltaY ] < 0.0) { /* Scroll down */
@@ -603,9 +603,9 @@ static bool QZ_PollEvent()
 			break;
 #endif
 
-		case NSCursorUpdate:
-		case NSMouseEntered:
-		case NSMouseExited:
+		case NSEventTypeCursorUpdate:
+		case NSEventTypeMouseEntered:
+		case NSEventTypeMouseExited:
 			/* Catch these events if the cursor is dragging. During dragging, we reset
 			 * the mouse position programmatically, which would trigger OS X to show
 			 * the default arrow cursor if the events are propagated. */
@@ -649,11 +649,13 @@ void QZ_GameLoop()
 	QZ_CheckPaletteAnim();
 	_cocoa_subdriver->Draw(true);
 
+	while (QZ_PollEvent()) {}
+	
 	for (;;) {
 		uint32 prev_cur_ticks = cur_ticks; // to check for wrapping
 		InteractiveRandom(); // randomness
 
-		while (QZ_PollEvent()) {}
+		QZ_PollEvent();
 
 		if (_exit_game) break;
 
@@ -676,8 +678,8 @@ void QZ_GameLoop()
 
 			bool old_ctrl_pressed = _ctrl_pressed;
 
-			_ctrl_pressed = !!(_current_mods & ( _settings_client.gui.right_mouse_btn_emulation != RMBE_CONTROL ? NSControlKeyMask : NSCommandKeyMask));
-			_shift_pressed = !!(_current_mods & NSShiftKeyMask);
+			_ctrl_pressed = !!(_current_mods & ( _settings_client.gui.right_mouse_btn_emulation != RMBE_CONTROL ? NSEventModifierFlagControl : NSEventModifierFlagCommand));
+			_shift_pressed = !!(_current_mods & NSEventModifierFlagShift);
 
 			if (old_ctrl_pressed != _ctrl_pressed) HandleCtrlChanged();
 
